@@ -5,14 +5,14 @@
 
 
 enum Opcoes {
-    CRIAR_TABELA_VEICULO = 1,
-    CRIAR_TABELA_LINHA,
-    LER_TABELA_VEICULO,
-    LER_TABELA_LINHA,
-    FILTRAR_TABELA_VEICULO,
-    FILTRAR_TABELA_LINHA,
-    INSERIR_VEICULO,
-    INSERIR_LINHA
+    CREATE_TABLE_VEICULO = 1,
+    CREATE_TABLE_LINHA,
+    SELECT_FROM_VEICULO,
+    SELECT_FROM_LINHA,
+    SELECT_FROM_WHERE_VEICULO,
+    SELECT_FROM_WHERE_LINHA,
+    INSERT_INTO_VEICULO,
+    INSERT_INTO_LINHA
 };
 
 int main() {
@@ -20,10 +20,22 @@ int main() {
     scanf("%d", &opcao);
 
     switch (opcao) {
-        case /* constant-expression */:
-            /* code */
+        case CREATE_TABLE_VEICULO:
             break;
-
+        case CREATE_TABLE_LINHA:
+            break;
+        case SELECT_FROM_VEICULO:
+            break;
+        case SELECT_FROM_LINHA:
+            break;
+        case SELECT_FROM_WHERE_VEICULO:
+            break;
+        case SELECT_FROM_WHERE_LINHA:
+            break;
+        case INSERT_INTO_VEICULO:
+            break;
+        case INSERT_INTO_LINHA:
+            break;
         default:
             break;
     }
