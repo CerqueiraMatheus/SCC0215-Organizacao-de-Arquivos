@@ -15,9 +15,9 @@ typedef struct {
     char descrevePrefixo[19];
     char descreveData[36];
     char descreveLugares[43];
-    char descreveLinha[18];
-    char descreveModelo[21];
-    char descreveCategoria[27];
+    char descreveLinha[27];
+    char descreveModelo[18];
+    char descreveCategoria[21];
 } CabecalhoVeiculo;
 
 typedef struct {
