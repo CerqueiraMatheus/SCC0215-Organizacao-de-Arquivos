@@ -12,19 +12,19 @@ typedef struct {
     long byteProxReg;
     int nroRegistros;
     int nroRegRemovidos;
-    char descrevePrefixo[18];
-    char descreveData[35];
-    char descreveLugares[42];
-    char descreveLinha[17];
-    char descreveModelo[20];
-    char descreveCategoria[26];
+    char descrevePrefixo[19];
+    char descreveData[36];
+    char descreveLugares[43];
+    char descreveLinha[18];
+    char descreveModelo[21];
+    char descreveCategoria[27];
 } CabecalhoVeiculo;
 
 typedef struct {
     bool removido;
     int tamanhoRegistro;
-    char prefixo[5];
-    char data[10];
+    char prefixo[6];
+    char data[11];
     int quantidadeLugares;
     int codLinha;
     int tamanhoModelo;
