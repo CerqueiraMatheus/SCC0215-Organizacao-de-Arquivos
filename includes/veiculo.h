@@ -4,12 +4,10 @@
 #ifndef VEICULO_H
 #define VEICULO_H
 
-#include <stdbool.h>
-
 
 typedef struct {
-    bool status;
-    long byteProxReg;
+    char status;
+    long long int byteProxReg;
     int nroRegistros;
     int nroRegRemovidos;
     char descrevePrefixo[19];
@@ -21,16 +19,16 @@ typedef struct {
 } CabecalhoVeiculo;
 
 typedef struct {
-    bool removido;
+    char removido;
     int tamanhoRegistro;
     char prefixo[6];
     char data[11];
     int quantidadeLugares;
     int codLinha;
     int tamanhoModelo;
-    char *modelo;
+    char modelo[100];
     int tamanhoCategoria;
-    char *categoria;
+    char categoria[100];
 } Veiculo;
 
 #endif // VEICULO_H

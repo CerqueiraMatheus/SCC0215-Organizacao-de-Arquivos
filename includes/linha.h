@@ -4,12 +4,10 @@
 #ifndef LINHA_H
 #define LINHA_H
 
-#include <stdbool.h>
-
 
 typedef struct {
-    bool status;
-    long byteProxReg;
+    char status;
+    long long int byteProxReg;
     int nroRegistros;
     int nroRegRemovidos;
     char descreveCodigo[16];
@@ -19,14 +17,14 @@ typedef struct {
 } CabecalhoLinha;
 
 typedef struct {
-    bool removido;
+    char removido;
     int tamanhoRegistro;
     int codLinha;
     char aceitaCartao;
     int tamanhoNome;
-    char *nomeLinha;
+    char nomeLinha[100];
     int tamanhoCor;
-    char *corLinha;
+    char corLinha[100];
 } Linha;
 
 #endif // LINHA_H
