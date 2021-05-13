@@ -4,6 +4,8 @@
 #ifndef UTIL_H
 #define UTIL_H
 
-
+// Funções fornecidas:
+void binarioNaTela(char *nomeArquivoBinario);
+void scan_quote_string(char *str);
 
 #endif // UTIL_H
