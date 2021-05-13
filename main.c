@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 
-enum Opcoes {
+enum Funcionalidades {
     CREATE_TABLE_VEICULO = 1,
     CREATE_TABLE_LINHA,
     SELECT_FROM_VEICULO,
@@ -16,10 +16,10 @@ enum Opcoes {
 };
 
 int main() {
-    enum Opcoes opcao;
-    scanf("%d", &opcao);
+    enum Funcionalidades funcionalidade;
+    scanf("%d", &funcionalidade);
 
-    switch (opcao) {
+    switch (funcionalidade) {
         case CREATE_TABLE_VEICULO:
             break;
         case CREATE_TABLE_LINHA:
