@@ -2,6 +2,7 @@
 // Matheus Henrique de Cerqueira Pinto - 11911104
 
 #include <stdio.h>
+#include <stdlib.h>
 
 
 enum Funcionalidades {
@@ -37,8 +38,9 @@ int main() {
         case INSERT_INTO_LINHA:
             break;
         default:
-            break;
+            fprintf(stderr, "Falha na identificacao da funcionalidade %d.", funcionalidade);
+            exit(EXIT_FAILURE);
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }
