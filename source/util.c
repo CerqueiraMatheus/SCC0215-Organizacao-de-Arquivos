@@ -2,6 +2,22 @@
 // Matheus Henrique de Cerqueira Pinto - 11911104
 
 #include <stdio.h>
+#include <stdlib.h>
+
+
+char *leStringCSV(FILE *csv) {
+	char *string = NULL;
+	size_t tamanho = 0;
+
+	size_t comprimento = getline(&string, &tamanho, csv);
+	if (comprimento == -1) {
+		free(string);
+		return NULL;
+	} else {
+		string[comprimento - 1] = '\0';
+		return string;
+	}
+}
 
 
 // Funções fornecidas:

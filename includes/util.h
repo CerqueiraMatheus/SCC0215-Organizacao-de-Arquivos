@@ -4,6 +4,11 @@
 #ifndef UTIL_H
 #define UTIL_H
 
+#include <stdio.h>
+
+
+char *leStringCSV(FILE *csv);
+
 // Funções fornecidas:
 void binarioNaTela(char *nomeArquivoBinario);
 void scan_quote_string(char *str);
