@@ -31,4 +31,7 @@ typedef struct {
     char categoria[100];
 } Veiculo;
 
+
+int leCabecalhoVeiculoCSV(CabecalhoVeiculo *cabecalho, FILE *csv);
+
 #endif // VEICULO_H
