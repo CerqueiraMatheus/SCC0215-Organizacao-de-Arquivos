@@ -38,7 +38,7 @@ int main() {
         case INSERT_INTO_LINHA: ;
             break;
         default: ;
-            fprintf(stderr, "Falha na identificacao da funcionalidade %d.", funcionalidade);
+            fprintf(stderr, "Falha na identificacao da funcionalidade %u.", funcionalidade);
             exit(EXIT_FAILURE);
     }
 
