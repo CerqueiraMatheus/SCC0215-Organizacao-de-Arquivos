@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "veiculo.h"
+
 
 enum Funcionalidades {
     CREATE_TABLE_VEICULO = 1,
@@ -22,6 +24,33 @@ int main() {
 
     switch (funcionalidade) {
         case CREATE_TABLE_VEICULO: ;
+            char nomeCsv[255];
+            char nomeBinario[255];
+
+            if (scanf("%s %s", nomeCsv, nomeBinario) != 2) {
+                fprintf(stderr, "Falha no processamento do arquivo.\n");
+                exit(EXIT_FAILURE);
+            }
+
+            FILE *csv = fopen(nomeCsv, "r");
+            if (csv == NULL) {
+                fprintf(stderr, "Falha no processamento do arquivo.\n");
+                exit(EXIT_FAILURE);
+            }
+
+            FILE *binario = fopen(nomeBinario, "wb");
+            if (binario == NULL) {
+                fclose(csv);
+                fprintf(stderr, "Falha no processamento do arquivo.\n");
+                exit(EXIT_FAILURE);
+            }
+
+            CabecalhoVeiculo cabecalhoVeiculo;
+            leCabecalhoVeiculoCsv(&cabecalhoVeiculo, csv);
+
+            fclose(csv);
+            fclose(binario);
+
             break;
         case CREATE_TABLE_LINHA: ;
             break;
