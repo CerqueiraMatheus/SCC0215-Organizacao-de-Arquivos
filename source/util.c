@@ -2,7 +2,9 @@
 // Matheus Henrique de Cerqueira Pinto - 11911104
 
 #include <stdio.h>
+#include <ctype.h>
 #include <stdlib.h>
+#include <string.h>
 
 
 char *leStringCsv(FILE *csv) {
