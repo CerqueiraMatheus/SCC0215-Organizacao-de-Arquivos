@@ -21,23 +21,23 @@ int main() {
     scanf("%u", &funcionalidade);
 
     switch (funcionalidade) {
-        case CREATE_TABLE_VEICULO:
+        case CREATE_TABLE_VEICULO: ;
             break;
-        case CREATE_TABLE_LINHA:
+        case CREATE_TABLE_LINHA: ;
             break;
-        case SELECT_FROM_VEICULO:
+        case SELECT_FROM_VEICULO: ;
             break;
-        case SELECT_FROM_LINHA:
+        case SELECT_FROM_LINHA: ;
             break;
-        case SELECT_FROM_WHERE_VEICULO:
+        case SELECT_FROM_WHERE_VEICULO: ;
             break;
-        case SELECT_FROM_WHERE_LINHA:
+        case SELECT_FROM_WHERE_LINHA: ;
             break;
-        case INSERT_INTO_VEICULO:
+        case INSERT_INTO_VEICULO: ;
             break;
-        case INSERT_INTO_LINHA:
+        case INSERT_INTO_LINHA: ;
             break;
-        default:
+        default: ;
             fprintf(stderr, "Falha na identificacao da funcionalidade %d.", funcionalidade);
             exit(EXIT_FAILURE);
     }
