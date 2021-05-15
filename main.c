@@ -18,7 +18,7 @@ enum Funcionalidades {
 
 int main() {
     enum Funcionalidades funcionalidade;
-    scanf("%d", &funcionalidade);
+    scanf("%u", &funcionalidade);
 
     switch (funcionalidade) {
         case CREATE_TABLE_VEICULO:
