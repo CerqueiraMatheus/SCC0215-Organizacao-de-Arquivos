@@ -32,6 +32,6 @@ typedef struct {
 } Veiculo;
 
 
-int leCabecalhoVeiculoCSV(CabecalhoVeiculo *cabecalho, FILE *csv);
+int leCabecalhoVeiculoCsv(CabecalhoVeiculo *cabecalho, FILE *csv);
 
 #endif // VEICULO_H

@@ -9,7 +9,7 @@
 #include "util.h"
 
 
-int leCabecalhoVeiculoCSV(CabecalhoVeiculo *cabecalho, FILE *csv) {
+int leCabecalhoVeiculoCsv(CabecalhoVeiculo *cabecalho, FILE *csv) {
     // Inicializa valores do cabeçalho
     cabecalho->status = '0';
     cabecalho->byteProxReg = 0;
@@ -17,7 +17,7 @@ int leCabecalhoVeiculoCSV(CabecalhoVeiculo *cabecalho, FILE *csv) {
     cabecalho->nroRegRemovidos = 0;
     
     // Lê linha do CSV em uma string
-    char *string = leStringCSV(csv);
+    char *string = leStringCsv(csv);
     if (string == NULL)
         return EOF;
     char *leitor = string;

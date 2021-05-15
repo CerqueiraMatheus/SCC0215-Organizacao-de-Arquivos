@@ -7,7 +7,7 @@
 #include <stdio.h>
 
 
-char *leStringCSV(FILE *csv);
+char *leStringCsv(FILE *csv);
 
 // Funções fornecidas:
 void binarioNaTela(char *nomeArquivoBinario);

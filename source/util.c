@@ -5,7 +5,7 @@
 #include <stdlib.h>
 
 
-char *leStringCSV(FILE *csv) {
+char *leStringCsv(FILE *csv) {
 	char *string = NULL;
 	size_t tamanho = 0;
 
