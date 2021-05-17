@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "util.h"
 #include "veiculo.h"
 
 
@@ -27,17 +28,20 @@ int main() {
             char nomeCsv[255];
             char nomeBinario[255];
 
+            // Lê nome arquivos
             if (scanf("%s %s", nomeCsv, nomeBinario) != 2) {
                 fprintf(stderr, "Falha no processamento do arquivo.\n");
                 exit(EXIT_FAILURE);
             }
 
+            // Abre CSV para leitura
             FILE *csv = fopen(nomeCsv, "r");
             if (csv == NULL) {
                 fprintf(stderr, "Falha no processamento do arquivo.\n");
                 exit(EXIT_FAILURE);
             }
 
+            // Abre binário para escrita
             FILE *binario = fopen(nomeBinario, "wb");
             if (binario == NULL) {
                 fclose(csv);
@@ -45,11 +49,36 @@ int main() {
                 exit(EXIT_FAILURE);
             }
 
+            // Inicializa cabeçalho
             CabecalhoVeiculo cabecalhoVeiculo;
             leCabecalhoVeiculoCsv(&cabecalhoVeiculo, csv);
+            escreveCabecalhoVeiculoBinario(&cabecalhoVeiculo, binario);
 
+            // Lê e escreve registros
+            Veiculo veiculo;
+            while (leVeiculoCsv(&veiculo, csv) != EOF) {
+                escreveVeiculoBinario(&veiculo, binario);
+
+                // Atualiza número de registros
+                if (veiculo.removido == '0')
+                    cabecalhoVeiculo.nroRegRemovidos++;
+                else
+                    cabecalhoVeiculo.nroRegistros++;
+            }
+
+            // Atualiza campos de controle do cabeçalho
+            cabecalhoVeiculo.byteProxReg = ftell(binario);
+            cabecalhoVeiculo.status = '1';
+
+            // Atualiza cabeçalho
+            fseek(binario, 0, SEEK_SET);
+            escreveCabecalhoVeiculoBinario(&cabecalhoVeiculo, binario);
+
+            // Fecha arquivos utilizados
             fclose(csv);
             fclose(binario);
+
+            binarioNaTela(nomeBinario);
 
             break;
         case CREATE_TABLE_LINHA: ;
