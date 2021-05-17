@@ -8,6 +8,8 @@
 
 
 char *leStringCsv(FILE *csv);
+const char *trataNuloString(const char *string);
+int trataNuloInteiro(const char *string);
 
 // Funções fornecidas:
 void binarioNaTela(char *nomeArquivoBinario);

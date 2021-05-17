@@ -21,6 +21,20 @@ char *leStringCsv(FILE *csv) {
 	}
 }
 
+const char *trataNuloString(const char *string) {
+	if (strcmp(string, "NULO") == 0)
+		return "";
+	else
+		return string;
+}
+
+int trataNuloInteiro(const char *string) {
+	if (strcmp(string, "NULO") == 0)
+		return -1;
+	else
+		return atoi(string);
+}
+
 
 // Funções fornecidas:
 
