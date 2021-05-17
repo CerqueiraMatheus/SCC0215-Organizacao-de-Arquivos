@@ -8,97 +8,135 @@
 #include "veiculo.h"
 
 
-enum Funcionalidades {
-    CREATE_TABLE_VEICULO = 1,
-    CREATE_TABLE_LINHA,
-    SELECT_FROM_VEICULO,
-    SELECT_FROM_LINHA,
-    SELECT_FROM_WHERE_VEICULO,
-    SELECT_FROM_WHERE_LINHA,
-    INSERT_INTO_VEICULO,
-    INSERT_INTO_LINHA
-};
+void createTableVeiculo();
+void createTableLinha();
+void selectFromVeiculo();
+void selectFromLinha();
+void selectFromWhereVeiculo();
+void selectFromWhereLinha();
+void insertIntoVeiculo();
+void insertIntoLinha();
+
 
 int main() {
-    enum Funcionalidades funcionalidade;
-    scanf("%u", &funcionalidade);
+    int funcionalidade;
+    scanf("%d", &funcionalidade);
 
     switch (funcionalidade) {
-        case CREATE_TABLE_VEICULO: ;
-            char nomeCsv[255];
-            char nomeBinario[255];
-
-            // Lê nome arquivos
-            if (scanf("%s %s", nomeCsv, nomeBinario) != 2) {
-                fprintf(stderr, "Falha no processamento do arquivo.\n");
-                exit(EXIT_FAILURE);
-            }
-
-            // Abre CSV para leitura
-            FILE *csv = fopen(nomeCsv, "r");
-            if (csv == NULL) {
-                fprintf(stderr, "Falha no processamento do arquivo.\n");
-                exit(EXIT_FAILURE);
-            }
-
-            // Abre binário para escrita
-            FILE *binario = fopen(nomeBinario, "wb");
-            if (binario == NULL) {
-                fclose(csv);
-                fprintf(stderr, "Falha no processamento do arquivo.\n");
-                exit(EXIT_FAILURE);
-            }
-
-            // Inicializa cabeçalho
-            CabecalhoVeiculo cabecalhoVeiculo;
-            leCabecalhoVeiculoCsv(&cabecalhoVeiculo, csv);
-            escreveCabecalhoVeiculoBinario(&cabecalhoVeiculo, binario);
-
-            // Lê e escreve registros
-            Veiculo veiculo;
-            while (leVeiculoCsv(&veiculo, csv) != EOF) {
-                escreveVeiculoBinario(&veiculo, binario);
-
-                // Atualiza número de registros
-                if (veiculo.removido == '0')
-                    cabecalhoVeiculo.nroRegRemovidos++;
-                else
-                    cabecalhoVeiculo.nroRegistros++;
-            }
-
-            // Atualiza campos de controle do cabeçalho
-            cabecalhoVeiculo.byteProxReg = ftell(binario);
-            cabecalhoVeiculo.status = '1';
-
-            // Atualiza cabeçalho
-            fseek(binario, 0, SEEK_SET);
-            escreveCabecalhoVeiculoBinario(&cabecalhoVeiculo, binario);
-
-            // Fecha arquivos utilizados
-            fclose(csv);
-            fclose(binario);
-
-            binarioNaTela(nomeBinario);
-
+        case 1:
+            createTableVeiculo();
             break;
-        case CREATE_TABLE_LINHA: ;
+        case 2:
+            createTableLinha();
             break;
-        case SELECT_FROM_VEICULO: ;
+        case 3:
+            selectFromVeiculo();
             break;
-        case SELECT_FROM_LINHA: ;
+        case 4:
+            selectFromLinha();
             break;
-        case SELECT_FROM_WHERE_VEICULO: ;
+        case 5:
+            selectFromWhereVeiculo();
             break;
-        case SELECT_FROM_WHERE_LINHA: ;
+        case 6:
+            selectFromWhereLinha();
             break;
-        case INSERT_INTO_VEICULO: ;
+        case 7:
+            insertIntoVeiculo();
             break;
-        case INSERT_INTO_LINHA: ;
+        case 8:
+            insertIntoLinha();
             break;
-        default: ;
+        default:
             fprintf(stderr, "Falha na identificacao da funcionalidade %u.", funcionalidade);
             exit(EXIT_FAILURE);
+            break;
     }
 
     return EXIT_SUCCESS;
+}
+
+void createTableVeiculo() {
+    char nomeCsv[255];
+    char nomeBinario[255];
+
+    // Lê nome dos arquivos
+    if (scanf("%s %s", nomeCsv, nomeBinario) != 2) {
+        fprintf(stderr, "Falha no processamento do arquivo.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    // Abre o CSV para leitura
+    FILE *csv = fopen(nomeCsv, "r");
+    if (csv == NULL) {
+        fprintf(stderr, "Falha no processamento do arquivo.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    // Abre o binário para escrita binária
+    FILE *binario = fopen(nomeBinario, "wb");
+    if (binario == NULL) {
+        fclose(csv);
+        fprintf(stderr, "Falha no processamento do arquivo.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    // Inicializa o cabeçalho
+    CabecalhoVeiculo cabecalhoVeiculo;
+    leCabecalhoVeiculoCsv(&cabecalhoVeiculo, csv);
+    escreveCabecalhoVeiculoBinario(&cabecalhoVeiculo, binario);
+
+    // Lê e escreve registros
+    Veiculo veiculo;
+    while (leVeiculoCsv(&veiculo, csv) != EOF) {
+        escreveVeiculoBinario(&veiculo, binario);
+
+        // Atualiza o número de registros
+        if (veiculo.removido == '0')
+            cabecalhoVeiculo.nroRegRemovidos++;
+        else
+            cabecalhoVeiculo.nroRegistros++;
+    }
+
+    // Atualiza os campos de controle do cabeçalho
+    cabecalhoVeiculo.byteProxReg = ftell(binario);
+    cabecalhoVeiculo.status = '1';
+
+    // Atualiza cabeçalho
+    fseek(binario, 0, SEEK_SET);
+    escreveCabecalhoVeiculoBinario(&cabecalhoVeiculo, binario);
+
+    // Fecha os arquivos utilizados
+    fclose(csv);
+    fclose(binario);
+
+    binarioNaTela(nomeBinario);
+}
+
+void createTableLinha() {
+
+}
+
+void selectFromVeiculo() {
+
+}
+
+void selectFromLinha() {
+
+}
+
+void selectFromWhereVeiculo() {
+
+}
+
+void selectFromWhereLinha() {
+
+}
+
+void insertIntoVeiculo() {
+
+}
+
+void insertIntoLinha() {
+
 }
