@@ -9,8 +9,10 @@
 #include "util.h"
 
 
+// Cabeçalho Veículo
+
 int leCabecalhoVeiculoCsv(CabecalhoVeiculo *cabecalho, FILE *csv) {
-    // Inicializa valores do cabeçalho
+    // Inicializa campos de controle
     cabecalho->status = '0';
     cabecalho->byteProxReg = 0;
     cabecalho->nroRegistros = 0;
@@ -22,7 +24,7 @@ int leCabecalhoVeiculoCsv(CabecalhoVeiculo *cabecalho, FILE *csv) {
         return EOF;
     char *leitor = string;
 
-    // Lê strings descritoras
+    // Lê campos string de tamanho fixo
     strcpy(cabecalho->descrevePrefixo, strsep(&leitor, ","));
     strcpy(cabecalho->descreveData, strsep(&leitor, ","));
     strcpy(cabecalho->descreveLugares, strsep(&leitor, ","));
@@ -33,6 +35,25 @@ int leCabecalhoVeiculoCsv(CabecalhoVeiculo *cabecalho, FILE *csv) {
     free(string);
     return 0;
 }
+
+void escreveCabecalhoVeiculoBinario(CabecalhoVeiculo *cabecalho, FILE *binario) {
+    // Escreve campos de controle
+    fwrite(&cabecalho->status, sizeof(char), 1, binario);
+    fwrite(&cabecalho->byteProxReg, sizeof(long long int), 1, binario);
+    fwrite(&cabecalho->nroRegistros, sizeof(int), 1, binario);
+    fwrite(&cabecalho->nroRegRemovidos, sizeof(int), 1, binario);
+
+    // Escreve campos string de tamanho fixo
+    fwrite(cabecalho->descrevePrefixo, sizeof(char), 18, binario);
+    fwrite(cabecalho->descreveData, sizeof(char), 35, binario);
+    fwrite(cabecalho->descreveLugares, sizeof(char), 42, binario);
+    fwrite(cabecalho->descreveLinha, sizeof(char), 26, binario);
+    fwrite(cabecalho->descreveModelo, sizeof(char), 17, binario);
+    fwrite(cabecalho->descreveCategoria, sizeof(char), 20, binario);
+}
+
+
+// Veículo
 
 int leVeiculoCsv(Veiculo *veiculo, FILE *csv) {
     // Lê linha do CSV em uma string
@@ -59,13 +80,39 @@ int leVeiculoCsv(Veiculo *veiculo, FILE *csv) {
     strcpy(veiculo->modelo, trataNuloString(strsep(&leitor, ",")));
     strcpy(veiculo->categoria, trataNuloString(strsep(&leitor, ",")));
     
-    // Calcula tamanho das strings variáveis
+    // Calcula tamanho dos campos string de tamanho variável
     veiculo->tamanhoModelo = strlen(veiculo->modelo);
     veiculo->tamanhoCategoria = strlen(veiculo->categoria);
     
-    // Calcula tamanho final do registro
+    // Calcula tamanho do registro
     veiculo->tamanhoRegistro = 31 + veiculo->tamanhoModelo + veiculo->tamanhoCategoria;
 
     free(string);
     return 0;
+}
+
+void escreveVeiculoBinario(Veiculo *veiculo, FILE *binario) {
+    // Escreve campos de controle
+    fwrite(&veiculo->removido, sizeof(char), 1, binario);
+    fwrite(&veiculo->tamanhoRegistro, sizeof(int), 1, binario);
+
+    // Escreve campos string de tamanho fixo
+    fwrite(veiculo->prefixo, sizeof(char), 5, binario);
+
+    // Escreve campos string de tamanho fixo possivelmente nulos
+    int tamanhoData = strlen(veiculo->data);
+    fwrite(veiculo->data, sizeof(char), tamanhoData, binario);
+    if (tamanhoData == 0)
+        fwrite("\0", sizeof(char), 1, binario);
+    escreveLixoBinario(10 - tamanhoData - 1, binario);
+
+    // Escreve campos inteiros
+    fwrite(&veiculo->quantidadeLugares, sizeof(int), 1, binario);
+    fwrite(&veiculo->codLinha, sizeof(int), 1, binario);
+
+    // Escreve campos string de tamanho variável
+    fwrite(&veiculo->tamanhoModelo, sizeof(int), 1, binario);
+    fwrite(veiculo->modelo, sizeof(char), veiculo->tamanhoModelo, binario);
+    fwrite(&veiculo->tamanhoCategoria, sizeof(int), 1, binario);
+    fwrite(veiculo->categoria, sizeof(char), veiculo->tamanhoCategoria, binario);
 }

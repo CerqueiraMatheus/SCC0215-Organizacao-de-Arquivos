@@ -10,6 +10,7 @@
 char *leStringCsv(FILE *csv);
 const char *trataNuloString(const char *string);
 int trataNuloInteiro(const char *string);
+void escreveLixoBinario(int numero, FILE *binario);
 
 // Funções fornecidas:
 void binarioNaTela(char *nomeArquivoBinario);

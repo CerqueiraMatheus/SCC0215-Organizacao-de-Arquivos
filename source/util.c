@@ -35,6 +35,11 @@ int trataNuloInteiro(const char *string) {
 		return atoi(string);
 }
 
+void escreveLixoBinario(int numero, FILE *binario) {
+	for (int i = 0; i < numero; i++)
+		fwrite("@", sizeof(char), 1, binario);
+}
+
 
 // Funções fornecidas:
 
