@@ -5,26 +5,24 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "veiculo.h"
 #include "util.h"
+#include "veiculo.h"
 
 
 // Cabeçalho Veículo
 
 int leCabecalhoVeiculoCsv(CabecalhoVeiculo *cabecalho, FILE *csv) {
-    // Inicializa campos de controle
-    cabecalho->status = '0';
-    cabecalho->byteProxReg = 0;
-    cabecalho->nroRegistros = 0;
-    cabecalho->nroRegRemovidos = 0;
-    
-    // Lê linha do CSV em uma string
+    // Lê linha do CSV
     char *string = leStringCsv(csv);
     if (string == NULL)
         return EOF;
     char *leitor = string;
 
-    // Lê campos string de tamanho fixo
+    cabecalho->status = '0';
+    cabecalho->byteProxReg = 0;
+    cabecalho->nroRegistros = 0;
+    cabecalho->nroRegRemovidos = 0;
+
     strcpy(cabecalho->descrevePrefixo, strsep(&leitor, ","));
     strcpy(cabecalho->descreveData, strsep(&leitor, ","));
     strcpy(cabecalho->descreveLugares, strsep(&leitor, ","));
@@ -37,13 +35,11 @@ int leCabecalhoVeiculoCsv(CabecalhoVeiculo *cabecalho, FILE *csv) {
 }
 
 void escreveCabecalhoVeiculoBinario(CabecalhoVeiculo *cabecalho, FILE *binario) {
-    // Escreve campos de controle
     fwrite(&cabecalho->status, sizeof(char), 1, binario);
     fwrite(&cabecalho->byteProxReg, sizeof(long long int), 1, binario);
     fwrite(&cabecalho->nroRegistros, sizeof(int), 1, binario);
     fwrite(&cabecalho->nroRegRemovidos, sizeof(int), 1, binario);
 
-    // Escreve campos string de tamanho fixo
     fwrite(cabecalho->descrevePrefixo, sizeof(char), 18, binario);
     fwrite(cabecalho->descreveData, sizeof(char), 35, binario);
     fwrite(cabecalho->descreveLugares, sizeof(char), 42, binario);
@@ -56,13 +52,13 @@ void escreveCabecalhoVeiculoBinario(CabecalhoVeiculo *cabecalho, FILE *binario) 
 // Veículo
 
 int leVeiculoCsv(Veiculo *veiculo, FILE *csv) {
-    // Lê linha do CSV em uma string
+    // Lê linha do CSV
     char *string = leStringCsv(csv);
     if (string == NULL)
         return EOF;
     char *leitor = string;
 
-    // Checa se o registro foi removido
+    // Checa por registro removido
     if (leitor[0] == '*') {
         veiculo->removido = '0';
         leitor++;
@@ -70,21 +66,15 @@ int leVeiculoCsv(Veiculo *veiculo, FILE *csv) {
         veiculo->removido = '1';
     }
 
-    // Lê campos não nulos
     strcpy(veiculo->prefixo, strsep(&leitor, ","));
-
-    // Lê campos possivelmente nulos
     strcpy(veiculo->data, trataNuloString(strsep(&leitor, ",")));
     veiculo->quantidadeLugares = trataNuloInteiro(strsep(&leitor, ","));
     veiculo->codLinha = trataNuloInteiro(strsep(&leitor, ","));
     strcpy(veiculo->modelo, trataNuloString(strsep(&leitor, ",")));
     strcpy(veiculo->categoria, trataNuloString(strsep(&leitor, ",")));
     
-    // Calcula tamanho dos campos string de tamanho variável
     veiculo->tamanhoModelo = strlen(veiculo->modelo);
     veiculo->tamanhoCategoria = strlen(veiculo->categoria);
-    
-    // Calcula tamanho do registro
     veiculo->tamanhoRegistro = 31 + veiculo->tamanhoModelo + veiculo->tamanhoCategoria;
 
     free(string);
@@ -92,25 +82,20 @@ int leVeiculoCsv(Veiculo *veiculo, FILE *csv) {
 }
 
 void escreveVeiculoBinario(Veiculo *veiculo, FILE *binario) {
-    // Escreve campos de controle
     fwrite(&veiculo->removido, sizeof(char), 1, binario);
     fwrite(&veiculo->tamanhoRegistro, sizeof(int), 1, binario);
-
-    // Escreve campos string de tamanho fixo
     fwrite(veiculo->prefixo, sizeof(char), 5, binario);
 
-    // Escreve campos string de tamanho fixo possivelmente nulos
+    // Escreve o campo data possivelmente nulo
     int tamanhoData = strlen(veiculo->data);
     fwrite(veiculo->data, sizeof(char), tamanhoData, binario);
     if (tamanhoData == 0)
         fwrite("\0", sizeof(char), 1, binario);
     escreveLixoBinario(10 - tamanhoData - 1, binario);
 
-    // Escreve campos inteiros
     fwrite(&veiculo->quantidadeLugares, sizeof(int), 1, binario);
     fwrite(&veiculo->codLinha, sizeof(int), 1, binario);
 
-    // Escreve campos string de tamanho variável
     fwrite(&veiculo->tamanhoModelo, sizeof(int), 1, binario);
     fwrite(veiculo->modelo, sizeof(char), veiculo->tamanhoModelo, binario);
     fwrite(&veiculo->tamanhoCategoria, sizeof(int), 1, binario);
