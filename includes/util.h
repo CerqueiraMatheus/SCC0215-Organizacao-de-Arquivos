@@ -7,10 +7,13 @@
 #include <stdio.h>
 
 
+// Leitura e Escrita
 char *leStringCsv(FILE *csv);
-const char *trataNuloString(const char *string);
-int trataNuloInteiro(const char *string);
 void escreveStringNuloBinario(int tamanho, FILE *binario);
+
+// Conversão
+const char *stringParaCampoString(const char *string);
+int stringParaCampoInteiro(const char *string);
 
 // Funções fornecidas:
 void binarioNaTela(char *nomeArquivoBinario);

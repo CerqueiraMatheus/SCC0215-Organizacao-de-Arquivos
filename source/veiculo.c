@@ -67,11 +67,13 @@ int leVeiculoCsv(Veiculo *veiculo, FILE *csv) {
     }
 
     strcpy(veiculo->prefixo, strsep(&leitor, ","));
-    strcpy(veiculo->data, trataNuloString(strsep(&leitor, ",")));
-    veiculo->quantidadeLugares = trataNuloInteiro(strsep(&leitor, ","));
-    veiculo->codLinha = trataNuloInteiro(strsep(&leitor, ","));
-    strcpy(veiculo->modelo, trataNuloString(strsep(&leitor, ",")));
-    strcpy(veiculo->categoria, trataNuloString(strsep(&leitor, ",")));
+    strcpy(veiculo->data, stringParaCampoString(strsep(&leitor, ",")));
+
+    veiculo->quantidadeLugares = stringParaCampoInteiro(strsep(&leitor, ","));
+    veiculo->codLinha = stringParaCampoInteiro(strsep(&leitor, ","));
+
+    strcpy(veiculo->modelo, stringParaCampoString(strsep(&leitor, ",")));
+    strcpy(veiculo->categoria, stringParaCampoString(strsep(&leitor, ",")));
     
     veiculo->tamanhoModelo = strlen(veiculo->modelo);
     veiculo->tamanhoCategoria = strlen(veiculo->categoria);
@@ -84,6 +86,7 @@ int leVeiculoCsv(Veiculo *veiculo, FILE *csv) {
 void escreveVeiculoBinario(Veiculo *veiculo, FILE *binario) {
     fwrite(&veiculo->removido, sizeof(char), 1, binario);
     fwrite(&veiculo->tamanhoRegistro, sizeof(int), 1, binario);
+
     fwrite(veiculo->prefixo, sizeof(char), 5, binario);
 
     // Escreve o campo data possivelmente nulo
@@ -97,6 +100,7 @@ void escreveVeiculoBinario(Veiculo *veiculo, FILE *binario) {
 
     fwrite(&veiculo->tamanhoModelo, sizeof(int), 1, binario);
     fwrite(veiculo->modelo, sizeof(char), veiculo->tamanhoModelo, binario);
+
     fwrite(&veiculo->tamanhoCategoria, sizeof(int), 1, binario);
     fwrite(veiculo->categoria, sizeof(char), veiculo->tamanhoCategoria, binario);
 }

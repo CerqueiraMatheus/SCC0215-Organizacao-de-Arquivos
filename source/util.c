@@ -7,11 +7,14 @@
 #include <string.h>
 
 
+// Leitura e Escrita
+
 char *leStringCsv(FILE *csv) {
 	char *string = NULL;
 	size_t tamanho = 0;
 
 	size_t comprimento = getline(&string, &tamanho, csv);
+
 	if (comprimento == -1) {
 		free(string);
 		return NULL;
@@ -21,26 +24,29 @@ char *leStringCsv(FILE *csv) {
 	}
 }
 
-const char *trataNuloString(const char *string) {
-	if (strcmp(string, "NULO") == 0)
-		return "";
-	else
-		return string;
-}
-
-int trataNuloInteiro(const char *string) {
-	if (strcmp(string, "NULO") == 0)
-		return -1;
-	else
-		return atoi(string);
-}
-
 void escreveStringNuloBinario(int tamanho, FILE *binario) {
 	fwrite("\0", sizeof(char), 1, binario);
 
 	// Adiciona o lixo
 	for (int i = 0; i < tamanho - 1; i++)
 		fwrite("@", sizeof(char), 1, binario);
+}
+
+
+// Conversão
+
+const char *stringParaCampoString(const char *string) {
+	if (strcmp(string, "NULO") == 0)
+		return "";
+	else
+		return string;
+}
+
+int stringParaCampoInteiro(const char *string) {
+	if (strcmp(string, "NULO") == 0)
+		return -1;
+	else
+		return atoi(string);
 }
 
 
