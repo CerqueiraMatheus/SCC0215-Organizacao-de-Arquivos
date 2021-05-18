@@ -5,6 +5,7 @@
 #include <stdlib.h>
 
 #include "util.h"
+#include "linha.h"
 #include "veiculo.h"
 
 
@@ -56,6 +57,7 @@ int main() {
     return EXIT_SUCCESS;
 }
 
+
 void createTableVeiculo() {
     char nomeCsv[255];
     char nomeBinario[255];
@@ -106,7 +108,52 @@ void createTableVeiculo() {
 }
 
 void createTableLinha() {
+    char nomeCsv[255];
+    char nomeBinario[255];
 
+    if (scanf("%s %s", nomeCsv, nomeBinario) != 2) {
+        fprintf(stderr, "Falha no processamento do arquivo.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    FILE *csv = fopen(nomeCsv, "r");
+    if (csv == NULL) {
+        fprintf(stderr, "Falha no processamento do arquivo.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    FILE *binario = fopen(nomeBinario, "wb");
+    if (binario == NULL) {
+        fclose(csv);
+        fprintf(stderr, "Falha no processamento do arquivo.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    // Inicializa o cabeçalho
+    CabecalhoLinha cabecalhoLinha;
+    leCabecalhoLinhaCsv(&cabecalhoLinha, csv);
+    escreveCabecalhoLinhaBinario(&cabecalhoLinha, binario);
+
+    // Percorre o CSV escrevendo os registros
+    Linha linha;
+    while (leLinhaCsv(&linha, csv) != EOF) {
+        escreveLinhaBinario(&linha, binario);
+
+        if (linha.removido == '0')
+            cabecalhoLinha.nroRegRemovidos++;
+        else
+            cabecalhoLinha.nroRegistros++;
+    }
+
+    // Atualiza o cabeçalho
+    cabecalhoLinha.byteProxReg = ftell(binario);
+    cabecalhoLinha.status = '1';
+    fseek(binario, 0, SEEK_SET);
+    escreveCabecalhoLinhaBinario(&cabecalhoLinha, binario);
+
+    fclose(csv);
+    fclose(binario);
+    binarioNaTela(nomeBinario);
 }
 
 void selectFromVeiculo() {
