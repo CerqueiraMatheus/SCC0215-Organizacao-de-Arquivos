@@ -33,6 +33,7 @@ int leCabecalhoLinhaCsv(CabecalhoLinha *cabecalho, FILE *csv);
 void escreveCabecalhoLinhaBinario(CabecalhoLinha *cabecalho, FILE *binario);
 
 // Linha
-
+int leLinhaCsv(Linha *linha, FILE *csv);
+void escreveLinhaBinario(Linha *linha, FILE *binario);
 
 #endif // LINHA_H

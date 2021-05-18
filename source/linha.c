@@ -48,9 +48,44 @@ void escreveCabecalhoLinhaBinario(CabecalhoLinha *cabecalho, FILE *binario) {
 // Linha
 
 int leLinhaCsv(Linha *linha, FILE *csv) {
+    // Lê string do CSV
+    char *string = leStringCsv(csv);
+    if (string == NULL)
+        return EOF;
+    char *leitor = string;
 
+    // Checa por registro removido
+    if (leitor[0] == '*') {
+        linha->removido = '0';
+        leitor++;
+    } else {
+        linha->removido = '1';
+    }
+
+    linha->codLinha = atoi(strsep(&leitor, ","));
+    linha->aceitaCartao = stringParaCampoString(strsep(&leitor, ","))[0];
+
+    strcpy(linha->nomeLinha, stringParaCampoString(strsep(&leitor, ",")));
+    strcpy(linha->corLinha, stringParaCampoString(strsep(&leitor, ",")));
+
+    linha->tamanhoNome = strlen(linha->nomeLinha);
+    linha->tamanhoCor = strlen(linha->corLinha);
+    linha->tamanhoRegistro = 13 + linha->tamanhoNome + linha->tamanhoCor;
+
+    free(string);
+    return 0;
 }
 
 void escreveLinhaBinario(Linha *linha, FILE *binario) {
+    fwrite(&linha->removido, sizeof(char), 1, binario);
+    fwrite(&linha->tamanhoRegistro, sizeof(int), 1, binario);
 
+    fwrite(&linha->codLinha, sizeof(int), 1, binario);
+    fwrite(&linha->aceitaCartao, sizeof(char), 1, binario);
+
+    fwrite(&linha->tamanhoNome, sizeof(int), 1, binario);
+    fwrite(linha->nomeLinha, sizeof(char), linha->tamanhoNome, binario);
+
+    fwrite(&linha->tamanhoCor, sizeof(int), 1, binario);
+    fwrite(linha->corLinha, sizeof(char), linha->tamanhoCor, binario);
 }
