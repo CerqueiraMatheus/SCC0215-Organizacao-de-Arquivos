@@ -87,11 +87,10 @@ void escreveVeiculoBinario(Veiculo *veiculo, FILE *binario) {
     fwrite(veiculo->prefixo, sizeof(char), 5, binario);
 
     // Escreve o campo data possivelmente nulo
-    int tamanhoData = strlen(veiculo->data);
-    fwrite(veiculo->data, sizeof(char), tamanhoData, binario);
-    if (tamanhoData == 0)
-        fwrite("\0", sizeof(char), 1, binario);
-    escreveLixoBinario(10 - tamanhoData - 1, binario);
+    if (strlen(veiculo->data) == 0)
+        escreveStringNuloBinario(10, binario);
+    else
+        fwrite(veiculo->data, sizeof(char), 10, binario);
 
     fwrite(&veiculo->quantidadeLugares, sizeof(int), 1, binario);
     fwrite(&veiculo->codLinha, sizeof(int), 1, binario);
