@@ -20,7 +20,7 @@ typedef struct {
     char removido;
     int tamanhoRegistro;
     int codLinha;
-    char aceitaCartao;
+    char aceitaCartao[2];
     int tamanhoNome;
     char nomeLinha[100];
     int tamanhoCor;

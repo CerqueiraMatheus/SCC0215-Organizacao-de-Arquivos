@@ -63,7 +63,8 @@ int leLinhaCsv(Linha *linha, FILE *csv) {
     }
 
     linha->codLinha = atoi(strsep(&leitor, ","));
-    linha->aceitaCartao = stringParaCampoString(strsep(&leitor, ","))[0];
+
+    strcpy(linha->aceitaCartao, stringParaCampoString(strsep(&leitor, ",")));
 
     strcpy(linha->nomeLinha, stringParaCampoString(strsep(&leitor, ",")));
     strcpy(linha->corLinha, stringParaCampoString(strsep(&leitor, ",")));
@@ -81,7 +82,7 @@ void escreveLinhaBinario(Linha *linha, FILE *binario) {
     fwrite(&linha->tamanhoRegistro, sizeof(int), 1, binario);
 
     fwrite(&linha->codLinha, sizeof(int), 1, binario);
-    fwrite(&linha->aceitaCartao, sizeof(char), 1, binario);
+    fwrite(linha->aceitaCartao, sizeof(char), 1, binario);
 
     fwrite(&linha->tamanhoNome, sizeof(int), 1, binario);
     fwrite(linha->nomeLinha, sizeof(char), linha->tamanhoNome, binario);
