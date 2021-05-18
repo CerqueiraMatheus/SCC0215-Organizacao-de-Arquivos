@@ -27,4 +27,12 @@ typedef struct {
     char corLinha[100];
 } Linha;
 
+
+// Cabeçalho Linha
+int leCabecalhoLinhaCsv(CabecalhoLinha *cabecalho, FILE *csv);
+void escreveCabecalhoLinhaBinario(CabecalhoLinha *cabecalho, FILE *binario);
+
+// Linha
+
+
 #endif // LINHA_H

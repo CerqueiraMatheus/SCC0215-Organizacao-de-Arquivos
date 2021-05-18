@@ -12,7 +12,7 @@
 // Cabeçalho Veículo
 
 int leCabecalhoVeiculoCsv(CabecalhoVeiculo *cabecalho, FILE *csv) {
-    // Lê linha do CSV
+    // Lê string do CSV
     char *string = leStringCsv(csv);
     if (string == NULL)
         return EOF;
@@ -52,7 +52,7 @@ void escreveCabecalhoVeiculoBinario(CabecalhoVeiculo *cabecalho, FILE *binario) 
 // Veículo
 
 int leVeiculoCsv(Veiculo *veiculo, FILE *csv) {
-    // Lê linha do CSV
+    // Lê string do CSV
     char *string = leStringCsv(csv);
     if (string == NULL)
         return EOF;
