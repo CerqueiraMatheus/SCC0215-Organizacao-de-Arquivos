@@ -1,13 +1,9 @@
 // Pedro Lucas de Moliner de Castro - 11795784
 // Matheus Henrique de Cerqueira Pinto - 11911104
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-#include "util.h"
 #include "veiculo.h"
 
+#include "util.h"
 
 // Cabeçalho Veículo
 
@@ -48,6 +44,19 @@ void escreveCabecalhoVeiculoBinario(CabecalhoVeiculo *cabecalho, FILE *binario) 
     fwrite(cabecalho->descreveCategoria, sizeof(char), 20, binario);
 }
 
+void leCabecalhoVeiculoBinario(CabecalhoVeiculo *cabecalhoVeiculo, FILE *binario) {
+    fread(&cabecalhoVeiculo->status, sizeof(char), 1, binario);
+    fread(&cabecalhoVeiculo->byteProxReg, sizeof(long long int), 1, binario);
+    fread(&cabecalhoVeiculo->nroRegistros, sizeof(int), 1, binario);
+    fread(&cabecalhoVeiculo->nroRegRemovidos, sizeof(int), 1, binario);
+
+    fread(cabecalhoVeiculo->descrevePrefixo, sizeof(char), 18, binario);
+    fread(cabecalhoVeiculo->descreveData, sizeof(char), 35, binario);
+    fread(cabecalhoVeiculo->descreveLugares, sizeof(char), 42, binario);
+    fread(cabecalhoVeiculo->descreveLinha, sizeof(char), 26, binario);
+    fread(cabecalhoVeiculo->descreveModelo, sizeof(char), 17, binario);
+    fread(cabecalhoVeiculo->descreveCategoria, sizeof(char), 20, binario);
+}
 
 // Veículo
 
@@ -74,7 +83,7 @@ int leVeiculoCsv(Veiculo *veiculo, FILE *csv) {
 
     strcpy(veiculo->modelo, stringParaCampoString(strsep(&leitor, ",")));
     strcpy(veiculo->categoria, stringParaCampoString(strsep(&leitor, ",")));
-    
+
     veiculo->tamanhoModelo = strlen(veiculo->modelo);
     veiculo->tamanhoCategoria = strlen(veiculo->categoria);
     veiculo->tamanhoRegistro = 31 + veiculo->tamanhoModelo + veiculo->tamanhoCategoria;
@@ -103,4 +112,29 @@ void escreveVeiculoBinario(Veiculo *veiculo, FILE *binario) {
 
     fwrite(&veiculo->tamanhoCategoria, sizeof(int), 1, binario);
     fwrite(veiculo->categoria, sizeof(char), veiculo->tamanhoCategoria, binario);
+}
+
+bool leVeiculoBinario(Veiculo *veiculo, FILE *binario) {
+    fread(&veiculo->removido, sizeof(char), 1, binario);
+    fread(&veiculo->tamanhoRegistro, sizeof(int), 1, binario);
+
+    // Se o registro foi removido, mata a execução
+    if (foiRemovido(veiculo->removido)) return false;
+
+    fread(veiculo->prefixo, sizeof(char), 5, binario);
+
+    fread(veiculo->data, sizeof(char), 10, binario);
+    fread(&veiculo->quantidadeLugares, sizeof(int), 1, binario);
+    fread(&veiculo->codLinha, sizeof(int), 1, binario);
+
+    fread(&veiculo->tamanhoModelo, sizeof(int), 1, binario);
+    fread(veiculo->modelo, sizeof(char), veiculo->tamanhoModelo, binario);
+    veiculo->modelo[veiculo->tamanhoModelo] = '\0';
+
+    fread(&veiculo->tamanhoCategoria, sizeof(int), 1, binario);
+    fread(veiculo->categoria, sizeof(char), veiculo->tamanhoCategoria, binario);
+    veiculo->categoria[veiculo->tamanhoCategoria] = '\0';
+
+    // Garante a completude do registro
+    return true;
 }

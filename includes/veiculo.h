@@ -4,6 +4,10 @@
 #ifndef VEICULO_H
 #define VEICULO_H
 
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 typedef struct {
     char status;
@@ -31,13 +35,14 @@ typedef struct {
     char categoria[100];
 } Veiculo;
 
-
 // Cabeçalho Veículo
 int leCabecalhoVeiculoCsv(CabecalhoVeiculo *cabecalho, FILE *csv);
 void escreveCabecalhoVeiculoBinario(CabecalhoVeiculo *cabecalho, FILE *binario);
+void leCabecalhoVeiculoBinario(CabecalhoVeiculo *cabecalhoVeiculo, FILE *binario);
 
 // Veículo
 int leVeiculoCsv(Veiculo *veiculo, FILE *csv);
 void escreveVeiculoBinario(Veiculo *veiculo, FILE *binario);
+bool leVeiculoBinario(Veiculo *veiculo, FILE *binario);
 
-#endif // VEICULO_H
+#endif  // VEICULO_H

@@ -4,8 +4,8 @@
 #ifndef UTIL_H
 #define UTIL_H
 
+#include <stdbool.h>
 #include <stdio.h>
-
 
 // Leitura e Escrita
 char *leStringCsv(FILE *csv);
@@ -19,4 +19,10 @@ int stringParaCampoInteiro(const char *string);
 void binarioNaTela(char *nomeArquivoBinario);
 void scan_quote_string(char *str);
 
-#endif // UTIL_H
+bool foiRemovido(char c);
+void printfTrataNuloString(char *string);
+void printfTrataNuloInt(int n);
+void printfTrataNuloVariavel(char *string, int tamanho);
+void printTrataNuloDataExtenso(char *string);
+
+#endif  // UTIL_H
