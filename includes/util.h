@@ -24,5 +24,6 @@ void printfTrataNuloString(char *string);
 void printfTrataNuloInt(int n);
 void printfTrataNuloVariavel(char *string, int tamanho);
 void printTrataNuloDataExtenso(char *string);
+void printTrataNuloPagamentoExtenso(char *string);
 
 #endif  // UTIL_H

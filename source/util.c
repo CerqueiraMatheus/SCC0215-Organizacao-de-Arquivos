@@ -80,22 +80,43 @@ void printTrataNuloDataExtenso(char *string) {
         return;
     }
 
-    char *meses[12] = {"Janeiro",
-                             "Fevereiro",
-                             "Março",
-                             "Abril",
-                             "Maio",
-                             "Junho",
-                             "Julho",
-                             "Agosto",
-                             "Setembro",
-                             "Outubro",
-                             "Novembro",
-                             "Dezembro"};
+    char *meses[12] = {"janeiro",
+                       "fevereiro",
+                       "março",
+                       "abril",
+                       "maio",
+                       "junho",
+                       "julho",
+                       "agosto",
+                       "setembro",
+                       "outubro",
+                       "novembro",
+                       "dezembro"};
 
     int dia, mes, ano;
     sscanf(string, "%d-%d-%d", &ano, &mes, &dia);
-    printf("%d de %s de %d\n", dia, meses[mes - 1], ano);
+    printf("%02d de %s de %d\n", dia, meses[mes - 1], ano);
+}
+
+void printTrataNuloPagamentoExtenso(char *string) {
+    if (!*string) {
+        printf("campo com valor nulo\n");
+        return;
+    }
+
+    switch (string[0]) {
+        case 'S':
+            printf("PAGAMENTO SOMENTE COM CARTAO SEM PRESENCA DE COBRADOR\n");
+            break;
+
+        case 'N':
+            printf("PAGAMENTO EM CARTAO E DINHEIRO\n");
+            break;
+
+        case 'F':
+            printf("PAGAMENTO EM CARTAO SOMENTE NO FINAL DE SEMANA\n");
+            break;
+    }
 }
 
 // Funções fornecidas:

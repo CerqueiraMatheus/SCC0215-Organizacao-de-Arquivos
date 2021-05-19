@@ -173,15 +173,21 @@ void selectFromVeiculo() {
     CabecalhoVeiculo cabecalhoVeiculo;
     leCabecalhoVeiculoBinario(&cabecalhoVeiculo, binario);
 
+    // Caso não haja registros
+    if (cabecalhoVeiculo.nroRegistros == 0) {
+        printf("Registro inexistente.\n");
+        fclose(binario);
+        return;
+    }
+
     // Leitura do corpo do binário
     Veiculo veiculo;
 
     // Contabiliza todos os registros
     int nroTotalRegistros = cabecalhoVeiculo.nroRegistros + cabecalhoVeiculo.nroRegRemovidos;
-    
+
     // Percorre até o fim do número de registros
     for (; nroTotalRegistros > 0; nroTotalRegistros--) {
-        
         // Caso seja lido um registro não excluído
         if (leVeiculoBinario(&veiculo, binario) != false) {
             printf("Prefixo do veiculo: %s\n", veiculo.prefixo);
@@ -199,8 +205,8 @@ void selectFromVeiculo() {
             printfTrataNuloInt(veiculo.quantidadeLugares);
 
             printf("\n");
-        } 
-        
+        }
+
         // Se for excluído, pula o corpo do registro
         else {
             fseek(binario, veiculo.tamanhoRegistro, SEEK_CUR);
@@ -211,6 +217,63 @@ void selectFromVeiculo() {
 }
 
 void selectFromLinha() {
+    char nomeBinario[255];
+
+    // Leitura do nome do arquivo
+    if (scanf("%s", nomeBinario) != 1) {
+        fprintf(stderr, "Falha no processamento do arquivo.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    // Leitura do arquivo
+    FILE *binario = fopen(nomeBinario, "rb");
+    if (binario == NULL) {
+        fprintf(stderr, "Falha no processamento do arquivo.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    // Leitura do cabeçalho do binário
+    CabecalhoLinha cabecalhoLinha;
+    leCabecalhoLinhaBinario(&cabecalhoLinha, binario);
+
+    // Caso não haja registros
+    if (cabecalhoLinha.nroRegistros == 0) {
+        printf("Registro inexistente.\n");
+        fclose(binario);
+        return;
+    }
+
+    // Leitura do corpo do binário
+    Linha linha;
+
+    // Contabiliza todos os registros
+    int nroTotalRegistros = cabecalhoLinha.nroRegistros + cabecalhoLinha.nroRegRemovidos;
+
+    // Percorre até o fim do número de registros
+    for (; nroTotalRegistros > 0; nroTotalRegistros--) {
+        // Caso seja lido um registro não excluído
+        if (leLinhaBinario(&linha, binario) != false) {
+            printf("Codigo da linha: %d\n", linha.codLinha);
+
+            printf("Nome da linha: ");
+            printfTrataNuloVariavel(linha.nomeLinha, linha.tamanhoNome);
+
+            printf("Cor que descreve a linha: ");
+            printfTrataNuloVariavel(linha.corLinha, linha.tamanhoCor);
+
+            printf("Aceita cartao: ");
+            printTrataNuloPagamentoExtenso(linha.aceitaCartao);
+
+            printf("\n");
+        }
+
+        // Se for excluído, pula o corpo do registro
+        else {
+            fseek(binario, linha.tamanhoRegistro, SEEK_CUR);
+        }
+    }
+
+    fclose(binario);
 }
 
 void selectFromWhereVeiculo() {

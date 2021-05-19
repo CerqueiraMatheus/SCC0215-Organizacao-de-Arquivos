@@ -1,13 +1,9 @@
 // Pedro Lucas de Moliner de Castro - 11795784
 // Matheus Henrique de Cerqueira Pinto - 11911104
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-#include "util.h"
 #include "linha.h"
 
+#include "util.h"
 
 // Cabeçalho Linha
 
@@ -44,6 +40,17 @@ void escreveCabecalhoLinhaBinario(CabecalhoLinha *cabecalho, FILE *binario) {
     fwrite(cabecalho->descreveLinha, sizeof(char), 24, binario);
 }
 
+void leCabecalhoLinhaBinario(CabecalhoLinha *cabecalho, FILE *binario) {
+    fread(&cabecalho->status, sizeof(char), 1, binario);
+    fread(&cabecalho->byteProxReg, sizeof(long long int), 1, binario);
+    fread(&cabecalho->nroRegistros, sizeof(int), 1, binario);
+    fread(&cabecalho->nroRegRemovidos, sizeof(int), 1, binario);
+
+    fread(cabecalho->descreveCodigo, sizeof(char), 15, binario);
+    fread(cabecalho->descreveCartao, sizeof(char), 13, binario);
+    fread(cabecalho->descreveNome, sizeof(char), 13, binario);
+    fread(cabecalho->descreveLinha, sizeof(char), 24, binario);
+}
 
 // Linha
 
@@ -89,4 +96,26 @@ void escreveLinhaBinario(Linha *linha, FILE *binario) {
 
     fwrite(&linha->tamanhoCor, sizeof(int), 1, binario);
     fwrite(linha->corLinha, sizeof(char), linha->tamanhoCor, binario);
+}
+
+bool leLinhaBinario(Linha *linha, FILE *binario) {
+    fread(&linha->removido, sizeof(char), 1, binario);
+    fread(&linha->tamanhoRegistro, sizeof(int), 1, binario);
+
+    // Se o registro foi removido, mata a execução
+    if (foiRemovido(linha->removido)) return false;
+
+    fread(&linha->codLinha, sizeof(int), 1, binario);
+    fread(linha->aceitaCartao, sizeof(char), 1, binario);
+
+    fread(&linha->tamanhoNome, sizeof(int), 1, binario);
+    fread(linha->nomeLinha, sizeof(char), linha->tamanhoNome, binario);
+    linha->nomeLinha[linha->tamanhoNome] = '\0';
+
+    fread(&linha->tamanhoCor, sizeof(int), 1, binario);
+    fread(linha->corLinha, sizeof(char), linha->tamanhoCor, binario);
+    linha->corLinha[linha->tamanhoCor] = '\0';
+
+    // Garante a completude do registro
+    return true;
 }
