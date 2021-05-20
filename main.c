@@ -190,27 +190,12 @@ void selectFromVeiculo() {
     for (; nroTotalRegistros > 0; nroTotalRegistros--) {
         // Caso seja lido um registro não excluído
         if (leVeiculoBinario(&veiculo, binario) != false) {
-            printf("Prefixo do veiculo: %s\n", veiculo.prefixo);
-
-            printf("Modelo do veiculo: ");
-            printfTrataNuloVariavel(veiculo.modelo, veiculo.tamanhoModelo);
-
-            printf("Categoria do veiculo: ");
-            printfTrataNuloVariavel(veiculo.categoria, veiculo.tamanhoCategoria);
-
-            printf("Data de entrada do veiculo na frota: ");
-            printTrataNuloDataExtenso(veiculo.data);
-
-            printf("Quantidade de lugares sentados disponiveis: ");
-            printfTrataNuloInt(veiculo.quantidadeLugares);
-
-            printf("\n");
+            printVeiculo(cabecalhoVeiculo, veiculo);
         }
 
         // Se for excluído, pula o corpo do registro
-        else {
+        else
             fseek(binario, veiculo.tamanhoRegistro, SEEK_CUR);
-        }
     }
 
     fclose(binario);
@@ -252,25 +237,12 @@ void selectFromLinha() {
     // Percorre até o fim do número de registros
     for (; nroTotalRegistros > 0; nroTotalRegistros--) {
         // Caso seja lido um registro não excluído
-        if (leLinhaBinario(&linha, binario) != false) {
-            printf("Codigo da linha: %d\n", linha.codLinha);
-
-            printf("Nome da linha: ");
-            printfTrataNuloVariavel(linha.nomeLinha, linha.tamanhoNome);
-
-            printf("Cor que descreve a linha: ");
-            printfTrataNuloVariavel(linha.corLinha, linha.tamanhoCor);
-
-            printf("Aceita cartao: ");
-            printTrataNuloPagamentoExtenso(linha.aceitaCartao);
-
-            printf("\n");
-        }
+        if (leLinhaBinario(&linha, binario) != false)
+            printLinha(cabecalhoLinha, linha);
 
         // Se for excluído, pula o corpo do registro
-        else {
+        else
             fseek(binario, linha.tamanhoRegistro, SEEK_CUR);
-        }
     }
 
     fclose(binario);

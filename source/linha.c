@@ -47,9 +47,16 @@ void leCabecalhoLinhaBinario(CabecalhoLinha *cabecalho, FILE *binario) {
     fread(&cabecalho->nroRegRemovidos, sizeof(int), 1, binario);
 
     fread(cabecalho->descreveCodigo, sizeof(char), 15, binario);
+    cabecalho->descreveCodigo[15] = '\0';
+
     fread(cabecalho->descreveCartao, sizeof(char), 13, binario);
+    cabecalho->descreveCartao[13] = '\0';
+
     fread(cabecalho->descreveNome, sizeof(char), 13, binario);
+    cabecalho->descreveNome[13] = '\0';
+
     fread(cabecalho->descreveLinha, sizeof(char), 24, binario);
+    cabecalho->descreveLinha[24] = '\0';
 }
 
 // Linha
@@ -118,4 +125,19 @@ bool leLinhaBinario(Linha *linha, FILE *binario) {
 
     // Garante a completude do registro
     return true;
+}
+
+void printLinha(CabecalhoLinha cabecalhoLinha, Linha linha) {
+    printf("%s: %d\n", cabecalhoLinha.descreveCodigo, linha.codLinha);
+
+    printf("%s: ", cabecalhoLinha.descreveNome);
+    printTrataNuloVariavel(linha.nomeLinha, linha.tamanhoNome);
+
+    printf("%s: ", cabecalhoLinha.descreveLinha);
+    printTrataNuloVariavel(linha.corLinha, linha.tamanhoCor);
+
+    printf("%s: ", cabecalhoLinha.descreveCartao);
+    printTrataNuloPagamentoExtenso(linha.aceitaCartao);
+
+    printf("\n");
 }

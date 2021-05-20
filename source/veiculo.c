@@ -51,11 +51,22 @@ void leCabecalhoVeiculoBinario(CabecalhoVeiculo *cabecalhoVeiculo, FILE *binario
     fread(&cabecalhoVeiculo->nroRegRemovidos, sizeof(int), 1, binario);
 
     fread(cabecalhoVeiculo->descrevePrefixo, sizeof(char), 18, binario);
+    cabecalhoVeiculo->descrevePrefixo[18] = '\0';
+
     fread(cabecalhoVeiculo->descreveData, sizeof(char), 35, binario);
+    cabecalhoVeiculo->descreveData[35] = '\0';
+
     fread(cabecalhoVeiculo->descreveLugares, sizeof(char), 42, binario);
+    cabecalhoVeiculo->descreveLugares[42] = '\0';
+
     fread(cabecalhoVeiculo->descreveLinha, sizeof(char), 26, binario);
+    cabecalhoVeiculo->descreveLinha[26] = '\0';
+
     fread(cabecalhoVeiculo->descreveModelo, sizeof(char), 17, binario);
+    cabecalhoVeiculo->descreveModelo[17] = '\0';
+
     fread(cabecalhoVeiculo->descreveCategoria, sizeof(char), 20, binario);
+    cabecalhoVeiculo->descreveCategoria[20] = '\0';
 }
 
 // Veículo
@@ -122,8 +133,11 @@ bool leVeiculoBinario(Veiculo *veiculo, FILE *binario) {
     if (foiRemovido(veiculo->removido)) return false;
 
     fread(veiculo->prefixo, sizeof(char), 5, binario);
+    veiculo->prefixo[5] = '\0';
 
     fread(veiculo->data, sizeof(char), 10, binario);
+    veiculo->data[10] = '\0';
+
     fread(&veiculo->quantidadeLugares, sizeof(int), 1, binario);
     fread(&veiculo->codLinha, sizeof(int), 1, binario);
 
@@ -137,4 +151,22 @@ bool leVeiculoBinario(Veiculo *veiculo, FILE *binario) {
 
     // Garante a completude do registro
     return true;
+}
+
+void printVeiculo(CabecalhoVeiculo cabecalhoVeiculo, Veiculo veiculo) {
+    printf("%s: %s\n", cabecalhoVeiculo.descrevePrefixo, veiculo.prefixo);
+
+    printf("%s: ", cabecalhoVeiculo.descreveModelo);
+    printTrataNuloVariavel(veiculo.modelo, veiculo.tamanhoModelo);
+
+    printf("%s: ", cabecalhoVeiculo.descreveCategoria);
+    printTrataNuloVariavel(veiculo.categoria, veiculo.tamanhoCategoria);
+
+    printf("%s: ", cabecalhoVeiculo.descreveData);
+    printTrataNuloDataExtenso(veiculo.data);
+
+    printf("%s: ", cabecalhoVeiculo.descreveLugares);
+    printTrataNuloInt(veiculo.quantidadeLugares);
+
+    printf("\n");
 }

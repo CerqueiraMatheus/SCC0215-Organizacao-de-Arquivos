@@ -41,4 +41,6 @@ int leLinhaCsv(Linha *linha, FILE *csv);
 void escreveLinhaBinario(Linha *linha, FILE *binario);
 bool leLinhaBinario(Linha *linha, FILE *binario);
 
+void printLinha(CabecalhoLinha cabecalhoLinha, Linha linha);
+
 #endif  // LINHA_H

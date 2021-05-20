@@ -20,9 +20,9 @@ void binarioNaTela(char *nomeArquivoBinario);
 void scan_quote_string(char *str);
 
 bool foiRemovido(char c);
-void printfTrataNuloString(char *string);
-void printfTrataNuloInt(int n);
-void printfTrataNuloVariavel(char *string, int tamanho);
+void printTrataNuloString(char *string);
+void printTrataNuloInt(int n);
+void printTrataNuloVariavel(char *string, int tamanho);
 void printTrataNuloDataExtenso(char *string);
 void printTrataNuloPagamentoExtenso(char *string);
 

@@ -45,4 +45,6 @@ int leVeiculoCsv(Veiculo *veiculo, FILE *csv);
 void escreveVeiculoBinario(Veiculo *veiculo, FILE *binario);
 bool leVeiculoBinario(Veiculo *veiculo, FILE *binario);
 
+void printVeiculo(CabecalhoVeiculo cabecalhoVeiculo, Veiculo veiculo);
+
 #endif  // VEICULO_H

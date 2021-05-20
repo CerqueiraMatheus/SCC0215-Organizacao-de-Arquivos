@@ -53,21 +53,21 @@ bool foiRemovido(char c) {
     return (c == '0') ? true : false;
 }
 
-void printfTrataNuloString(char *string) {
-    if (*string)
+void printTrataNuloString(char *string) {
+    if (string[0] != '\0')
         printf("%s\n", string);
     else
         printf("campo com valor nulo\n");
 }
 
-void printfTrataNuloInt(int n) {
+void printTrataNuloInt(int n) {
     if (n != -1)
         printf("%d\n", n);
     else
         printf("campo com valor nulo\n");
 }
 
-void printfTrataNuloVariavel(char *string, int tamanho) {
+void printTrataNuloVariavel(char *string, int tamanho) {
     if (tamanho != 0)
         printf("%s\n", string);
     else
@@ -75,7 +75,7 @@ void printfTrataNuloVariavel(char *string, int tamanho) {
 }
 
 void printTrataNuloDataExtenso(char *string) {
-    if (!*string) {
+    if (string[0] == '\0') {
         printf("campo com valor nulo\n");
         return;
     }
@@ -99,7 +99,7 @@ void printTrataNuloDataExtenso(char *string) {
 }
 
 void printTrataNuloPagamentoExtenso(char *string) {
-    if (!*string) {
+    if (string[0] == '\0') {
         printf("campo com valor nulo\n");
         return;
     }
