@@ -15,7 +15,6 @@
 char *leStringCsv(FILE *csv) {
     char *string = NULL;
     size_t tamanho = 0;
-
     size_t comprimento = getline(&string, &tamanho, csv);
 
     if (comprimento == -1) {
@@ -35,20 +34,15 @@ void escreveStringNuloBinario(int tamanho, FILE *binario) {
         fwrite("@", sizeof(char), 1, binario);
 }
 
+
 // Conversão
 
 const char *stringParaCampoString(const char *string) {
-    if (strcmp(string, "NULO") == 0)
-        return "";
-    else
-        return string;
+    return strcmp(string, "NULO") == 0 ? "" : string;
 }
 
 int stringParaCampoInteiro(const char *string) {
-    if (strcmp(string, "NULO") == 0)
-        return -1;
-    else
-        return atoi(string);
+    return strcmp(string, "NULO") == 0 ? -1 : atoi(string);
 }
 
 bool foiRemovido(char c) {
@@ -120,6 +114,7 @@ void printTrataNuloPagamentoExtenso(char *string) {
             break;
     }
 }
+
 
 // Funções fornecidas:
 
