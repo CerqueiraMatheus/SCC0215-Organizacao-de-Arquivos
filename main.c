@@ -188,9 +188,9 @@ void selectFromVeiculo() {
     int nroTotalRegistros = cabecalhoVeiculo.nroRegistros + cabecalhoVeiculo.nroRegRemovidos;
 
     // Percorre até o fim do número de registros
-    for (; nroTotalRegistros > 0; nroTotalRegistros--) {
+    for (int i = 0; i < nroTotalRegistros; i++) {
         // Caso seja lido um registro não excluído
-        if (leVeiculoBinario(&veiculo, binario) != false) {
+        if (leVeiculoBinario(&veiculo, binario) == true) {
             imprimeVeiculo(cabecalhoVeiculo, veiculo);
         }
 
@@ -236,9 +236,9 @@ void selectFromLinha() {
     int nroTotalRegistros = cabecalhoLinha.nroRegistros + cabecalhoLinha.nroRegRemovidos;
 
     // Percorre até o fim do número de registros
-    for (; nroTotalRegistros > 0; nroTotalRegistros--) {
+    for (int i = 0; i < nroTotalRegistros; i++) {
         // Caso seja lido um registro não excluído
-        if (leLinhaBinario(&linha, binario) != false)
+        if (leLinhaBinario(&linha, binario) == true)
             imprimeLinha(cabecalhoLinha, linha);
 
         // Se for excluído, pula o corpo do registro
