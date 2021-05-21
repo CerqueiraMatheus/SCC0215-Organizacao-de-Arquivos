@@ -4,9 +4,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "linha.h"
 #include "util.h"
+#include "linha.h"
 #include "veiculo.h"
+
 
 void createTableVeiculo();
 void createTableLinha();

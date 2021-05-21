@@ -4,10 +4,9 @@
 #ifndef VEICULO_H
 #define VEICULO_H
 
-#include <stdbool.h>
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <stdbool.h>
+
 
 typedef struct {
     char status;
@@ -34,6 +33,7 @@ typedef struct {
     int tamanhoCategoria;
     char categoria[100];
 } Veiculo;
+
 
 // Cabeçalho Veículo
 int leCabecalhoVeiculoCsv(CabecalhoVeiculo *cabecalho, FILE *csv);

@@ -1,12 +1,14 @@
 // Pedro Lucas de Moliner de Castro - 11795784
 // Matheus Henrique de Cerqueira Pinto - 11911104
 
-#include "util.h"
-
-#include <ctype.h>
 #include <stdio.h>
+#include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
+
+#include "util.h"
+
 
 // Leitura e Escrita
 

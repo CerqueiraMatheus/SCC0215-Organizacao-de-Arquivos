@@ -1,9 +1,14 @@
 // Pedro Lucas de Moliner de Castro - 11795784
 // Matheus Henrique de Cerqueira Pinto - 11911104
 
-#include "linha.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
 
 #include "util.h"
+#include "linha.h"
+
 
 // Cabeçalho Linha
 

@@ -4,10 +4,8 @@
 #ifndef LINHA_H
 #define LINHA_H
 
-#include <stdbool.h>
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <stdbool.h>
 
 typedef struct {
     char status;
@@ -30,6 +28,7 @@ typedef struct {
     int tamanhoCor;
     char corLinha[100];
 } Linha;
+
 
 // Cabeçalho Linha
 int leCabecalhoLinhaCsv(CabecalhoLinha *cabecalho, FILE *csv);
