@@ -159,20 +159,21 @@ void escreveVeiculoBinario(Veiculo *veiculo, FILE *binario) {
     fwrite(veiculo->categoria, sizeof(char), veiculo->tamanhoCategoria, binario);
 }
 
-void printVeiculo(CabecalhoVeiculo cabecalhoVeiculo, Veiculo veiculo) {
-    printf("%s: %s\n", cabecalhoVeiculo.descrevePrefixo, veiculo.prefixo);
+void imprimeVeiculo(CabecalhoVeiculo cabecalhoVeiculo, Veiculo veiculo) {
+    printf("%s: ", cabecalhoVeiculo.descrevePrefixo);
+    imprimeCampoString(veiculo.prefixo, strlen(veiculo.prefixo));
 
     printf("%s: ", cabecalhoVeiculo.descreveModelo);
-    printTrataNuloVariavel(veiculo.modelo, veiculo.tamanhoModelo);
+    imprimeCampoString(veiculo.modelo, veiculo.tamanhoModelo);
 
     printf("%s: ", cabecalhoVeiculo.descreveCategoria);
-    printTrataNuloVariavel(veiculo.categoria, veiculo.tamanhoCategoria);
+    imprimeCampoString(veiculo.categoria, veiculo.tamanhoCategoria);
 
     printf("%s: ", cabecalhoVeiculo.descreveData);
-    printTrataNuloDataExtenso(veiculo.data);
+    imprimeData(veiculo.data);
 
     printf("%s: ", cabecalhoVeiculo.descreveLugares);
-    printTrataNuloInt(veiculo.quantidadeLugares);
+    imprimeCampoInteiro(veiculo.quantidadeLugares);
 
     printf("\n");
 }

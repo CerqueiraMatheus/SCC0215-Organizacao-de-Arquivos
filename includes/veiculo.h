@@ -37,14 +37,13 @@ typedef struct {
 
 // Cabeçalho Veículo
 int leCabecalhoVeiculoCsv(CabecalhoVeiculo *cabecalho, FILE *csv);
-void escreveCabecalhoVeiculoBinario(CabecalhoVeiculo *cabecalho, FILE *binario);
 void leCabecalhoVeiculoBinario(CabecalhoVeiculo *cabecalhoVeiculo, FILE *binario);
+void escreveCabecalhoVeiculoBinario(CabecalhoVeiculo *cabecalho, FILE *binario);
 
 // Veículo
 int leVeiculoCsv(Veiculo *veiculo, FILE *csv);
-void escreveVeiculoBinario(Veiculo *veiculo, FILE *binario);
 bool leVeiculoBinario(Veiculo *veiculo, FILE *binario);
-
-void printVeiculo(CabecalhoVeiculo cabecalhoVeiculo, Veiculo veiculo);
+void escreveVeiculoBinario(Veiculo *veiculo, FILE *binario);
+void imprimeVeiculo(CabecalhoVeiculo cabecalhoVeiculo, Veiculo veiculo);
 
 #endif  // VEICULO_H

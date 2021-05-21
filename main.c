@@ -191,7 +191,7 @@ void selectFromVeiculo() {
     for (; nroTotalRegistros > 0; nroTotalRegistros--) {
         // Caso seja lido um registro não excluído
         if (leVeiculoBinario(&veiculo, binario) != false) {
-            printVeiculo(cabecalhoVeiculo, veiculo);
+            imprimeVeiculo(cabecalhoVeiculo, veiculo);
         }
 
         // Se for excluído, pula o corpo do registro
@@ -239,7 +239,7 @@ void selectFromLinha() {
     for (; nroTotalRegistros > 0; nroTotalRegistros--) {
         // Caso seja lido um registro não excluído
         if (leLinhaBinario(&linha, binario) != false)
-            printLinha(cabecalhoLinha, linha);
+            imprimeLinha(cabecalhoLinha, linha);
 
         // Se for excluído, pula o corpo do registro
         else

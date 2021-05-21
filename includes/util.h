@@ -20,11 +20,13 @@ int stringParaCampoInteiro(const char *string);
 void binarioNaTela(char *nomeArquivoBinario);
 void scan_quote_string(char *str);
 
+// Impressão
+void imprimeCampoInteiro(int campo);
+void imprimeCampoString(char *campo, int tamanho);
+void imprimeData(char *data);
+void imprimeAceitaCartao(char *aceitaCartao);
+
+// Checagem
 bool foiRemovido(char c);
-void printTrataNuloString(char *string);
-void printTrataNuloInt(int n);
-void printTrataNuloVariavel(char *string, int tamanho);
-void printTrataNuloDataExtenso(char *string);
-void printTrataNuloPagamentoExtenso(char *string);
 
 #endif  // UTIL_H

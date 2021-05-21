@@ -132,17 +132,18 @@ void escreveLinhaBinario(Linha *linha, FILE *binario) {
     fwrite(linha->corLinha, sizeof(char), linha->tamanhoCor, binario);
 }
 
-void printLinha(CabecalhoLinha cabecalhoLinha, Linha linha) {
-    printf("%s: %d\n", cabecalhoLinha.descreveCodigo, linha.codLinha);
+void imprimeLinha(CabecalhoLinha cabecalhoLinha, Linha linha) {
+    printf("%s: ", cabecalhoLinha.descreveCodigo);
+    imprimeCampoInteiro(linha.codLinha);
 
     printf("%s: ", cabecalhoLinha.descreveNome);
-    printTrataNuloVariavel(linha.nomeLinha, linha.tamanhoNome);
+    imprimeCampoString(linha.nomeLinha, linha.tamanhoNome);
 
     printf("%s: ", cabecalhoLinha.descreveLinha);
-    printTrataNuloVariavel(linha.corLinha, linha.tamanhoCor);
+    imprimeCampoString(linha.corLinha, linha.tamanhoCor);
 
     printf("%s: ", cabecalhoLinha.descreveCartao);
-    printTrataNuloPagamentoExtenso(linha.aceitaCartao);
+    imprimeAceitaCartao(linha.aceitaCartao);
 
     printf("\n");
 }

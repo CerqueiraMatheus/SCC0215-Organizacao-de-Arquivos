@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 
+
 typedef struct {
     char status;
     long long int byteProxReg;
@@ -32,14 +33,13 @@ typedef struct {
 
 // Cabeçalho Linha
 int leCabecalhoLinhaCsv(CabecalhoLinha *cabecalho, FILE *csv);
-void escreveCabecalhoLinhaBinario(CabecalhoLinha *cabecalho, FILE *binario);
 void leCabecalhoLinhaBinario(CabecalhoLinha *cabecalho, FILE *binario);
+void escreveCabecalhoLinhaBinario(CabecalhoLinha *cabecalho, FILE *binario);
 
 // Linha
 int leLinhaCsv(Linha *linha, FILE *csv);
-void escreveLinhaBinario(Linha *linha, FILE *binario);
 bool leLinhaBinario(Linha *linha, FILE *binario);
-
-void printLinha(CabecalhoLinha cabecalhoLinha, Linha linha);
+void escreveLinhaBinario(Linha *linha, FILE *binario);
+void imprimeLinha(CabecalhoLinha cabecalhoLinha, Linha linha);
 
 #endif  // LINHA_H

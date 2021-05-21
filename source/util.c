@@ -10,6 +10,9 @@
 #include "util.h"
 
 
+const char *MENSAGEM_CAMPO_NULO = "campo com valor nulo";
+
+
 // Leitura e Escrita
 
 char *leStringCsv(FILE *csv) {
@@ -45,62 +48,57 @@ int stringParaCampoInteiro(const char *string) {
     return strcmp(string, "NULO") == 0 ? -1 : atoi(string);
 }
 
-bool foiRemovido(char c) {
-    return (c == '0') ? true : false;
-}
 
-void printTrataNuloString(char *string) {
-    if (string[0] != '\0')
-        printf("%s\n", string);
+// Impressão
+
+void imprimeCampoInteiro(int campo) {
+    if (campo == -1)
+        printf("%s\n", MENSAGEM_CAMPO_NULO);
     else
-        printf("campo com valor nulo\n");
+        printf("%d\n", campo);
 }
 
-void printTrataNuloInt(int n) {
-    if (n != -1)
-        printf("%d\n", n);
+void imprimeCampoString(char *campo, int tamanho) {
+    if (tamanho == 0)
+        printf("%s\n", MENSAGEM_CAMPO_NULO);
     else
-        printf("campo com valor nulo\n");
+        printf("%s\n", campo);
 }
 
-void printTrataNuloVariavel(char *string, int tamanho) {
-    if (tamanho != 0)
-        printf("%s\n", string);
-    else
-        printf("campo com valor nulo\n");
-}
-
-void printTrataNuloDataExtenso(char *string) {
-    if (string[0] == '\0') {
-        printf("campo com valor nulo\n");
+void imprimeData(char *data) {
+    if (data[0] == '\0') {
+        printf("%s\n", MENSAGEM_CAMPO_NULO);
         return;
     }
 
-    char *meses[12] = {"janeiro",
-                       "fevereiro",
-                       "março",
-                       "abril",
-                       "maio",
-                       "junho",
-                       "julho",
-                       "agosto",
-                       "setembro",
-                       "outubro",
-                       "novembro",
-                       "dezembro"};
+    const char *MESES[12] = {
+        "janeiro",
+        "fevereiro",
+        "março",
+        "abril",
+        "maio",
+        "junho",
+        "julho",
+        "agosto",
+        "setembro",
+        "outubro",
+        "novembro",
+        "dezembro"
+    };
 
     int dia, mes, ano;
-    sscanf(string, "%d-%d-%d", &ano, &mes, &dia);
-    printf("%02d de %s de %d\n", dia, meses[mes - 1], ano);
+    sscanf(data, "%d-%d-%d", &ano, &mes, &dia);
+
+    printf("%02d de %s de %d\n", dia, MESES[mes - 1], ano);
 }
 
-void printTrataNuloPagamentoExtenso(char *string) {
-    if (string[0] == '\0') {
-        printf("campo com valor nulo\n");
+void imprimeAceitaCartao(char *aceitaCartao) {
+    if (aceitaCartao[0] == '\0') {
+        printf("%s\n", MENSAGEM_CAMPO_NULO);
         return;
     }
 
-    switch (string[0]) {
+    switch (aceitaCartao[0]) {
         case 'S':
             printf("PAGAMENTO SOMENTE COM CARTAO SEM PRESENCA DE COBRADOR\n");
             break;
@@ -113,6 +111,13 @@ void printTrataNuloPagamentoExtenso(char *string) {
             printf("PAGAMENTO EM CARTAO SOMENTE NO FINAL DE SEMANA\n");
             break;
     }
+}
+
+
+// Checagem
+
+bool foiRemovido(char c) {
+    return (c == '0') ? true : false;
 }
 
 
