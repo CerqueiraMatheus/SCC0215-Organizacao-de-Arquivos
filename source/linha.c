@@ -105,7 +105,9 @@ bool leLinhaBinario(Linha *linha, FILE *binario) {
         return false;
 
     fread(&linha->codLinha, sizeof(int), 1, binario);
+
     fread(linha->aceitaCartao, sizeof(char), 1, binario);
+    linha->aceitaCartao[1] = '\0';
 
     fread(&linha->tamanhoNome, sizeof(int), 1, binario);
     fread(linha->nomeLinha, sizeof(char), linha->tamanhoNome, binario);
