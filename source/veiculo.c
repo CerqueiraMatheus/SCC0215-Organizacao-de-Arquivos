@@ -114,7 +114,8 @@ bool leVeiculoBinario(Veiculo *veiculo, FILE *binario) {
     fread(&veiculo->tamanhoRegistro, sizeof(int), 1, binario);
 
     // Se o registro foi removido, mata a execução
-    if (foiRemovido(veiculo->removido)) return false;
+    if (registroFoiRemovido(veiculo->removido))
+        return false;
 
     fread(veiculo->prefixo, sizeof(char), 5, binario);
     veiculo->prefixo[5] = '\0';

@@ -101,7 +101,8 @@ bool leLinhaBinario(Linha *linha, FILE *binario) {
     fread(&linha->tamanhoRegistro, sizeof(int), 1, binario);
 
     // Se o registro foi removido, mata a execução
-    if (foiRemovido(linha->removido)) return false;
+    if (registroFoiRemovido(linha->removido))
+        return false;
 
     fread(&linha->codLinha, sizeof(int), 1, binario);
     fread(linha->aceitaCartao, sizeof(char), 1, binario);

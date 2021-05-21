@@ -49,6 +49,17 @@ int stringParaCampoInteiro(const char *string) {
 }
 
 
+// Checagem
+
+bool arquivoFoiCorrompido(char status) {
+    return status == '0';
+}
+
+bool registroFoiRemovido(char removido) {
+    return removido == '0';
+}
+
+
 // Impressão
 
 void imprimeCampoInteiro(int campo) {
@@ -111,13 +122,6 @@ void imprimeAceitaCartao(char *aceitaCartao) {
             printf("PAGAMENTO EM CARTAO SOMENTE NO FINAL DE SEMANA\n");
             break;
     }
-}
-
-
-// Checagem
-
-bool foiRemovido(char c) {
-    return (c == '0') ? true : false;
 }
 
 

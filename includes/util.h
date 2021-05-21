@@ -20,13 +20,14 @@ int stringParaCampoInteiro(const char *string);
 void binarioNaTela(char *nomeArquivoBinario);
 void scan_quote_string(char *str);
 
+// Checagem
+bool arquivoFoiCorrompido(char status);
+bool registroFoiRemovido(char removido);
+
 // Impressão
 void imprimeCampoInteiro(int campo);
 void imprimeCampoString(char *campo, int tamanho);
 void imprimeData(char *data);
 void imprimeAceitaCartao(char *aceitaCartao);
-
-// Checagem
-bool foiRemovido(char c);
 
 #endif  // UTIL_H
