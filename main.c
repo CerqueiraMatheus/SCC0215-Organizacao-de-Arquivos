@@ -73,8 +73,8 @@ void createTableVeiculo() {
 
     FILE *binario = fopen(nomeBinario, "wb");
     if (binario == NULL) {
-        fclose(csv);
         fprintf(stderr, "Falha no processamento do arquivo.\n");
+        fclose(csv);
         exit(EXIT_FAILURE);
     }
 
@@ -122,8 +122,8 @@ void createTableLinha() {
 
     FILE *binario = fopen(nomeBinario, "wb");
     if (binario == NULL) {
-        fclose(csv);
         fprintf(stderr, "Falha no processamento do arquivo.\n");
+        fclose(csv);
         exit(EXIT_FAILURE);
     }
 
@@ -174,6 +174,13 @@ void selectFromVeiculo() {
     CabecalhoVeiculo cabecalhoVeiculo;
     leCabecalhoVeiculoBinario(&cabecalhoVeiculo, binario);
 
+    // Caso esteja corrompido
+    if (arquivoFoiCorrompido(cabecalhoVeiculo.status)) {
+        fprintf(stderr, "Falha no processamento do arquivo.\n");
+        fclose(binario);
+        exit(EXIT_FAILURE);
+    }
+
     // Caso não haja registros
     if (cabecalhoVeiculo.nroRegistros == 0) {
         printf("Registro inexistente.\n");
@@ -221,6 +228,13 @@ void selectFromLinha() {
     // Leitura do cabeçalho do binário
     CabecalhoLinha cabecalhoLinha;
     leCabecalhoLinhaBinario(&cabecalhoLinha, binario);
+
+    // Caso esteja corrompido
+    if (arquivoFoiCorrompido(cabecalhoLinha.status)) {
+        fprintf(stderr, "Falha no processamento do arquivo.\n");
+        fclose(binario);
+        exit(EXIT_FAILURE);
+    }
 
     // Caso não haja registros
     if (cabecalhoLinha.nroRegistros == 0) {
