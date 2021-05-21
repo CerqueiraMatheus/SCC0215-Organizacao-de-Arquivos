@@ -13,7 +13,7 @@
 const char *MENSAGEM_CAMPO_NULO = "campo com valor nulo";
 
 
-// Leitura e Escrita
+// CSV
 
 char *leStringCsv(FILE *csv) {
     char *string = NULL;
@@ -27,6 +27,14 @@ char *leStringCsv(FILE *csv) {
         string[comprimento - 1] = '\0';
         return string;
     }
+}
+
+
+// Binário
+
+void leStringBinario(char *string, int tamanho, FILE *binario) {
+    fread(string, sizeof(char), tamanho, binario);
+    string[tamanho] = '\0';
 }
 
 void escreveStringNuloBinario(int tamanho, FILE *binario) {

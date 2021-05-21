@@ -41,23 +41,12 @@ void leCabecalhoVeiculoBinario(CabecalhoVeiculo *cabecalhoVeiculo, FILE *binario
     fread(&cabecalhoVeiculo->nroRegistros, sizeof(int), 1, binario);
     fread(&cabecalhoVeiculo->nroRegRemovidos, sizeof(int), 1, binario);
 
-    fread(cabecalhoVeiculo->descrevePrefixo, sizeof(char), 18, binario);
-    cabecalhoVeiculo->descrevePrefixo[18] = '\0';
-
-    fread(cabecalhoVeiculo->descreveData, sizeof(char), 35, binario);
-    cabecalhoVeiculo->descreveData[35] = '\0';
-
-    fread(cabecalhoVeiculo->descreveLugares, sizeof(char), 42, binario);
-    cabecalhoVeiculo->descreveLugares[42] = '\0';
-
-    fread(cabecalhoVeiculo->descreveLinha, sizeof(char), 26, binario);
-    cabecalhoVeiculo->descreveLinha[26] = '\0';
-
-    fread(cabecalhoVeiculo->descreveModelo, sizeof(char), 17, binario);
-    cabecalhoVeiculo->descreveModelo[17] = '\0';
-
-    fread(cabecalhoVeiculo->descreveCategoria, sizeof(char), 20, binario);
-    cabecalhoVeiculo->descreveCategoria[20] = '\0';
+    leStringBinario(cabecalhoVeiculo->descrevePrefixo, 18, binario);
+    leStringBinario(cabecalhoVeiculo->descreveData, 35, binario);
+    leStringBinario(cabecalhoVeiculo->descreveLugares, 42, binario);
+    leStringBinario(cabecalhoVeiculo->descreveLinha, 26, binario);
+    leStringBinario(cabecalhoVeiculo->descreveModelo, 17, binario);
+    leStringBinario(cabecalhoVeiculo->descreveCategoria, 20, binario);
 }
 
 void escreveCabecalhoVeiculoBinario(CabecalhoVeiculo *cabecalhoVeiculo, FILE *binario) {
@@ -117,22 +106,17 @@ bool leVeiculoBinario(Veiculo *veiculo, FILE *binario) {
     if (registroFoiRemovido(veiculo->removido))
         return false;
 
-    fread(veiculo->prefixo, sizeof(char), 5, binario);
-    veiculo->prefixo[5] = '\0';
-
-    fread(veiculo->data, sizeof(char), 10, binario);
-    veiculo->data[10] = '\0';
+    leStringBinario(veiculo->prefixo, 5, binario);
+    leStringBinario(veiculo->data, 10, binario);
 
     fread(&veiculo->quantidadeLugares, sizeof(int), 1, binario);
     fread(&veiculo->codLinha, sizeof(int), 1, binario);
 
     fread(&veiculo->tamanhoModelo, sizeof(int), 1, binario);
-    fread(veiculo->modelo, sizeof(char), veiculo->tamanhoModelo, binario);
-    veiculo->modelo[veiculo->tamanhoModelo] = '\0';
+    leStringBinario(veiculo->modelo, veiculo->tamanhoModelo, binario);
 
     fread(&veiculo->tamanhoCategoria, sizeof(int), 1, binario);
-    fread(veiculo->categoria, sizeof(char), veiculo->tamanhoCategoria, binario);
-    veiculo->categoria[veiculo->tamanhoCategoria] = '\0';
+    leStringBinario(veiculo->categoria, veiculo->tamanhoCategoria, binario);
 
     // Garante a completude do registro
     return true;

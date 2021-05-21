@@ -39,17 +39,10 @@ void leCabecalhoLinhaBinario(CabecalhoLinha *cabecalhoLinha, FILE *binario) {
     fread(&cabecalhoLinha->nroRegistros, sizeof(int), 1, binario);
     fread(&cabecalhoLinha->nroRegRemovidos, sizeof(int), 1, binario);
 
-    fread(cabecalhoLinha->descreveCodigo, sizeof(char), 15, binario);
-    cabecalhoLinha->descreveCodigo[15] = '\0';
-
-    fread(cabecalhoLinha->descreveCartao, sizeof(char), 13, binario);
-    cabecalhoLinha->descreveCartao[13] = '\0';
-
-    fread(cabecalhoLinha->descreveNome, sizeof(char), 13, binario);
-    cabecalhoLinha->descreveNome[13] = '\0';
-
-    fread(cabecalhoLinha->descreveLinha, sizeof(char), 24, binario);
-    cabecalhoLinha->descreveLinha[24] = '\0';
+    leStringBinario(cabecalhoLinha->descreveCodigo, 15, binario);
+    leStringBinario(cabecalhoLinha->descreveCartao, 13, binario);
+    leStringBinario(cabecalhoLinha->descreveNome, 13, binario);
+    leStringBinario(cabecalhoLinha->descreveLinha, 24, binario);
 }
 
 void escreveCabecalhoLinhaBinario(CabecalhoLinha *cabecalhoLinha, FILE *binario) {
@@ -106,16 +99,13 @@ bool leLinhaBinario(Linha *linha, FILE *binario) {
 
     fread(&linha->codLinha, sizeof(int), 1, binario);
 
-    fread(linha->aceitaCartao, sizeof(char), 1, binario);
-    linha->aceitaCartao[1] = '\0';
+    leStringBinario(linha->aceitaCartao, 1, binario);
 
     fread(&linha->tamanhoNome, sizeof(int), 1, binario);
-    fread(linha->nomeLinha, sizeof(char), linha->tamanhoNome, binario);
-    linha->nomeLinha[linha->tamanhoNome] = '\0';
+    leStringBinario(linha->nomeLinha, linha->tamanhoNome, binario);
 
     fread(&linha->tamanhoCor, sizeof(int), 1, binario);
-    fread(linha->corLinha, sizeof(char), linha->tamanhoCor, binario);
-    linha->corLinha[linha->tamanhoCor] = '\0';
+    leStringBinario(linha->corLinha, linha->tamanhoCor, binario);
 
     // Garante a completude do registro
     return true;

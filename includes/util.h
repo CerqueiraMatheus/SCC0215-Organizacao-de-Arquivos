@@ -8,8 +8,11 @@
 #include <stdbool.h>
 
 
-// Leitura e Escrita
+// CSV
 char *leStringCsv(FILE *csv);
+
+// Binário
+void leStringBinario(char *string, int tamanho, FILE *binario);
 void escreveStringNuloBinario(int tamanho, FILE *binario);
 
 // Conversão
