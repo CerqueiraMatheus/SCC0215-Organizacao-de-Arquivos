@@ -32,9 +32,9 @@ typedef struct {
 
 
 // Cabeçalho Linha
-int leCabecalhoLinhaCsv(CabecalhoLinha *cabecalho, FILE *csv);
-void leCabecalhoLinhaBinario(CabecalhoLinha *cabecalho, FILE *binario);
-void escreveCabecalhoLinhaBinario(CabecalhoLinha *cabecalho, FILE *binario);
+int leCabecalhoLinhaCsv(CabecalhoLinha *cabecalhoLinha, FILE *csv);
+void leCabecalhoLinhaBinario(CabecalhoLinha *cabecalhoLinha, FILE *binario);
+void escreveCabecalhoLinhaBinario(CabecalhoLinha *cabecalhoLinha, FILE *binario);
 
 // Linha
 int leLinhaCsv(Linha *linha, FILE *csv);

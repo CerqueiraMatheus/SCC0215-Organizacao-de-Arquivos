@@ -12,56 +12,56 @@
 
 // Cabeçalho Linha
 
-int leCabecalhoLinhaCsv(CabecalhoLinha *cabecalho, FILE *csv) {
+int leCabecalhoLinhaCsv(CabecalhoLinha *cabecalhoLinha, FILE *csv) {
     // Lê string do CSV
     char *string = leStringCsv(csv);
     if (string == NULL)
         return EOF;
     char *leitor = string;
 
-    cabecalho->status = '0';
-    cabecalho->byteProxReg = 0;
-    cabecalho->nroRegistros = 0;
-    cabecalho->nroRegRemovidos = 0;
+    cabecalhoLinha->status = '0';
+    cabecalhoLinha->byteProxReg = 0;
+    cabecalhoLinha->nroRegistros = 0;
+    cabecalhoLinha->nroRegRemovidos = 0;
 
-    strcpy(cabecalho->descreveCodigo, stringParaCampoString(strsep(&leitor, ",")));
-    strcpy(cabecalho->descreveCartao, stringParaCampoString(strsep(&leitor, ",")));
-    strcpy(cabecalho->descreveNome, stringParaCampoString(strsep(&leitor, ",")));
-    strcpy(cabecalho->descreveLinha, stringParaCampoString(strsep(&leitor, ",")));
+    strcpy(cabecalhoLinha->descreveCodigo, stringParaCampoString(strsep(&leitor, ",")));
+    strcpy(cabecalhoLinha->descreveCartao, stringParaCampoString(strsep(&leitor, ",")));
+    strcpy(cabecalhoLinha->descreveNome, stringParaCampoString(strsep(&leitor, ",")));
+    strcpy(cabecalhoLinha->descreveLinha, stringParaCampoString(strsep(&leitor, ",")));
 
     free(string);
     return 0;
 }
 
-void leCabecalhoLinhaBinario(CabecalhoLinha *cabecalho, FILE *binario) {
-    fread(&cabecalho->status, sizeof(char), 1, binario);
-    fread(&cabecalho->byteProxReg, sizeof(long long int), 1, binario);
-    fread(&cabecalho->nroRegistros, sizeof(int), 1, binario);
-    fread(&cabecalho->nroRegRemovidos, sizeof(int), 1, binario);
+void leCabecalhoLinhaBinario(CabecalhoLinha *cabecalhoLinha, FILE *binario) {
+    fread(&cabecalhoLinha->status, sizeof(char), 1, binario);
+    fread(&cabecalhoLinha->byteProxReg, sizeof(long long int), 1, binario);
+    fread(&cabecalhoLinha->nroRegistros, sizeof(int), 1, binario);
+    fread(&cabecalhoLinha->nroRegRemovidos, sizeof(int), 1, binario);
 
-    fread(cabecalho->descreveCodigo, sizeof(char), 15, binario);
-    cabecalho->descreveCodigo[15] = '\0';
+    fread(cabecalhoLinha->descreveCodigo, sizeof(char), 15, binario);
+    cabecalhoLinha->descreveCodigo[15] = '\0';
 
-    fread(cabecalho->descreveCartao, sizeof(char), 13, binario);
-    cabecalho->descreveCartao[13] = '\0';
+    fread(cabecalhoLinha->descreveCartao, sizeof(char), 13, binario);
+    cabecalhoLinha->descreveCartao[13] = '\0';
 
-    fread(cabecalho->descreveNome, sizeof(char), 13, binario);
-    cabecalho->descreveNome[13] = '\0';
+    fread(cabecalhoLinha->descreveNome, sizeof(char), 13, binario);
+    cabecalhoLinha->descreveNome[13] = '\0';
 
-    fread(cabecalho->descreveLinha, sizeof(char), 24, binario);
-    cabecalho->descreveLinha[24] = '\0';
+    fread(cabecalhoLinha->descreveLinha, sizeof(char), 24, binario);
+    cabecalhoLinha->descreveLinha[24] = '\0';
 }
 
-void escreveCabecalhoLinhaBinario(CabecalhoLinha *cabecalho, FILE *binario) {
-    fwrite(&cabecalho->status, sizeof(char), 1, binario);
-    fwrite(&cabecalho->byteProxReg, sizeof(long long int), 1, binario);
-    fwrite(&cabecalho->nroRegistros, sizeof(int), 1, binario);
-    fwrite(&cabecalho->nroRegRemovidos, sizeof(int), 1, binario);
+void escreveCabecalhoLinhaBinario(CabecalhoLinha *cabecalhoLinha, FILE *binario) {
+    fwrite(&cabecalhoLinha->status, sizeof(char), 1, binario);
+    fwrite(&cabecalhoLinha->byteProxReg, sizeof(long long int), 1, binario);
+    fwrite(&cabecalhoLinha->nroRegistros, sizeof(int), 1, binario);
+    fwrite(&cabecalhoLinha->nroRegRemovidos, sizeof(int), 1, binario);
 
-    fwrite(cabecalho->descreveCodigo, sizeof(char), 15, binario);
-    fwrite(cabecalho->descreveCartao, sizeof(char), 13, binario);
-    fwrite(cabecalho->descreveNome, sizeof(char), 13, binario);
-    fwrite(cabecalho->descreveLinha, sizeof(char), 24, binario);
+    fwrite(cabecalhoLinha->descreveCodigo, sizeof(char), 15, binario);
+    fwrite(cabecalhoLinha->descreveCartao, sizeof(char), 13, binario);
+    fwrite(cabecalhoLinha->descreveNome, sizeof(char), 13, binario);
+    fwrite(cabecalhoLinha->descreveLinha, sizeof(char), 24, binario);
 }
 
 

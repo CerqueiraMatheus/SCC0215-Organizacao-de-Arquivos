@@ -12,24 +12,24 @@
 
 // Cabeçalho Veículo
 
-int leCabecalhoVeiculoCsv(CabecalhoVeiculo *cabecalho, FILE *csv) {
+int leCabecalhoVeiculoCsv(CabecalhoVeiculo *cabecalhoVeiculo, FILE *csv) {
     // Lê string do CSV
     char *string = leStringCsv(csv);
     if (string == NULL)
         return EOF;
     char *leitor = string;
 
-    cabecalho->status = '0';
-    cabecalho->byteProxReg = 0;
-    cabecalho->nroRegistros = 0;
-    cabecalho->nroRegRemovidos = 0;
+    cabecalhoVeiculo->status = '0';
+    cabecalhoVeiculo->byteProxReg = 0;
+    cabecalhoVeiculo->nroRegistros = 0;
+    cabecalhoVeiculo->nroRegRemovidos = 0;
 
-    strcpy(cabecalho->descrevePrefixo, stringParaCampoString(strsep(&leitor, ",")));
-    strcpy(cabecalho->descreveData, stringParaCampoString(strsep(&leitor, ",")));
-    strcpy(cabecalho->descreveLugares, stringParaCampoString(strsep(&leitor, ",")));
-    strcpy(cabecalho->descreveLinha, stringParaCampoString(strsep(&leitor, ",")));
-    strcpy(cabecalho->descreveModelo, stringParaCampoString(strsep(&leitor, ",")));
-    strcpy(cabecalho->descreveCategoria, stringParaCampoString(strsep(&leitor, ",")));
+    strcpy(cabecalhoVeiculo->descrevePrefixo, stringParaCampoString(strsep(&leitor, ",")));
+    strcpy(cabecalhoVeiculo->descreveData, stringParaCampoString(strsep(&leitor, ",")));
+    strcpy(cabecalhoVeiculo->descreveLugares, stringParaCampoString(strsep(&leitor, ",")));
+    strcpy(cabecalhoVeiculo->descreveLinha, stringParaCampoString(strsep(&leitor, ",")));
+    strcpy(cabecalhoVeiculo->descreveModelo, stringParaCampoString(strsep(&leitor, ",")));
+    strcpy(cabecalhoVeiculo->descreveCategoria, stringParaCampoString(strsep(&leitor, ",")));
 
     free(string);
     return 0;
@@ -60,18 +60,18 @@ void leCabecalhoVeiculoBinario(CabecalhoVeiculo *cabecalhoVeiculo, FILE *binario
     cabecalhoVeiculo->descreveCategoria[20] = '\0';
 }
 
-void escreveCabecalhoVeiculoBinario(CabecalhoVeiculo *cabecalho, FILE *binario) {
-    fwrite(&cabecalho->status, sizeof(char), 1, binario);
-    fwrite(&cabecalho->byteProxReg, sizeof(long long int), 1, binario);
-    fwrite(&cabecalho->nroRegistros, sizeof(int), 1, binario);
-    fwrite(&cabecalho->nroRegRemovidos, sizeof(int), 1, binario);
+void escreveCabecalhoVeiculoBinario(CabecalhoVeiculo *cabecalhoVeiculo, FILE *binario) {
+    fwrite(&cabecalhoVeiculo->status, sizeof(char), 1, binario);
+    fwrite(&cabecalhoVeiculo->byteProxReg, sizeof(long long int), 1, binario);
+    fwrite(&cabecalhoVeiculo->nroRegistros, sizeof(int), 1, binario);
+    fwrite(&cabecalhoVeiculo->nroRegRemovidos, sizeof(int), 1, binario);
 
-    fwrite(cabecalho->descrevePrefixo, sizeof(char), 18, binario);
-    fwrite(cabecalho->descreveData, sizeof(char), 35, binario);
-    fwrite(cabecalho->descreveLugares, sizeof(char), 42, binario);
-    fwrite(cabecalho->descreveLinha, sizeof(char), 26, binario);
-    fwrite(cabecalho->descreveModelo, sizeof(char), 17, binario);
-    fwrite(cabecalho->descreveCategoria, sizeof(char), 20, binario);
+    fwrite(cabecalhoVeiculo->descrevePrefixo, sizeof(char), 18, binario);
+    fwrite(cabecalhoVeiculo->descreveData, sizeof(char), 35, binario);
+    fwrite(cabecalhoVeiculo->descreveLugares, sizeof(char), 42, binario);
+    fwrite(cabecalhoVeiculo->descreveLinha, sizeof(char), 26, binario);
+    fwrite(cabecalhoVeiculo->descreveModelo, sizeof(char), 17, binario);
+    fwrite(cabecalhoVeiculo->descreveCategoria, sizeof(char), 20, binario);
 }
 
 
