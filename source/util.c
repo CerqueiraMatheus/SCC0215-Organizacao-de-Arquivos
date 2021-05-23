@@ -1,17 +1,15 @@
 // Pedro Lucas de Moliner de Castro - 11795784
 // Matheus Henrique de Cerqueira Pinto - 11911104
 
-#include <stdio.h>
-#include <ctype.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdbool.h>
-
 #include "util.h"
 
+#include <ctype.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 const char *MENSAGEM_CAMPO_NULO = "campo com valor nulo";
-
 
 // CSV
 
@@ -29,7 +27,6 @@ char *leStringCsv(FILE *csv) {
     }
 }
 
-
 // Binário
 
 void leStringBinario(char *string, int tamanho, FILE *binario) {
@@ -45,7 +42,6 @@ void escreveStringNuloBinario(int tamanho, FILE *binario) {
         fwrite("@", sizeof(char), 1, binario);
 }
 
-
 // Conversão
 
 const char *stringParaCampoString(const char *string) {
@@ -56,7 +52,6 @@ int stringParaCampoInteiro(const char *string) {
     return strcmp(string, "NULO") == 0 ? -1 : atoi(string);
 }
 
-
 // Checagem
 
 bool arquivoFoiCorrompido(char status) {
@@ -66,7 +61,6 @@ bool arquivoFoiCorrompido(char status) {
 bool registroFoiRemovido(char removido) {
     return removido == '0';
 }
-
 
 // Impressão
 
@@ -102,8 +96,7 @@ void imprimeData(char *data) {
         "setembro",
         "outubro",
         "novembro",
-        "dezembro"
-    };
+        "dezembro"};
 
     int dia, mes, ano;
     sscanf(data, "%d-%d-%d", &ano, &mes, &dia);
@@ -132,6 +125,14 @@ void imprimeAceitaCartao(char *aceitaCartao) {
     }
 }
 
+void removeAspasString(char *string) {
+    // Caso não haja aspas
+    if (string[0] != '\"') return;
+
+    // Caso haja, retira as aspas
+    memmove(string, string + 1, strlen(string));
+    string[strlen(string) - 1] = '\0';
+}
 
 // Funções fornecidas:
 

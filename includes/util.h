@@ -4,9 +4,8 @@
 #ifndef UTIL_H
 #define UTIL_H
 
-#include <stdio.h>
 #include <stdbool.h>
-
+#include <stdio.h>
 
 // CSV
 char *leStringCsv(FILE *csv);
@@ -18,6 +17,7 @@ void escreveStringNuloBinario(int tamanho, FILE *binario);
 // Conversão
 const char *stringParaCampoString(const char *string);
 int stringParaCampoInteiro(const char *string);
+void removeAspasString(char *string);
 
 // Funções fornecidas:
 void binarioNaTela(char *nomeArquivoBinario);
