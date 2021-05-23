@@ -122,17 +122,20 @@ bool leVeiculoBinario(Veiculo *veiculo, FILE *binario) {
 }
 
 void leVeiculoEntrada(Veiculo *veiculo) {
-    // Lê string da entrada
-    char *string = leStringArquivo(stdin);
-    if (string == NULL)
-        return;
-    char *leitor = string;
-
     veiculo->removido = '1';
 
-    strcpy(veiculo->prefixo, removeAspasString(stringParaCampoString(strsep(&leitor, " "))));
+    scan_quote_string(veiculo->prefixo);
+    scan_quote_string(veiculo->data);
+    
+    veiculo->quantidadeLugares = leInteiroEntrada();
+    veiculo->codLinha = leInteiroEntrada();
 
-    free(string);
+    scan_quote_string(veiculo->modelo);
+    scan_quote_string(veiculo->categoria);
+
+    veiculo->tamanhoModelo = strlen(veiculo->modelo);
+    veiculo->tamanhoCategoria = strlen(veiculo->categoria);
+    veiculo->tamanhoRegistro = 31 + veiculo->tamanhoModelo + veiculo->tamanhoCategoria;
 }
 
 void escreveVeiculoBinario(Veiculo *veiculo, FILE *binario) {

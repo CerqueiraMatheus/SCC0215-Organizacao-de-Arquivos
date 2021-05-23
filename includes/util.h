@@ -9,6 +9,7 @@
 
 // Leitura
 char *leStringArquivo(FILE *arquivo);
+int leInteiroEntrada();
 
 // Binário
 void leStringBinario(char *string, int tamanho, FILE *binario);

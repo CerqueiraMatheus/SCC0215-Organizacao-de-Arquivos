@@ -422,8 +422,10 @@ void insertIntoVeiculo() {
         exit(EXIT_FAILURE);
     }
 
+    fseek(binario, cabecalhoVeiculo.byteProxReg, SEEK_SET);
+
     int insercoes;
-    scanf("%d ", &insercoes);
+    scanf("%d", &insercoes);
 
     // Percorre a entrada escrevendo os registros
     Veiculo veiculo;

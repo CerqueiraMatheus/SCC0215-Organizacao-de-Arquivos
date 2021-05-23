@@ -28,6 +28,12 @@ char *leStringArquivo(FILE *arquivo) {
     }
 }
 
+int leInteiroEntrada() {
+    char inteiro[20];
+    scanf(" %s", inteiro);
+    return strcmp(inteiro, "NULO") == 0 ? -1 : atoi(inteiro);
+}
+
 // Binário
 
 void leStringBinario(char *string, int tamanho, FILE *binario) {
