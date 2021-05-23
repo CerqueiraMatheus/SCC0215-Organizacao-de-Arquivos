@@ -1,14 +1,14 @@
 // Pedro Lucas de Moliner de Castro - 11795784
 // Matheus Henrique de Cerqueira Pinto - 11911104
 
+#include "veiculo.h"
+
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdbool.h>
 
 #include "util.h"
-#include "veiculo.h"
-
 
 // Cabeçalho Veículo
 
@@ -62,7 +62,6 @@ void escreveCabecalhoVeiculoBinario(CabecalhoVeiculo *cabecalhoVeiculo, FILE *bi
     fwrite(cabecalhoVeiculo->descreveModelo, sizeof(char), 17, binario);
     fwrite(cabecalhoVeiculo->descreveCategoria, sizeof(char), 20, binario);
 }
-
 
 // Veículo
 
@@ -142,6 +141,28 @@ void escreveVeiculoBinario(Veiculo *veiculo, FILE *binario) {
 
     fwrite(&veiculo->tamanhoCategoria, sizeof(int), 1, binario);
     fwrite(veiculo->categoria, sizeof(char), veiculo->tamanhoCategoria, binario);
+}
+
+bool comparaVeiculo(Veiculo veiculo, char *nomeCampo, char *valor) {
+    if (
+        comparaRegistroCampoString(STR_PREFIXO, nomeCampo,
+                                   veiculo.prefixo, valor) ||
+
+        comparaRegistroCampoString(STR_MODELO, nomeCampo,
+                                   veiculo.modelo, valor) ||
+
+        comparaRegistroCampoString(STR_CATEGORIA, nomeCampo,
+                                   veiculo.categoria, valor) ||
+
+        comparaRegistroCampoString(STR_DATA, nomeCampo,
+                                   veiculo.data, valor) ||
+
+        comparaRegistroCampoInt(STR_QTDE_LUGARES, nomeCampo,
+                                veiculo.quantidadeLugares, valor)) {
+        return true;
+    }
+
+    return false;
 }
 
 void imprimeVeiculo(CabecalhoVeiculo cabecalhoVeiculo, Veiculo veiculo) {
