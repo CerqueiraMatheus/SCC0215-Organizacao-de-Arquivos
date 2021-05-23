@@ -351,6 +351,86 @@ void selectFromWhereVeiculo() {
 }
 
 void selectFromWhereLinha() {
+    char nomeBinario[255], nomeCampo[42], valor[100];
+
+    // Leitura do nome do arquivo
+    if (scanf("%s %s %s", nomeBinario, nomeCampo, valor) != 3) {
+        fprintf(stderr, "Falha no processamento do arquivo.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    // Leitura do arquivo
+    FILE *binario = fopen(nomeBinario, "rb");
+    if (binario == NULL) {
+        fprintf(stderr, "Falha no processamento do arquivo.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    // Leitura do cabeçalho do binário
+    CabecalhoLinha cabecalhoLinha;
+    leCabecalhoLinhaBinario(&cabecalhoLinha, binario);
+
+    // Caso esteja corrompido
+    if (arquivoFoiCorrompido(cabecalhoLinha.status)) {
+        fprintf(stderr, "Falha no processamento do arquivo.\n");
+        fclose(binario);
+        exit(EXIT_FAILURE);
+    }
+
+    // Caso não haja registros
+    if (cabecalhoLinha.nroRegistros == 0) {
+        printf("Registro inexistente.\n");
+        fclose(binario);
+        return;
+    }
+
+    // Adapta a string caso necessário
+    removeAspasString(valor);
+
+    Linha linha;
+
+    // Contabiliza todos os registros
+    int nroTotalRegistros = cabecalhoLinha.nroRegistros + cabecalhoLinha.nroRegRemovidos;
+
+    // Flag para checar se houve ao menos uma correspondência
+    bool houveCorrespondencia = false;
+
+    // Percorre até o fim do número de registros
+    for (; nroTotalRegistros > 0; nroTotalRegistros--) {
+        // Flag para indicar se o valor foi encontrado na linha
+        bool valorEncontrado = false;
+
+        // Caso seja lido um registro não excluído
+        if (leLinhaBinario(&linha, binario) != false) {
+            if (strcmp(STR_COD, nomeCampo) == 0 &&
+                linha.codLinha == atoi(valor))
+                valorEncontrado = true;
+
+            else if (strcmp(STR_CARTAO, nomeCampo) == 0 &&
+                     strcmp(linha.aceitaCartao, valor) == 0)
+                valorEncontrado = true;
+
+            else if (strcmp(STR_NOME, nomeCampo) == 0 &&
+                     strcmp(linha.nomeLinha, valor) == 0)
+                valorEncontrado = true;
+
+            else if (strcmp(STR_COR, nomeCampo) == 0 &&
+                     strcmp(linha.corLinha, valor) == 0)
+                valorEncontrado = true;
+
+            if (valorEncontrado) {
+                imprimeLinha(cabecalhoLinha, linha);
+                if (!houveCorrespondencia) houveCorrespondencia = true;
+            }
+        }
+
+        // Se for excluído, pula o corpo do registro
+        else
+            fseek(binario, linha.tamanhoRegistro, SEEK_CUR);
+    }
+
+    if (!houveCorrespondencia) printf("Registro inexistente.\n");
+    fclose(binario);
 }
 
 void insertIntoVeiculo() {
