@@ -33,4 +33,8 @@ void imprimeCampoString(char *campo, int tamanho);
 void imprimeData(char *data);
 void imprimeAceitaCartao(char *aceitaCartao);
 
+// Comparação
+bool comparaRegistroCampoString(char *nomeCampo, char *nomeCampoPesquisado, char *valor, char *valorPesquisado);
+bool comparaRegistroCampoInt(char *nomeCampo, char *nomeCampoPesquisado, int valor, char *valorPesquisado);
+
 #endif  // UTIL_H
