@@ -11,12 +11,13 @@
 
 const char *MENSAGEM_CAMPO_NULO = "campo com valor nulo";
 
-// CSV
 
-char *leStringCsv(FILE *csv) {
+// Leitura
+
+char *leStringArquivo(FILE *arquivo) {
     char *string = NULL;
     size_t tamanho = 0;
-    size_t comprimento = getline(&string, &tamanho, csv);
+    size_t comprimento = getline(&string, &tamanho, arquivo);
 
     if (comprimento == -1) {
         free(string);

@@ -14,7 +14,7 @@
 
 int leCabecalhoLinhaCsv(CabecalhoLinha *cabecalhoLinha, FILE *csv) {
     // Lê string do CSV
-    char *string = leStringCsv(csv);
+    char *string = leStringArquivo(csv);
     if (string == NULL)
         return EOF;
     char *leitor = string;
@@ -62,7 +62,7 @@ void escreveCabecalhoLinhaBinario(CabecalhoLinha *cabecalhoLinha, FILE *binario)
 
 int leLinhaCsv(Linha *linha, FILE *csv) {
     // Lê string do CSV
-    char *string = leStringCsv(csv);
+    char *string = leStringArquivo(csv);
     if (string == NULL)
         return EOF;
     char *leitor = string;

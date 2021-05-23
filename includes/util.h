@@ -7,8 +7,8 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-// CSV
-char *leStringCsv(FILE *csv);
+// Leitura
+char *leStringArquivo(FILE *arquivo);
 
 // Binário
 void leStringBinario(char *string, int tamanho, FILE *binario);
