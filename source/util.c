@@ -142,6 +142,16 @@ void imprimeAceitaCartao(char *aceitaCartao) {
 }
 
 
+bool comparaRegistroCampoString(char *nomeCampo, char *nomeCampoPesquisado, char *valor, char *valorPesquisado) {
+    return strcmp(nomeCampo, nomeCampoPesquisado) == 0 &&
+           strcmp(valor, stringParaCampoString(valorPesquisado)) == 0;
+}
+
+bool comparaRegistroCampoInt(char *nomeCampo, char *nomeCampoPesquisado, int valor, char *valorPesquisado) {
+    return strcmp(nomeCampo, nomeCampoPesquisado) == 0 &&
+           valor == stringParaCampoInteiro(valorPesquisado);
+}
+
 // Funções fornecidas:
 
 /* Use essa função para comparação no run.codes. Lembre-se de ter fechado (fclose) o arquivo anteriormente.

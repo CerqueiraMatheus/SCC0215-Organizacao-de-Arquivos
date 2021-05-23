@@ -310,33 +310,13 @@ void selectFromWhereVeiculo() {
 
     // Percorre até o fim do número de registros
     for (; nroTotalRegistros > 0; nroTotalRegistros--) {
-        // Flag para indicar se o valor foi encontrado na linha
-        bool valorEncontrado = false;
-
         // Caso seja lido um registro não excluído
         if (leVeiculoBinario(&veiculo, binario) != false) {
-            if (strcmp(STR_PREFIXO, nomeCampo) == 0 &&
-                strcmp(veiculo.prefixo, valor) == 0)
-                valorEncontrado = true;
-
-            else if (strcmp(STR_MODELO, nomeCampo) == 0 &&
-                     strcmp(veiculo.modelo, valor) == 0)
-                valorEncontrado = true;
-
-            else if (strcmp(STR_CATEGORIA, nomeCampo) == 0 &&
-                     strcmp(veiculo.categoria, valor) == 0)
-                valorEncontrado = true;
-
-            else if (strcmp(STR_DATA, nomeCampo) == 0 &&
-                     strcmp(veiculo.data, valor) == 0)
-                valorEncontrado = true;
-
-            else if (strcmp(STR_QTDE_LUGARES, nomeCampo) == 0 &&
-                     veiculo.quantidadeLugares == atoi(valor))
-                valorEncontrado = true;
-
-            if (valorEncontrado) {
+            // Checa se o veículo tem o valor fornecido no campo desejado
+            if (comparaVeiculo(veiculo, nomeCampo, valor)) {
                 imprimeVeiculo(cabecalhoVeiculo, veiculo);
+
+                // Se houver correspondência, atualiza a flag
                 if (!houveCorrespondencia) houveCorrespondencia = true;
             }
         }
@@ -397,29 +377,13 @@ void selectFromWhereLinha() {
 
     // Percorre até o fim do número de registros
     for (; nroTotalRegistros > 0; nroTotalRegistros--) {
-        // Flag para indicar se o valor foi encontrado na linha
-        bool valorEncontrado = false;
-
         // Caso seja lido um registro não excluído
         if (leLinhaBinario(&linha, binario) != false) {
-            if (strcmp(STR_COD, nomeCampo) == 0 &&
-                linha.codLinha == atoi(valor))
-                valorEncontrado = true;
-
-            else if (strcmp(STR_CARTAO, nomeCampo) == 0 &&
-                     strcmp(linha.aceitaCartao, valor) == 0)
-                valorEncontrado = true;
-
-            else if (strcmp(STR_NOME, nomeCampo) == 0 &&
-                     strcmp(linha.nomeLinha, valor) == 0)
-                valorEncontrado = true;
-
-            else if (strcmp(STR_COR, nomeCampo) == 0 &&
-                     strcmp(linha.corLinha, valor) == 0)
-                valorEncontrado = true;
-
-            if (valorEncontrado) {
+            // Checa se a linha tem o valor fornecido no campo desejado
+            if (comparaLinha(linha, nomeCampo, valor)) {
                 imprimeLinha(cabecalhoLinha, linha);
+
+                // Se houver correspondência, atualiza a flag
                 if (!houveCorrespondencia) houveCorrespondencia = true;
             }
         }
