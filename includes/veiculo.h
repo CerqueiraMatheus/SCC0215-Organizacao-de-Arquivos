@@ -7,6 +7,11 @@
 #include <stdio.h>
 #include <stdbool.h>
 
+#define STR_PREFIXO "prefixo"
+#define STR_DATA "data"
+#define STR_QTDE_LUGARES "quantidadeLugares"
+#define STR_MODELO "modelo"
+#define STR_CATEGORIA "categoria"
 
 typedef struct {
     char status;
