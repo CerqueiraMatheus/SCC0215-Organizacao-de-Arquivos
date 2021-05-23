@@ -110,6 +110,20 @@ bool leLinhaBinario(Linha *linha, FILE *binario) {
     return true;
 }
 
+void leLinhaEntrada(Linha *linha) {
+    linha->removido = '1';
+
+    linha->codLinha = leInteiroEntrada();
+
+    scan_quote_string(linha->aceitaCartao);
+    scan_quote_string(linha->nomeLinha);
+    scan_quote_string(linha->corLinha);
+
+    linha->tamanhoNome = strlen(linha->nomeLinha);
+    linha->tamanhoCor = strlen(linha->corLinha);
+    linha->tamanhoRegistro = 13 + linha->tamanhoNome + linha->tamanhoCor;
+}
+
 void escreveLinhaBinario(Linha *linha, FILE *binario) {
     fwrite(&linha->removido, sizeof(char), 1, binario);
     fwrite(&linha->tamanhoRegistro, sizeof(int), 1, binario);
