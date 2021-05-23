@@ -122,6 +122,20 @@ bool leVeiculoBinario(Veiculo *veiculo, FILE *binario) {
     return true;
 }
 
+void leVeiculoEntrada(Veiculo *veiculo) {
+    // Lê string da entrada
+    char *string = leStringArquivo(stdin);
+    if (string == NULL)
+        return;
+    char *leitor = string;
+
+    veiculo->removido = '1';
+
+    strcpy(veiculo->prefixo, removeAspasString(stringParaCampoString(strsep(&leitor, " "))));
+
+    free(string);
+}
+
 void escreveVeiculoBinario(Veiculo *veiculo, FILE *binario) {
     fwrite(&veiculo->removido, sizeof(char), 1, binario);
     fwrite(&veiculo->tamanhoRegistro, sizeof(int), 1, binario);

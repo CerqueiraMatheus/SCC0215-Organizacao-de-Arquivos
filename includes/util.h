@@ -15,9 +15,9 @@ void leStringBinario(char *string, int tamanho, FILE *binario);
 void escreveStringNuloBinario(int tamanho, FILE *binario);
 
 // Conversão
-const char *stringParaCampoString(const char *string);
-int stringParaCampoInteiro(const char *string);
-void removeAspasString(char *string);
+char *stringParaCampoString(char *string);
+int stringParaCampoInteiro(char *string);
+char *removeAspasString(char *string);
 
 // Funções fornecidas:
 void binarioNaTela(char *nomeArquivoBinario);

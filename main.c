@@ -264,10 +264,10 @@ void selectFromLinha() {
 }
 
 void selectFromWhereVeiculo() {
-    char nomeBinario[255], nomeCampo[42], valor[100];
+    char nomeBinario[255], nomeCampo[42], valorAspas[100];
 
     // Leitura do nome do arquivo
-    if (scanf("%s %s %s", nomeBinario, nomeCampo, valor) != 3) {
+    if (scanf("%s %s %s", nomeBinario, nomeCampo, valorAspas) != 3) {
         fprintf(stderr, "Falha no processamento do arquivo.\n");
         exit(EXIT_FAILURE);
     }
@@ -298,7 +298,7 @@ void selectFromWhereVeiculo() {
     }
 
     // Adapta a string caso necessário
-    removeAspasString(valor);
+    char *valor = removeAspasString(valorAspas);
 
     Veiculo veiculo;
 
@@ -351,10 +351,10 @@ void selectFromWhereVeiculo() {
 }
 
 void selectFromWhereLinha() {
-    char nomeBinario[255], nomeCampo[42], valor[100];
+    char nomeBinario[255], nomeCampo[42], valorAspas[100];
 
     // Leitura do nome do arquivo
-    if (scanf("%s %s %s", nomeBinario, nomeCampo, valor) != 3) {
+    if (scanf("%s %s %s", nomeBinario, nomeCampo, valorAspas) != 3) {
         fprintf(stderr, "Falha no processamento do arquivo.\n");
         exit(EXIT_FAILURE);
     }
@@ -385,7 +385,7 @@ void selectFromWhereLinha() {
     }
 
     // Adapta a string caso necessário
-    removeAspasString(valor);
+    char *valor = removeAspasString(valorAspas);
 
     Linha linha;
 
