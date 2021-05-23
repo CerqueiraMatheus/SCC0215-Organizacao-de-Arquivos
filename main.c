@@ -310,11 +310,9 @@ void selectFromWhereVeiculo() {
 
     // Percorre até o fim do número de registros
     for (; nroTotalRegistros > 0; nroTotalRegistros--) {
-        // Flag para indicar se o valor foi encontrado na linha
-        bool valorEncontrado = false;
-
         // Caso seja lido um registro não excluído
         if (leVeiculoBinario(&veiculo, binario) != false) {
+            // Compara o veículo ao campo e valor informados
             if (comparaVeiculo(veiculo, nomeCampo, valor)) {
                 imprimeVeiculo(cabecalhoVeiculo, veiculo);
                 if (!houveCorrespondencia) houveCorrespondencia = true;
@@ -377,28 +375,10 @@ void selectFromWhereLinha() {
 
     // Percorre até o fim do número de registros
     for (; nroTotalRegistros > 0; nroTotalRegistros--) {
-        // Flag para indicar se o valor foi encontrado na linha
-        bool valorEncontrado = false;
-
         // Caso seja lido um registro não excluído
         if (leLinhaBinario(&linha, binario) != false) {
-            if (strcmp(STR_COD, nomeCampo) == 0 &&
-                linha.codLinha == atoi(valor))
-                valorEncontrado = true;
-
-            else if (strcmp(STR_CARTAO, nomeCampo) == 0 &&
-                     strcmp(linha.aceitaCartao, valor) == 0)
-                valorEncontrado = true;
-
-            else if (strcmp(STR_NOME, nomeCampo) == 0 &&
-                     strcmp(linha.nomeLinha, valor) == 0)
-                valorEncontrado = true;
-
-            else if (strcmp(STR_COR, nomeCampo) == 0 &&
-                     strcmp(linha.corLinha, valor) == 0)
-                valorEncontrado = true;
-
-            if (valorEncontrado) {
+            // Compara a linha ao campo e valor informados
+            if (comparaLinha(linha, nomeCampo, valor)) {
                 imprimeLinha(cabecalhoLinha, linha);
                 if (!houveCorrespondencia) houveCorrespondencia = true;
             }
