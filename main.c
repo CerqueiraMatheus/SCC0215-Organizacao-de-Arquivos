@@ -312,9 +312,11 @@ void selectFromWhereVeiculo() {
     for (; nroTotalRegistros > 0; nroTotalRegistros--) {
         // Caso seja lido um registro não excluído
         if (leVeiculoBinario(&veiculo, binario) != false) {
-            // Compara o veículo ao campo e valor informados
+            // Checa se o veículo tem o valor fornecido no campo desejado
             if (comparaVeiculo(veiculo, nomeCampo, valor)) {
                 imprimeVeiculo(cabecalhoVeiculo, veiculo);
+
+                // Se houver correspondência, atualiza a flag
                 if (!houveCorrespondencia) houveCorrespondencia = true;
             }
         }
@@ -377,9 +379,11 @@ void selectFromWhereLinha() {
     for (; nroTotalRegistros > 0; nroTotalRegistros--) {
         // Caso seja lido um registro não excluído
         if (leLinhaBinario(&linha, binario) != false) {
-            // Compara a linha ao campo e valor informados
+            // Checa se a linha tem o valor fornecido no campo desejado
             if (comparaLinha(linha, nomeCampo, valor)) {
                 imprimeLinha(cabecalhoLinha, linha);
+
+                // Se houver correspondência, atualiza a flag
                 if (!houveCorrespondencia) houveCorrespondencia = true;
             }
         }
