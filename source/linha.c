@@ -12,25 +12,16 @@
 
 // Cabeçalho Linha
 
-int leCabecalhoLinhaCsv(CabecalhoLinha *cabecalhoLinha, FILE *csv) {
-    // Lê string do CSV
-    char *string = leStringArquivo(csv);
-    if (string == NULL)
-        return EOF;
-    char *leitor = string;
-
+void leCabecalhoLinhaCsv(CabecalhoLinha *cabecalhoLinha, FILE *csv) {
     cabecalhoLinha->status = '0';
     cabecalhoLinha->byteProxReg = 0;
     cabecalhoLinha->nroRegistros = 0;
     cabecalhoLinha->nroRegRemovidos = 0;
 
-    strcpy(cabecalhoLinha->descreveCodigo, stringParaCampoString(strsep(&leitor, ",")));
-    strcpy(cabecalhoLinha->descreveCartao, stringParaCampoString(strsep(&leitor, ",")));
-    strcpy(cabecalhoLinha->descreveNome, stringParaCampoString(strsep(&leitor, ",")));
-    strcpy(cabecalhoLinha->descreveLinha, stringParaCampoString(strsep(&leitor, ",")));
-
-    free(string);
-    return 0;
+    leStringCsv(cabecalhoLinha->descreveCodigo, csv);
+    leStringCsv(cabecalhoLinha->descreveCartao, csv);
+    leStringCsv(cabecalhoLinha->descreveNome, csv);
+    leStringCsv(cabecalhoLinha->descreveLinha, csv);
 }
 
 void leCabecalhoLinhaBinario(CabecalhoLinha *cabecalhoLinha, FILE *binario) {
@@ -60,31 +51,30 @@ void escreveCabecalhoLinhaBinario(CabecalhoLinha *cabecalhoLinha, FILE *binario)
 // Linha
 
 int leLinhaCsv(Linha *linha, FILE *csv) {
-    // Lê string do CSV
-    char *string = leStringArquivo(csv);
-    if (string == NULL)
+    char verificador = fgetc(csv);
+
+    // Checa pelo fim do arquivo
+    if (verificador == EOF)
         return EOF;
-    char *leitor = string;
 
     // Checa por registro removido
-    if (leitor[0] == '*') {
+    if (verificador == '*') {
         linha->removido = '0';
-        leitor++;
     } else {
         linha->removido = '1';
+        fseek(csv, -1, SEEK_CUR);
     }
 
-    linha->codLinha = stringParaCampoInteiro(strsep(&leitor, ","));
+    linha->codLinha = leInteiroCsv(csv);
 
-    strcpy(linha->aceitaCartao, stringParaCampoString(strsep(&leitor, ",")));
-    strcpy(linha->nomeLinha, stringParaCampoString(strsep(&leitor, ",")));
-    strcpy(linha->corLinha, stringParaCampoString(strsep(&leitor, ",")));
+    leStringCsv(linha->aceitaCartao, csv);
+    leStringCsv(linha->nomeLinha, csv);
+    leStringCsv(linha->corLinha, csv);
 
     linha->tamanhoNome = strlen(linha->nomeLinha);
     linha->tamanhoCor = strlen(linha->corLinha);
     linha->tamanhoRegistro = 13 + linha->tamanhoNome + linha->tamanhoCor;
 
-    free(string);
     return 0;
 }
 

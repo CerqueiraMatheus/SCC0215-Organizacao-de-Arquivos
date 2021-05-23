@@ -12,22 +12,17 @@
 void leStringCsv(char *string, FILE *csv);
 int leInteiroCsv(FILE *csv);
 
-// Leitura
-char *leStringArquivo(FILE *arquivo);
-int leInteiroEntrada();
-
 // Binário
 void leStringBinario(char *string, int tamanho, FILE *binario);
 void escreveStringNuloBinario(int tamanho, FILE *binario);
+
+// Entrada
+int leInteiroEntrada();
 
 // Conversão
 char *stringParaCampoString(char *string);
 int stringParaCampoInteiro(char *string);
 char *removeAspasString(char *string);
-
-// Funções fornecidas:
-void binarioNaTela(char *nomeArquivoBinario);
-void scan_quote_string(char *str);
 
 // Checagem
 bool arquivoFoiCorrompido(char status);
@@ -42,5 +37,9 @@ void imprimeAceitaCartao(char *aceitaCartao);
 // Comparação
 bool comparaRegistroCampoString(char *nomeCampo, char *nomeCampoPesquisado, char *valor, char *valorPesquisado);
 bool comparaRegistroCampoInt(char *nomeCampo, char *nomeCampoPesquisado, int valor, char *valorPesquisado);
+
+// Funções fornecidas:
+void binarioNaTela(char *nomeArquivoBinario);
+void scan_quote_string(char *str);
 
 #endif  // UTIL_H

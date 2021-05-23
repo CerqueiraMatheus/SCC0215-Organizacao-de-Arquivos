@@ -27,28 +27,6 @@ int leInteiroCsv(FILE *csv) {
 }
 
 
-// Leitura
-
-char *leStringArquivo(FILE *arquivo) {
-    char *string = NULL;
-    size_t tamanho = 0;
-    size_t comprimento = getline(&string, &tamanho, arquivo);
-
-    if (comprimento == -1) {
-        free(string);
-        return NULL;
-    } else {
-        string[comprimento - 1] = '\0';
-        return string;
-    }
-}
-
-int leInteiroEntrada() {
-    char inteiro[20];
-    scanf(" %s", inteiro);
-    return strcmp(inteiro, "NULO") == 0 ? -1 : atoi(inteiro);
-}
-
 // Binário
 
 void leStringBinario(char *string, int tamanho, FILE *binario) {
@@ -63,6 +41,16 @@ void escreveStringNuloBinario(int tamanho, FILE *binario) {
     for (int i = 0; i < tamanho - 1; i++)
         fwrite("@", sizeof(char), 1, binario);
 }
+
+
+// Entrada
+
+int leInteiroEntrada() {
+    char inteiro[20];
+    scanf(" %s", inteiro);
+    return strcmp(inteiro, "NULO") == 0 ? -1 : atoi(inteiro);
+}
+
 
 // Conversão
 
