@@ -446,4 +446,49 @@ void insertIntoVeiculo() {
 }
 
 void insertIntoLinha() {
+    char nomeBinario[255];
+
+    if (scanf("%s", nomeBinario) != 1) {
+        fprintf(stderr, "Falha no processamento do arquivo.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    FILE *binario = fopen(nomeBinario, "rb+");
+    if (binario == NULL) {
+        fprintf(stderr, "Falha no processamento do arquivo.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    // Inicializa o cabeçalho
+    CabecalhoLinha cabecalhoLinha;
+    leCabecalhoLinhaBinario(&cabecalhoLinha, binario);
+
+    // Caso esteja corrompido
+    if (arquivoFoiCorrompido(cabecalhoLinha.status)) {
+        fprintf(stderr, "Falha no processamento do arquivo.\n");
+        fclose(binario);
+        exit(EXIT_FAILURE);
+    }
+
+    fseek(binario, cabecalhoLinha.byteProxReg, SEEK_SET);
+
+    int insercoes;
+    scanf("%d", &insercoes);
+
+    // Percorre a entrada escrevendo os registros
+    Linha linha;
+    for (int i = 0; i < insercoes; i++) {
+        leLinhaEntrada(&linha);
+        escreveLinhaBinario(&linha, binario);
+        cabecalhoLinha.nroRegistros++;
+    }
+
+    // Atualiza o cabeçalho
+    cabecalhoLinha.byteProxReg = ftell(binario);
+    cabecalhoLinha.status = '1';
+    fseek(binario, 0, SEEK_SET);
+    escreveCabecalhoLinhaBinario(&cabecalhoLinha, binario);
+
+    fclose(binario);
+    binarioNaTela(nomeBinario);
 }
