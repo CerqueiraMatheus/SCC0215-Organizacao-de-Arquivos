@@ -88,7 +88,7 @@ void createTableVeiculo() {
     while (leVeiculoCsv(&veiculo, csv) != EOF) {
         escreveVeiculoBinario(&veiculo, binario);
 
-        if (veiculo.removido == '0')
+        if (registroFoiRemovido(veiculo.removido))
             cabecalhoVeiculo.nroRegRemovidos++;
         else
             cabecalhoVeiculo.nroRegistros++;
@@ -137,7 +137,7 @@ void createTableLinha() {
     while (leLinhaCsv(&linha, csv) != EOF) {
         escreveLinhaBinario(&linha, binario);
 
-        if (linha.removido == '0')
+        if (registroFoiRemovido(linha.removido))
             cabecalhoLinha.nroRegRemovidos++;
         else
             cabecalhoLinha.nroRegistros++;
