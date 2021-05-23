@@ -3,11 +3,11 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
-#include "util.h"
 #include "linha.h"
+#include "util.h"
 #include "veiculo.h"
-
 
 void createTableVeiculo();
 void createTableLinha();
@@ -264,6 +264,81 @@ void selectFromLinha() {
 }
 
 void selectFromWhereVeiculo() {
+    char nomeBinario[255], nomeCampo[42], valor[100];
+
+    // Leitura do nome do arquivo
+    if (scanf("%s %s %s", nomeBinario, nomeCampo, valor) != 3) {
+        fprintf(stderr, "Falha no processamento do arquivo.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    // Leitura do arquivo
+    FILE *binario = fopen(nomeBinario, "rb");
+    if (binario == NULL) {
+        fprintf(stderr, "Falha no processamento do arquivo.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    // Leitura do cabeçalho do binário
+    CabecalhoVeiculo cabecalhoVeiculo;
+    leCabecalhoVeiculoBinario(&cabecalhoVeiculo, binario);
+
+    // Caso esteja corrompido
+    if (arquivoFoiCorrompido(cabecalhoVeiculo.status)) {
+        fprintf(stderr, "Falha no processamento do arquivo.\n");
+        fclose(binario);
+        exit(EXIT_FAILURE);
+    }
+
+    // Caso não haja registros
+    if (cabecalhoVeiculo.nroRegistros == 0) {
+        printf("Registro inexistente.\n");
+        fclose(binario);
+        return;
+    }
+
+    // Adapta a string caso necessário
+    removeAspasString(valor);
+
+    Veiculo veiculo;
+
+    // Contabiliza todos os registros
+    int nroTotalRegistros = cabecalhoVeiculo.nroRegistros + cabecalhoVeiculo.nroRegRemovidos;
+
+    // Percorre até o fim do número de registros
+    for (; nroTotalRegistros > 0; nroTotalRegistros--) {
+        bool match = false;
+
+        // Caso seja lido um registro não excluído
+        if (leVeiculoBinario(&veiculo, binario) != false) {
+            if (strcmp(STR_PREFIXO, nomeCampo) == 0 &&
+                strcmp(veiculo.prefixo, valor) == 0)
+                match = true;
+
+            else if (strcmp(STR_MODELO, nomeCampo) == 0 &&
+                     strcmp(veiculo.modelo, valor) == 0)
+                match = true;
+
+            else if (strcmp(STR_CATEGORIA, nomeCampo) == 0 &&
+                     strcmp(veiculo.categoria, valor) == 0)
+                match = true;
+
+            else if (strcmp(STR_DATA, nomeCampo) == 0 &&
+                     strcmp(veiculo.data, valor) == 0)
+                match = true;
+
+            else if (strcmp(STR_QTDE_LUGARES, nomeCampo) == 0 &&
+                     veiculo.quantidadeLugares == atoi(valor))
+                match = true;
+
+            if (match)
+                imprimeVeiculo(cabecalhoVeiculo, veiculo);
+        }
+
+        // Se for excluído, pula o corpo do registro
+        else
+            fseek(binario, veiculo.tamanhoRegistro, SEEK_CUR);
+    }
 }
 
 void selectFromWhereLinha() {
