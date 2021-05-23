@@ -1,14 +1,14 @@
 // Pedro Lucas de Moliner de Castro - 11795784
 // Matheus Henrique de Cerqueira Pinto - 11911104
 
+#include "linha.h"
+
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdbool.h>
 
 #include "util.h"
-#include "linha.h"
-
 
 // Cabeçalho Linha
 
@@ -56,7 +56,6 @@ void escreveCabecalhoLinhaBinario(CabecalhoLinha *cabecalhoLinha, FILE *binario)
     fwrite(cabecalhoLinha->descreveNome, sizeof(char), 13, binario);
     fwrite(cabecalhoLinha->descreveLinha, sizeof(char), 24, binario);
 }
-
 
 // Linha
 
@@ -123,6 +122,25 @@ void escreveLinhaBinario(Linha *linha, FILE *binario) {
 
     fwrite(&linha->tamanhoCor, sizeof(int), 1, binario);
     fwrite(linha->corLinha, sizeof(char), linha->tamanhoCor, binario);
+}
+
+bool comparaLinha(Linha linha, char *nomeCampo, char *valor) {
+    if (
+        comparaRegistroCampoInt(STR_COD, nomeCampo,
+                                linha.codLinha, valor) ||
+
+        comparaRegistroCampoString(STR_CARTAO, nomeCampo,
+                                   linha.aceitaCartao, valor) ||
+
+        comparaRegistroCampoString(STR_NOME, nomeCampo,
+                                   linha.nomeLinha, valor) ||
+
+        comparaRegistroCampoString(STR_COR, nomeCampo,
+                                   linha.corLinha, valor)) {
+        return true;
+    }
+
+    return false;
 }
 
 void imprimeLinha(CabecalhoLinha cabecalhoLinha, Linha linha) {
