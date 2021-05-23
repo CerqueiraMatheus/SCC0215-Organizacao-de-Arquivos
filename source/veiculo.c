@@ -12,27 +12,18 @@
 
 // Cabeçalho Veículo
 
-int leCabecalhoVeiculoCsv(CabecalhoVeiculo *cabecalhoVeiculo, FILE *csv) {
-    // Lê string do CSV
-    char *string = leStringArquivo(csv);
-    if (string == NULL)
-        return EOF;
-    char *leitor = string;
-
+void leCabecalhoVeiculoCsv(CabecalhoVeiculo *cabecalhoVeiculo, FILE *csv) {
     cabecalhoVeiculo->status = '0';
     cabecalhoVeiculo->byteProxReg = 0;
     cabecalhoVeiculo->nroRegistros = 0;
     cabecalhoVeiculo->nroRegRemovidos = 0;
 
-    strcpy(cabecalhoVeiculo->descrevePrefixo, stringParaCampoString(strsep(&leitor, ",")));
-    strcpy(cabecalhoVeiculo->descreveData, stringParaCampoString(strsep(&leitor, ",")));
-    strcpy(cabecalhoVeiculo->descreveLugares, stringParaCampoString(strsep(&leitor, ",")));
-    strcpy(cabecalhoVeiculo->descreveLinha, stringParaCampoString(strsep(&leitor, ",")));
-    strcpy(cabecalhoVeiculo->descreveModelo, stringParaCampoString(strsep(&leitor, ",")));
-    strcpy(cabecalhoVeiculo->descreveCategoria, stringParaCampoString(strsep(&leitor, ",")));
-
-    free(string);
-    return 0;
+    leStringCsv(cabecalhoVeiculo->descrevePrefixo, csv);
+    leStringCsv(cabecalhoVeiculo->descreveData, csv);
+    leStringCsv(cabecalhoVeiculo->descreveLugares, csv);
+    leStringCsv(cabecalhoVeiculo->descreveLinha, csv);
+    leStringCsv(cabecalhoVeiculo->descreveModelo, csv);
+    leStringCsv(cabecalhoVeiculo->descreveCategoria, csv);
 }
 
 void leCabecalhoVeiculoBinario(CabecalhoVeiculo *cabecalhoVeiculo, FILE *binario) {
@@ -66,34 +57,33 @@ void escreveCabecalhoVeiculoBinario(CabecalhoVeiculo *cabecalhoVeiculo, FILE *bi
 // Veículo
 
 int leVeiculoCsv(Veiculo *veiculo, FILE *csv) {
-    // Lê string do CSV
-    char *string = leStringArquivo(csv);
-    if (string == NULL)
+    char verificador = fgetc(csv);
+
+    // Checa pelo fim do arquivo
+    if (verificador == EOF)
         return EOF;
-    char *leitor = string;
 
     // Checa por registro removido
-    if (leitor[0] == '*') {
+    if (verificador == '*') {
         veiculo->removido = '0';
-        leitor++;
     } else {
         veiculo->removido = '1';
+        fseek(csv, -1, SEEK_CUR);
     }
 
-    strcpy(veiculo->prefixo, stringParaCampoString(strsep(&leitor, ",")));
-    strcpy(veiculo->data, stringParaCampoString(strsep(&leitor, ",")));
+    leStringCsv(veiculo->prefixo, csv);
+    leStringCsv(veiculo->data, csv);
 
-    veiculo->quantidadeLugares = stringParaCampoInteiro(strsep(&leitor, ","));
-    veiculo->codLinha = stringParaCampoInteiro(strsep(&leitor, ","));
+    veiculo->quantidadeLugares = leInteiroCsv(csv);
+    veiculo->codLinha = leInteiroCsv(csv);
 
-    strcpy(veiculo->modelo, stringParaCampoString(strsep(&leitor, ",")));
-    strcpy(veiculo->categoria, stringParaCampoString(strsep(&leitor, ",")));
+    leStringCsv(veiculo->modelo, csv);
+    leStringCsv(veiculo->categoria, csv);
 
     veiculo->tamanhoModelo = strlen(veiculo->modelo);
     veiculo->tamanhoCategoria = strlen(veiculo->categoria);
     veiculo->tamanhoRegistro = 31 + veiculo->tamanhoModelo + veiculo->tamanhoCategoria;
 
-    free(string);
     return 0;
 }
 

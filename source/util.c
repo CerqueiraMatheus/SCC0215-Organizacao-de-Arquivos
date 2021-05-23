@@ -12,6 +12,21 @@
 const char *MENSAGEM_CAMPO_NULO = "campo com valor nulo";
 
 
+// CSV
+
+void leStringCsv(char *string, FILE *csv) {
+    fscanf(csv, "%[^,\n]%*c", string);
+    if (strcmp(string, "NULO") == 0)
+        strcpy(string, "");
+}
+
+int leInteiroCsv(FILE *csv) {
+    char inteiro[20];
+    fscanf(csv, "%[^,\n]%*c", inteiro);
+    return strcmp(inteiro, "NULO") == 0 ? -1 : atoi(inteiro);
+}
+
+
 // Leitura
 
 char *leStringArquivo(FILE *arquivo) {

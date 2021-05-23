@@ -7,6 +7,11 @@
 #include <stdbool.h>
 #include <stdio.h>
 
+
+// CSV
+void leStringCsv(char *string, FILE *csv);
+int leInteiroCsv(FILE *csv);
+
 // Leitura
 char *leStringArquivo(FILE *arquivo);
 int leInteiroEntrada();
