@@ -22,6 +22,7 @@ int leInteiroEntrada();
 // Conversão
 char *stringParaCampoString(char *string);
 int stringParaCampoInteiro(char *string);
+int stringParaInteiro(const char *string);
 char *removeAspasString(char *string);
 
 // Checagem
@@ -35,8 +36,8 @@ void imprimeData(char *data);
 void imprimeAceitaCartao(char *aceitaCartao);
 
 // Comparação
-bool comparaRegistroCampoString(char *nomeCampo, char *nomeCampoPesquisado, char *valor, char *valorPesquisado);
-bool comparaRegistroCampoInt(char *nomeCampo, char *nomeCampoPesquisado, int valor, char *valorPesquisado);
+bool comparaCampoString(const char *campo, const char *campoRegistro, const char *valor, const char *valorRegistro);
+bool comparaCampoInteiro(const char *campo, const char *campoRegistro, int valor, int valorRegistro);
 
 // Funções fornecidas:
 void binarioNaTela(char *nomeArquivoBinario);

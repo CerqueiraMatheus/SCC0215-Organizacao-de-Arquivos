@@ -7,11 +7,6 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-#define STR_PREFIXO "prefixo"
-#define STR_DATA "data"
-#define STR_QTDE_LUGARES "quantidadeLugares"
-#define STR_MODELO "modelo"
-#define STR_CATEGORIA "categoria"
 
 typedef struct {
     char status;
@@ -50,7 +45,7 @@ int leVeiculoCsv(Veiculo *veiculo, FILE *csv);
 bool leVeiculoBinario(Veiculo *veiculo, FILE *binario);
 void leVeiculoEntrada(Veiculo *veiculo);
 void escreveVeiculoBinario(Veiculo *veiculo, FILE *binario);
-void imprimeVeiculo(CabecalhoVeiculo cabecalhoVeiculo, Veiculo veiculo);
 bool comparaVeiculo(Veiculo veiculo, char *nomeCampo, char *valor);
+void imprimeVeiculo(CabecalhoVeiculo cabecalhoVeiculo, Veiculo veiculo);
 
 #endif  // VEICULO_H

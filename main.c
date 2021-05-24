@@ -264,10 +264,11 @@ void selectFromLinha() {
 }
 
 void selectFromWhereVeiculo() {
-    char nomeBinario[255], nomeCampo[42], valorAspas[100];
+    char nomeBinario[255];
+    char nomeCampo[42];
 
     // Leitura do nome do arquivo
-    if (scanf("%s %s %s", nomeBinario, nomeCampo, valorAspas) != 3) {
+    if (scanf("%s %s", nomeBinario, nomeCampo) != 2) {
         fprintf(stderr, "Falha no processamento do arquivo.\n");
         exit(EXIT_FAILURE);
     }
@@ -297,8 +298,9 @@ void selectFromWhereVeiculo() {
         return;
     }
 
-    // Adapta a string caso necessário
-    char *valor = removeAspasString(valorAspas);
+    // Le o valor dado
+    char valor[100];
+    scan_quote_string(valor);
 
     Veiculo veiculo;
 
@@ -309,9 +311,9 @@ void selectFromWhereVeiculo() {
     bool houveCorrespondencia = false;
 
     // Percorre até o fim do número de registros
-    for (; nroTotalRegistros > 0; nroTotalRegistros--) {
+    for (int i = 0; i < nroTotalRegistros; i++) {
         // Caso seja lido um registro não excluído
-        if (leVeiculoBinario(&veiculo, binario) != false) {
+        if (leVeiculoBinario(&veiculo, binario) == true) {
             // Checa se o veículo tem o valor fornecido no campo desejado
             if (comparaVeiculo(veiculo, nomeCampo, valor)) {
                 imprimeVeiculo(cabecalhoVeiculo, veiculo);
@@ -326,7 +328,9 @@ void selectFromWhereVeiculo() {
             fseek(binario, veiculo.tamanhoRegistro, SEEK_CUR);
     }
 
-    if (!houveCorrespondencia) printf("Registro inexistente.\n");
+    if (!houveCorrespondencia)
+        printf("Registro inexistente.\n");
+
     fclose(binario);
 }
 

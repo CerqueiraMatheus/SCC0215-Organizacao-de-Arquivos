@@ -62,6 +62,10 @@ int stringParaCampoInteiro(char *string) {
     return strcmp(string, "NULO") == 0 ? -1 : atoi(string);
 }
 
+int stringParaInteiro(const char *string) {
+    return strcmp(string, "") == 0 ? -1 : atoi(string);
+}
+
 char *removeAspasString(char *string) {
     // Caso não haja aspas
     if (string[0] != '\"')
@@ -151,14 +155,12 @@ void imprimeAceitaCartao(char *aceitaCartao) {
 }
 
 
-bool comparaRegistroCampoString(char *nomeCampo, char *nomeCampoPesquisado, char *valor, char *valorPesquisado) {
-    return strcmp(nomeCampo, nomeCampoPesquisado) == 0 &&
-           strcmp(valor, stringParaCampoString(valorPesquisado)) == 0;
+bool comparaCampoString(const char *campo, const char *campoRegistro, const char *valor, const char *valorRegistro) {
+    return strcmp(campo, campoRegistro) == 0 && strcmp(valor, valorRegistro) == 0;
 }
 
-bool comparaRegistroCampoInt(char *nomeCampo, char *nomeCampoPesquisado, int valor, char *valorPesquisado) {
-    return strcmp(nomeCampo, nomeCampoPesquisado) == 0 &&
-           valor == stringParaCampoInteiro(valorPesquisado);
+bool comparaCampoInteiro(const char *campo, const char *campoRegistro, int valor, int valorRegistro) {
+    return strcmp(campo, campoRegistro) == 0 && valor == valorRegistro;
 }
 
 // Funções fornecidas:

@@ -129,6 +129,7 @@ void escreveLinhaBinario(Linha *linha, FILE *binario) {
 }
 
 bool comparaLinha(Linha linha, char *nomeCampo, char *valor) {
+    /*
     if (
         comparaRegistroCampoInt(STR_COD, nomeCampo,
                                 linha.codLinha, valor) ||
@@ -144,6 +145,7 @@ bool comparaLinha(Linha linha, char *nomeCampo, char *valor) {
         return true;
     }
 
+    */
     return false;
 }
 
