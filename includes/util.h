@@ -4,8 +4,8 @@
 #ifndef UTIL_H
 #define UTIL_H
 
-#include <stdbool.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 
 // CSV
@@ -31,10 +31,10 @@ bool comparaCampoString(const char *campo, const char *campoRegistro, const char
 bool comparaCampoInteiro(const char *campo, const char *campoRegistro, int valor, int valorRegistro);
 
 // Impressão
-void imprimeCampoInteiro(int campo);
 void imprimeCampoString(char *campo, int tamanho);
 void imprimeData(char *data);
 void imprimeAceitaCartao(char *aceitaCartao);
+void imprimeCampoInteiro(int campo);
 
 // Funções fornecidas:
 void binarioNaTela(char *nomeArquivoBinario);

@@ -1,14 +1,12 @@
 // Pedro Lucas de Moliner de Castro - 11795784
 // Matheus Henrique de Cerqueira Pinto - 11911104
 
-#include "linha.h"
-
-#include <stdbool.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 #include "util.h"
+#include "linha.h"
 
 
 const char *STRING_CODIGO_LINHA = "codLinha";
@@ -55,12 +53,12 @@ void escreveCabecalhoLinhaBinario(CabecalhoLinha *cabecalhoLinha, FILE *binario)
     fwrite(cabecalhoLinha->descreveLinha, sizeof(char), 24, binario);
 }
 
+
 // Linha
 
 int leLinhaCsv(Linha *linha, FILE *csv) {
-    char verificador = fgetc(csv);
-
     // Checa pelo fim do arquivo
+    char verificador = fgetc(csv);
     if (verificador == EOF)
         return EOF;
 

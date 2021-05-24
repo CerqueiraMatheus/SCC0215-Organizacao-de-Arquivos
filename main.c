@@ -267,13 +267,16 @@ void selectFromLinha() {
 
 void selectFromWhereVeiculo() {
     char nomeBinario[255];
-    char nomeCampo[42];
+    char campo[20];
 
     // Leitura do nome do arquivo
-    if (scanf("%s %s", nomeBinario, nomeCampo) != 2) {
+    if (scanf("%s %s", nomeBinario, campo) != 2) {
         printf("Falha no processamento do arquivo.\n");
         exit(0);
     }
+
+    char valor[100];
+    scan_quote_string(valor);
 
     // Leitura do arquivo
     FILE *binario = fopen(nomeBinario, "rb");
@@ -300,10 +303,6 @@ void selectFromWhereVeiculo() {
         exit(0);
     }
 
-    // Le o valor dado
-    char valor[100];
-    scan_quote_string(valor);
-
     Veiculo veiculo;
 
     // Contabiliza todos os registros
@@ -317,7 +316,7 @@ void selectFromWhereVeiculo() {
         // Caso seja lido um registro não excluído
         if (leVeiculoBinario(&veiculo, binario) == true) {
             // Checa se o veículo tem o valor fornecido no campo desejado
-            if (comparaVeiculo(veiculo, nomeCampo, valor) == true) {
+            if (comparaVeiculo(veiculo, campo, valor)) {
                 imprimeVeiculo(cabecalhoVeiculo, veiculo);
                 houveCorrespondencia = true;
             }
@@ -336,13 +335,16 @@ void selectFromWhereVeiculo() {
 
 void selectFromWhereLinha() {
     char nomeBinario[255];
-    char nomeCampo[42];
+    char campo[20];
 
     // Leitura do nome do arquivo
-    if (scanf("%s %s", nomeBinario, nomeCampo) != 2) {
+    if (scanf("%s %s", nomeBinario, campo) != 2) {
         printf("Falha no processamento do arquivo.\n");
         exit(0);
     }
+
+    char valor[100];
+    scan_quote_string(valor);
 
     // Leitura do arquivo
     FILE *binario = fopen(nomeBinario, "rb");
@@ -369,10 +371,6 @@ void selectFromWhereLinha() {
         exit(0);
     }
 
-    // Adapta a string caso necessário
-    char valor[100];
-    scan_quote_string(valor);
-
     Linha linha;
 
     // Contabiliza todos os registros
@@ -384,9 +382,9 @@ void selectFromWhereLinha() {
     // Percorre até o fim do número de registros
     for (int i = 0; i < nroTotalRegistros; i++) {
         // Caso seja lido um registro não excluído
-        if (leLinhaBinario(&linha, binario) != false) {
+        if (leLinhaBinario(&linha, binario) == true) {
             // Checa se a linha tem o valor fornecido no campo desejado
-            if (comparaLinha(linha, nomeCampo, valor) == true) {
+            if (comparaLinha(linha, campo, valor)) {
                 imprimeLinha(cabecalhoLinha, linha);
                 houveCorrespondencia = true;
             }

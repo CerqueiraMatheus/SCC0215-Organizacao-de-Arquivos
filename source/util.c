@@ -1,13 +1,14 @@
 // Pedro Lucas de Moliner de Castro - 11795784
 // Matheus Henrique de Cerqueira Pinto - 11911104
 
-#include "util.h"
-
-#include <ctype.h>
-#include <stdbool.h>
 #include <stdio.h>
+#include <ctype.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
+
+#include "util.h"
+
 
 const char *MENSAGEM_CAMPO_NULO = "campo com valor nulo";
 
@@ -83,13 +84,6 @@ bool comparaCampoInteiro(const char *campo, const char *campoRegistro, int valor
 
 // Impressão
 
-void imprimeCampoInteiro(int campo) {
-    if (campo == -1)
-        printf("%s\n", MENSAGEM_CAMPO_NULO);
-    else
-        printf("%d\n", campo);
-}
-
 void imprimeCampoString(char *campo, int tamanho) {
     if (tamanho == 0)
         printf("%s\n", MENSAGEM_CAMPO_NULO);
@@ -143,6 +137,13 @@ void imprimeAceitaCartao(char *aceitaCartao) {
             printf("PAGAMENTO EM CARTAO SOMENTE NO FINAL DE SEMANA\n");
             break;
     }
+}
+
+void imprimeCampoInteiro(int campo) {
+    if (campo == -1)
+        printf("%s\n", MENSAGEM_CAMPO_NULO);
+    else
+        printf("%d\n", campo);
 }
 
 

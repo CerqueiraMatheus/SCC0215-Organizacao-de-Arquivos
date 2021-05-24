@@ -1,14 +1,12 @@
 // Pedro Lucas de Moliner de Castro - 11795784
 // Matheus Henrique de Cerqueira Pinto - 11911104
 
-#include "veiculo.h"
-
-#include <stdbool.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 #include "util.h"
+#include "veiculo.h"
 
 
 const char *STRING_PREFIXO  = "prefixo";
@@ -62,12 +60,12 @@ void escreveCabecalhoVeiculoBinario(CabecalhoVeiculo *cabecalhoVeiculo, FILE *bi
     fwrite(cabecalhoVeiculo->descreveCategoria, sizeof(char), 20, binario);
 }
 
+
 // Veículo
 
 int leVeiculoCsv(Veiculo *veiculo, FILE *csv) {
+    // Checa pelo fim do CSV
     char verificador = fgetc(csv);
-
-    // Checa pelo fim do arquivo
     if (verificador == EOF)
         return EOF;
 
