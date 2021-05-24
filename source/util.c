@@ -45,6 +45,15 @@ void escreveStringNuloBinario(int tamanho, FILE *binario) {
         fwrite("@", sizeof(char), 1, binario);
 }
 
+void atualizaStatusBinario(char status, FILE *binario) {
+    long long int posicao = ftell(binario);
+
+    fseek(binario, 0, SEEK_SET);
+    fwrite(&status, sizeof(char), 1, binario);
+
+    fseek(binario, posicao, SEEK_SET);
+}
+
 
 // Entrada
 

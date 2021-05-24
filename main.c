@@ -176,6 +176,7 @@ void selectFromVeiculo() {
 
     CabecalhoVeiculo cabecalhoVeiculo;
     leCabecalhoVeiculoBinario(&cabecalhoVeiculo, binario);
+    atualizaStatusBinario('0', binario);
 
     if (arquivoFoiCorrompido(cabecalhoVeiculo.status)) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
@@ -202,6 +203,7 @@ void selectFromVeiculo() {
             fseek(binario, veiculo.tamanhoRegistro, SEEK_CUR);
     }
 
+    atualizaStatusBinario('1', binario);
     fclose(binario);
 }
 
@@ -221,6 +223,7 @@ void selectFromLinha() {
 
     CabecalhoLinha cabecalhoLinha;
     leCabecalhoLinhaBinario(&cabecalhoLinha, binario);
+    atualizaStatusBinario('0', binario);
 
     if (arquivoFoiCorrompido(cabecalhoLinha.status)) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
@@ -247,6 +250,7 @@ void selectFromLinha() {
             fseek(binario, linha.tamanhoRegistro, SEEK_CUR);
     }
 
+    atualizaStatusBinario('1', binario);
     fclose(binario);
 }
 
@@ -270,6 +274,7 @@ void selectFromWhereVeiculo() {
 
     CabecalhoVeiculo cabecalhoVeiculo;
     leCabecalhoVeiculoBinario(&cabecalhoVeiculo, binario);
+    atualizaStatusBinario('0', binario);
 
     if (arquivoFoiCorrompido(cabecalhoVeiculo.status)) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
@@ -305,6 +310,7 @@ void selectFromWhereVeiculo() {
     if (!houveCorrespondencia)
         printf("%s\n", MENSAGEM_REGISTRO_INEXISTENTE);
 
+    atualizaStatusBinario('1', binario);
     fclose(binario);
 }
 
@@ -328,6 +334,7 @@ void selectFromWhereLinha() {
 
     CabecalhoLinha cabecalhoLinha;
     leCabecalhoLinhaBinario(&cabecalhoLinha, binario);
+    atualizaStatusBinario('0', binario);
 
     if (arquivoFoiCorrompido(cabecalhoLinha.status)) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
@@ -363,6 +370,7 @@ void selectFromWhereLinha() {
     if (!houveCorrespondencia)
         printf("%s\n", MENSAGEM_REGISTRO_INEXISTENTE);
 
+    atualizaStatusBinario('1', binario);
     fclose(binario);
 }
 
@@ -382,6 +390,7 @@ void insertIntoVeiculo() {
 
     CabecalhoVeiculo cabecalhoVeiculo;
     leCabecalhoVeiculoBinario(&cabecalhoVeiculo, binario);
+    atualizaStatusBinario('0', binario);
 
     if (arquivoFoiCorrompido(cabecalhoVeiculo.status)) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
@@ -389,10 +398,9 @@ void insertIntoVeiculo() {
         exit(0);
     }
 
-    fseek(binario, cabecalhoVeiculo.byteProxReg, SEEK_SET);
-
     int insercoes;
     scanf("%d", &insercoes);
+    fseek(binario, cabecalhoVeiculo.byteProxReg, SEEK_SET);
 
     // Percorre a entrada escrevendo os registros
     Veiculo veiculo;
@@ -428,6 +436,7 @@ void insertIntoLinha() {
 
     CabecalhoLinha cabecalhoLinha;
     leCabecalhoLinhaBinario(&cabecalhoLinha, binario);
+    atualizaStatusBinario('0', binario);
 
     if (arquivoFoiCorrompido(cabecalhoLinha.status)) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
@@ -435,10 +444,9 @@ void insertIntoLinha() {
         exit(0);
     }
 
-    fseek(binario, cabecalhoLinha.byteProxReg, SEEK_SET);
-
     int insercoes;
     scanf("%d", &insercoes);
+    fseek(binario, cabecalhoLinha.byteProxReg, SEEK_SET);
 
     // Percorre a entrada escrevendo os registros
     Linha linha;

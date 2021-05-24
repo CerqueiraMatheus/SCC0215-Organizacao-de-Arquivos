@@ -15,6 +15,7 @@ int leInteiroCsv(FILE *csv);
 // Binário
 void leStringBinario(char *string, int tamanho, FILE *binario);
 void escreveStringNuloBinario(int tamanho, FILE *binario);
+void atualizaStatusBinario(char status, FILE *binario);
 
 // Entrada
 int leInteiroEntrada();
