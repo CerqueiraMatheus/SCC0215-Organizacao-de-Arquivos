@@ -10,6 +10,13 @@
 
 #include "util.h"
 
+
+const char *STRING_CODIGO_LINHA = "codLinha";
+const char *STRING_ACEITA_CARTAO = "aceitaCartao";
+const char *STRING_NOME_LINHA = "nomeLinha";
+const char *STRING_COR_LINHA = "corLinha";
+
+
 // Cabeçalho Linha
 
 void leCabecalhoLinhaCsv(CabecalhoLinha *cabecalhoLinha, FILE *csv) {
@@ -128,25 +135,17 @@ void escreveLinhaBinario(Linha *linha, FILE *binario) {
     fwrite(linha->corLinha, sizeof(char), linha->tamanhoCor, binario);
 }
 
-bool comparaLinha(Linha linha, char *nomeCampo, char *valor) {
-    /*
-    if (
-        comparaRegistroCampoInt(STR_COD, nomeCampo,
-                                linha.codLinha, valor) ||
-
-        comparaRegistroCampoString(STR_CARTAO, nomeCampo,
-                                   linha.aceitaCartao, valor) ||
-
-        comparaRegistroCampoString(STR_NOME, nomeCampo,
-                                   linha.nomeLinha, valor) ||
-
-        comparaRegistroCampoString(STR_COR, nomeCampo,
-                                   linha.corLinha, valor)) {
+bool comparaLinha(Linha linha, char *campo, char *valor) {
+    if (comparaCampoInteiro(campo, STRING_CODIGO_LINHA, stringParaInteiro(valor), linha.codLinha))
         return true;
-    }
-
-    */
-    return false;
+    else if (comparaCampoString(campo, STRING_ACEITA_CARTAO, valor, linha.aceitaCartao))
+        return true;
+    else if (comparaCampoString(campo, STRING_NOME_LINHA, valor, linha.nomeLinha))
+        return true;
+    else if (comparaCampoString(campo, STRING_COR_LINHA, valor, linha.corLinha))
+        return true;
+    else
+        return false;
 }
 
 void imprimeLinha(CabecalhoLinha cabecalhoLinha, Linha linha) {

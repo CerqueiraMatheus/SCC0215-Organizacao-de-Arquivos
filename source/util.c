@@ -54,28 +54,8 @@ int leInteiroEntrada() {
 
 // Conversão
 
-char *stringParaCampoString(char *string) {
-    return strcmp(string, "NULO") == 0 ? "" : string;
-}
-
-int stringParaCampoInteiro(char *string) {
-    return strcmp(string, "NULO") == 0 ? -1 : atoi(string);
-}
-
 int stringParaInteiro(const char *string) {
     return strcmp(string, "") == 0 ? -1 : atoi(string);
-}
-
-char *removeAspasString(char *string) {
-    // Caso não haja aspas
-    if (string[0] != '\"')
-        return string;
-
-    // Caso haja, retira as aspas
-    string++;
-    string[strlen(string) - 1] = '\0';
-
-    return string;
 }
 
 
@@ -87,6 +67,17 @@ bool arquivoFoiCorrompido(char status) {
 
 bool registroFoiRemovido(char removido) {
     return removido == '0';
+}
+
+
+// Comparação
+
+bool comparaCampoString(const char *campo, const char *campoRegistro, const char *valor, const char *valorRegistro) {
+    return strcmp(campo, campoRegistro) == 0 && strcmp(valor, valorRegistro) == 0;
+}
+
+bool comparaCampoInteiro(const char *campo, const char *campoRegistro, int valor, int valorRegistro) {
+    return strcmp(campo, campoRegistro) == 0 && valor == valorRegistro;
 }
 
 
@@ -154,14 +145,6 @@ void imprimeAceitaCartao(char *aceitaCartao) {
     }
 }
 
-
-bool comparaCampoString(const char *campo, const char *campoRegistro, const char *valor, const char *valorRegistro) {
-    return strcmp(campo, campoRegistro) == 0 && strcmp(valor, valorRegistro) == 0;
-}
-
-bool comparaCampoInteiro(const char *campo, const char *campoRegistro, int valor, int valorRegistro) {
-    return strcmp(campo, campoRegistro) == 0 && valor == valorRegistro;
-}
 
 // Funções fornecidas:
 

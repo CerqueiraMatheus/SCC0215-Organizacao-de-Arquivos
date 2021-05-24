@@ -7,10 +7,6 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-#define STR_COD "codLinha"
-#define STR_CARTAO "aceitaCartao"
-#define STR_NOME "nomeLinha"
-#define STR_COR "corLinha"
 
 typedef struct {
     char status;

@@ -20,24 +20,21 @@ void escreveStringNuloBinario(int tamanho, FILE *binario);
 int leInteiroEntrada();
 
 // Conversão
-char *stringParaCampoString(char *string);
-int stringParaCampoInteiro(char *string);
 int stringParaInteiro(const char *string);
-char *removeAspasString(char *string);
 
 // Checagem
 bool arquivoFoiCorrompido(char status);
 bool registroFoiRemovido(char removido);
+
+// Comparação
+bool comparaCampoString(const char *campo, const char *campoRegistro, const char *valor, const char *valorRegistro);
+bool comparaCampoInteiro(const char *campo, const char *campoRegistro, int valor, int valorRegistro);
 
 // Impressão
 void imprimeCampoInteiro(int campo);
 void imprimeCampoString(char *campo, int tamanho);
 void imprimeData(char *data);
 void imprimeAceitaCartao(char *aceitaCartao);
-
-// Comparação
-bool comparaCampoString(const char *campo, const char *campoRegistro, const char *valor, const char *valorRegistro);
-bool comparaCampoInteiro(const char *campo, const char *campoRegistro, int valor, int valorRegistro);
 
 // Funções fornecidas:
 void binarioNaTela(char *nomeArquivoBinario);

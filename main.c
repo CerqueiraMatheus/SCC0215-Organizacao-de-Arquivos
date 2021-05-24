@@ -337,7 +337,7 @@ void selectFromWhereLinha() {
     char nomeCampo[42];
 
     // Leitura do nome do arquivo
-    if (scanf("%s %s %s", nomeBinario, nomeCampo) != 2) {
+    if (scanf("%s %s", nomeBinario, nomeCampo) != 2) {
         fprintf(stderr, "Falha no processamento do arquivo.\n");
         exit(EXIT_FAILURE);
     }
