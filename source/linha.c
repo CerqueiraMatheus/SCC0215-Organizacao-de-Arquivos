@@ -9,12 +9,6 @@
 #include "linha.h"
 
 
-const char *STRING_CODIGO_LINHA = "codLinha";
-const char *STRING_ACEITA_CARTAO = "aceitaCartao";
-const char *STRING_NOME_LINHA = "nomeLinha";
-const char *STRING_COR_LINHA = "corLinha";
-
-
 // Cabeçalho Linha
 
 void leCabecalhoLinhaCsv(CabecalhoLinha *cabecalhoLinha, FILE *csv) {
@@ -134,13 +128,13 @@ void escreveLinhaBinario(Linha *linha, FILE *binario) {
 }
 
 bool comparaLinha(Linha linha, char *campo, char *valor) {
-    if (comparaCampoInteiro(campo, STRING_CODIGO_LINHA, stringParaInteiro(valor), linha.codLinha))
+    if (comparaCampoInteiro(campo, "codLinha", stringParaInteiro(valor), linha.codLinha))
         return true;
-    else if (comparaCampoString(campo, STRING_ACEITA_CARTAO, valor, linha.aceitaCartao))
+    else if (comparaCampoString(campo, "aceitaCartao", valor, linha.aceitaCartao))
         return true;
-    else if (comparaCampoString(campo, STRING_NOME_LINHA, valor, linha.nomeLinha))
+    else if (comparaCampoString(campo, "nomeLinha", valor, linha.nomeLinha))
         return true;
-    else if (comparaCampoString(campo, STRING_COR_LINHA, valor, linha.corLinha))
+    else if (comparaCampoString(campo, "corLinha", valor, linha.corLinha))
         return true;
     else
         return false;

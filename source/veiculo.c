@@ -9,13 +9,6 @@
 #include "veiculo.h"
 
 
-const char *STRING_PREFIXO  = "prefixo";
-const char *STRING_DATA  = "data";
-const char *STRING_QUANTIDADE_LUGARES  = "quantidadeLugares";
-const char *STRING_MODELO = "modelo";
-const char *STRING_CATEGORIA = "categoria";
-
-
 // Cabeçalho Veículo
 
 void leCabecalhoVeiculoCsv(CabecalhoVeiculo *cabecalhoVeiculo, FILE *csv) {
@@ -157,15 +150,15 @@ void escreveVeiculoBinario(Veiculo *veiculo, FILE *binario) {
 }
 
 bool comparaVeiculo(Veiculo veiculo, char *campo, char *valor) {
-    if (comparaCampoString(campo, STRING_PREFIXO, valor, veiculo.prefixo))
+    if (comparaCampoString(campo, "prefixo", valor, veiculo.prefixo))
         return true;
-    else if (comparaCampoString(campo, STRING_DATA, valor, veiculo.data))
+    else if (comparaCampoString(campo, "data", valor, veiculo.data))
         return true;
-    else if (comparaCampoInteiro(campo, STRING_QUANTIDADE_LUGARES, stringParaInteiro(valor),  veiculo.quantidadeLugares))
+    else if (comparaCampoInteiro(campo, "quantidadeLugares", stringParaInteiro(valor),  veiculo.quantidadeLugares))
         return true;
-    else if (comparaCampoString(campo, STRING_MODELO, valor,  veiculo.modelo))
+    else if (comparaCampoString(campo, "modelo", valor,  veiculo.modelo))
         return true;
-    else if (comparaCampoString(campo, STRING_CATEGORIA, valor,  veiculo.categoria))
+    else if (comparaCampoString(campo, "categoria", valor,  veiculo.categoria))
         return true;
     else
         return false;

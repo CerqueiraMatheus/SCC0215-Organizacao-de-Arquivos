@@ -20,6 +20,10 @@ void insertIntoVeiculo();
 void insertIntoLinha();
 
 
+const char *MENSAGEM_FALHA_PROCESSAMENTO = "Falha no processamento do arquivo.";
+const char *MENSAGEM_REGISTRO_INEXISTENTE = "Registro inexistente.";
+
+
 int main() {
     int funcionalidade;
     scanf("%d", &funcionalidade);
@@ -50,7 +54,7 @@ int main() {
             insertIntoLinha();
             break;
         default:
-            printf("Falha na identificacao da funcionalidade %u.", funcionalidade);
+            printf("Falha na identificacao da funcionalidade %d.", funcionalidade);
             exit(0);
             break;
     }
@@ -63,19 +67,19 @@ void createTableVeiculo() {
     char nomeBinario[255];
 
     if (scanf("%s %s", nomeCsv, nomeBinario) != 2) {
-        printf("Falha no processamento do arquivo.\n");
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         exit(0);
     }
 
     FILE *csv = fopen(nomeCsv, "r");
     if (csv == NULL) {
-        printf("Falha no processamento do arquivo.\n");
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         exit(0);
     }
 
     FILE *binario = fopen(nomeBinario, "wb");
     if (binario == NULL) {
-        printf("Falha no processamento do arquivo.\n");
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         fclose(csv);
         exit(0);
     }
@@ -112,19 +116,19 @@ void createTableLinha() {
     char nomeBinario[255];
 
     if (scanf("%s %s", nomeCsv, nomeBinario) != 2) {
-        printf("Falha no processamento do arquivo.\n");
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         exit(0);
     }
 
     FILE *csv = fopen(nomeCsv, "r");
     if (csv == NULL) {
-        printf("Falha no processamento do arquivo.\n");
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         exit(0);
     }
 
     FILE *binario = fopen(nomeBinario, "wb");
     if (binario == NULL) {
-        printf("Falha no processamento do arquivo.\n");
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         fclose(csv);
         exit(0);
     }
@@ -161,14 +165,14 @@ void selectFromVeiculo() {
 
     // Leitura do nome do arquivo
     if (scanf("%s", nomeBinario) != 1) {
-        printf("Falha no processamento do arquivo.\n");
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         exit(0);
     }
 
     // Leitura do arquivo
     FILE *binario = fopen(nomeBinario, "rb");
     if (binario == NULL) {
-        printf("Falha no processamento do arquivo.\n");
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         exit(0);
     }
 
@@ -178,14 +182,14 @@ void selectFromVeiculo() {
 
     // Caso esteja corrompido
     if (arquivoFoiCorrompido(cabecalhoVeiculo.status)) {
-        printf("Falha no processamento do arquivo.\n");
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         fclose(binario);
         exit(0);
     }
 
     // Caso não haja registros
     if (cabecalhoVeiculo.nroRegistros == 0) {
-        printf("Registro inexistente.\n");
+        printf("%s\n", MENSAGEM_REGISTRO_INEXISTENTE);
         fclose(binario);
         exit(0);
     }
@@ -216,14 +220,14 @@ void selectFromLinha() {
 
     // Leitura do nome do arquivo
     if (scanf("%s", nomeBinario) != 1) {
-        printf("Falha no processamento do arquivo.\n");
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         exit(0);
     }
 
     // Leitura do arquivo
     FILE *binario = fopen(nomeBinario, "rb");
     if (binario == NULL) {
-        printf("Falha no processamento do arquivo.\n");
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         exit(0);
     }
 
@@ -233,14 +237,14 @@ void selectFromLinha() {
 
     // Caso esteja corrompido
     if (arquivoFoiCorrompido(cabecalhoLinha.status)) {
-        printf("Falha no processamento do arquivo.\n");
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         fclose(binario);
         exit(0);
     }
 
     // Caso não haja registros
     if (cabecalhoLinha.nroRegistros == 0) {
-        printf("Registro inexistente.\n");
+        printf("%s\n", MENSAGEM_REGISTRO_INEXISTENTE);
         fclose(binario);
         exit(0);
     }
@@ -271,7 +275,7 @@ void selectFromWhereVeiculo() {
 
     // Leitura do nome do arquivo
     if (scanf("%s %s", nomeBinario, campo) != 2) {
-        printf("Falha no processamento do arquivo.\n");
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         exit(0);
     }
 
@@ -281,7 +285,7 @@ void selectFromWhereVeiculo() {
     // Leitura do arquivo
     FILE *binario = fopen(nomeBinario, "rb");
     if (binario == NULL) {
-        printf("Falha no processamento do arquivo.\n");
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         exit(0);
     }
 
@@ -291,14 +295,14 @@ void selectFromWhereVeiculo() {
 
     // Caso esteja corrompido
     if (arquivoFoiCorrompido(cabecalhoVeiculo.status)) {
-        printf("Falha no processamento do arquivo.\n");
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         fclose(binario);
         exit(0);
     }
 
     // Caso não haja registros
     if (cabecalhoVeiculo.nroRegistros == 0) {
-        printf("Registro inexistente.\n");
+        printf("%s\n", MENSAGEM_REGISTRO_INEXISTENTE);
         fclose(binario);
         exit(0);
     }
@@ -328,7 +332,7 @@ void selectFromWhereVeiculo() {
     }
 
     if (!houveCorrespondencia)
-        printf("Registro inexistente.\n");
+        printf("%s\n", MENSAGEM_REGISTRO_INEXISTENTE);
 
     fclose(binario);
 }
@@ -339,7 +343,7 @@ void selectFromWhereLinha() {
 
     // Leitura do nome do arquivo
     if (scanf("%s %s", nomeBinario, campo) != 2) {
-        printf("Falha no processamento do arquivo.\n");
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         exit(0);
     }
 
@@ -349,7 +353,7 @@ void selectFromWhereLinha() {
     // Leitura do arquivo
     FILE *binario = fopen(nomeBinario, "rb");
     if (binario == NULL) {
-        printf("Falha no processamento do arquivo.\n");
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         exit(0);
     }
 
@@ -359,14 +363,14 @@ void selectFromWhereLinha() {
 
     // Caso esteja corrompido
     if (arquivoFoiCorrompido(cabecalhoLinha.status)) {
-        printf("Falha no processamento do arquivo.\n");
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         fclose(binario);
         exit(0);
     }
 
     // Caso não haja registros
     if (cabecalhoLinha.nroRegistros == 0) {
-        printf("Registro inexistente.\n");
+        printf("%s\n", MENSAGEM_REGISTRO_INEXISTENTE);
         fclose(binario);
         exit(0);
     }
@@ -396,7 +400,7 @@ void selectFromWhereLinha() {
     }
 
     if (!houveCorrespondencia)
-        printf("Registro inexistente.\n");
+        printf("%s\n", MENSAGEM_REGISTRO_INEXISTENTE);
 
     fclose(binario);
 }
@@ -405,13 +409,13 @@ void insertIntoVeiculo() {
     char nomeBinario[255];
 
     if (scanf("%s", nomeBinario) != 1) {
-        printf("Falha no processamento do arquivo.\n");
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         exit(0);
     }
 
     FILE *binario = fopen(nomeBinario, "rb+");
     if (binario == NULL) {
-        printf("Falha no processamento do arquivo.\n");
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         exit(0);
     }
 
@@ -421,7 +425,7 @@ void insertIntoVeiculo() {
 
     // Caso esteja corrompido
     if (arquivoFoiCorrompido(cabecalhoVeiculo.status)) {
-        printf("Falha no processamento do arquivo.\n");
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         fclose(binario);
         exit(0);
     }
@@ -453,13 +457,13 @@ void insertIntoLinha() {
     char nomeBinario[255];
 
     if (scanf("%s", nomeBinario) != 1) {
-        printf("Falha no processamento do arquivo.\n");
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         exit(0);
     }
 
     FILE *binario = fopen(nomeBinario, "rb+");
     if (binario == NULL) {
-        printf("Falha no processamento do arquivo.\n");
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         exit(0);
     }
 
@@ -469,7 +473,7 @@ void insertIntoLinha() {
 
     // Caso esteja corrompido
     if (arquivoFoiCorrompido(cabecalhoLinha.status)) {
-        printf("Falha no processamento do arquivo.\n");
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         fclose(binario);
         exit(0);
     }

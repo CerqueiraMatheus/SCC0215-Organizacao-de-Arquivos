@@ -17,6 +17,7 @@ const char *MENSAGEM_CAMPO_NULO = "campo com valor nulo";
 
 void leStringCsv(char *string, FILE *csv) {
     fscanf(csv, "%[^,\n]%*c", string);
+
     if (strcmp(string, "NULO") == 0)
         strcpy(string, "");
 }
@@ -24,6 +25,7 @@ void leStringCsv(char *string, FILE *csv) {
 int leInteiroCsv(FILE *csv) {
     char inteiro[20];
     fscanf(csv, "%[^,\n]%*c", inteiro);
+
     return strcmp(inteiro, "NULO") == 0 ? -1 : atoi(inteiro);
 }
 
@@ -49,6 +51,7 @@ void escreveStringNuloBinario(int tamanho, FILE *binario) {
 int leInteiroEntrada() {
     char inteiro[20];
     scanf(" %s", inteiro);
+
     return strcmp(inteiro, "NULO") == 0 ? -1 : atoi(inteiro);
 }
 
