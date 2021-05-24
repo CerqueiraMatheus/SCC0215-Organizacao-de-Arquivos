@@ -315,11 +315,9 @@ void selectFromWhereVeiculo() {
         // Caso seja lido um registro não excluído
         if (leVeiculoBinario(&veiculo, binario) == true) {
             // Checa se o veículo tem o valor fornecido no campo desejado
-            if (comparaVeiculo(veiculo, nomeCampo, valor)) {
+            if (comparaVeiculo(veiculo, nomeCampo, valor) == true) {
                 imprimeVeiculo(cabecalhoVeiculo, veiculo);
-
-                // Se houver correspondência, atualiza a flag
-                if (!houveCorrespondencia) houveCorrespondencia = true;
+                houveCorrespondencia = true;
             }
         }
 
@@ -335,10 +333,11 @@ void selectFromWhereVeiculo() {
 }
 
 void selectFromWhereLinha() {
-    char nomeBinario[255], nomeCampo[42], valorAspas[100];
+    char nomeBinario[255];
+    char nomeCampo[42];
 
     // Leitura do nome do arquivo
-    if (scanf("%s %s %s", nomeBinario, nomeCampo, valorAspas) != 3) {
+    if (scanf("%s %s %s", nomeBinario, nomeCampo) != 2) {
         fprintf(stderr, "Falha no processamento do arquivo.\n");
         exit(EXIT_FAILURE);
     }
@@ -369,7 +368,8 @@ void selectFromWhereLinha() {
     }
 
     // Adapta a string caso necessário
-    char *valor = removeAspasString(valorAspas);
+    char valor[100];
+    scan_quote_string(valor);
 
     Linha linha;
 
@@ -380,15 +380,13 @@ void selectFromWhereLinha() {
     bool houveCorrespondencia = false;
 
     // Percorre até o fim do número de registros
-    for (; nroTotalRegistros > 0; nroTotalRegistros--) {
+    for (int i = 0; i < nroTotalRegistros; i++) {
         // Caso seja lido um registro não excluído
         if (leLinhaBinario(&linha, binario) != false) {
             // Checa se a linha tem o valor fornecido no campo desejado
-            if (comparaLinha(linha, nomeCampo, valor)) {
+            if (comparaLinha(linha, nomeCampo, valor) == true) {
                 imprimeLinha(cabecalhoLinha, linha);
-
-                // Se houver correspondência, atualiza a flag
-                if (!houveCorrespondencia) houveCorrespondencia = true;
+                houveCorrespondencia = true;
             }
         }
 
@@ -397,7 +395,9 @@ void selectFromWhereLinha() {
             fseek(binario, linha.tamanhoRegistro, SEEK_CUR);
     }
 
-    if (!houveCorrespondencia) printf("Registro inexistente.\n");
+    if (!houveCorrespondencia)
+        printf("Registro inexistente.\n");
+
     fclose(binario);
 }
 
