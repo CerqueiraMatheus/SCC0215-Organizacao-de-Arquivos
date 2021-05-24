@@ -90,7 +90,7 @@ bool leVeiculoBinario(Veiculo *veiculo, FILE *binario) {
     fread(&veiculo->removido, sizeof(char), 1, binario);
     fread(&veiculo->tamanhoRegistro, sizeof(int), 1, binario);
 
-    // Se o registro foi removido, mata a execução
+    // Checa por registro removido e retorna se sim
     if (registroFoiRemovido(veiculo->removido))
         return false;
 
@@ -106,7 +106,6 @@ bool leVeiculoBinario(Veiculo *veiculo, FILE *binario) {
     fread(&veiculo->tamanhoCategoria, sizeof(int), 1, binario);
     leStringBinario(veiculo->categoria, veiculo->tamanhoCategoria, binario);
 
-    // Garante a completude do registro
     return true;
 }
 

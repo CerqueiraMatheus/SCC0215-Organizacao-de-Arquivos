@@ -150,7 +150,7 @@ void imprimeCampoInteiro(int campo) {
 }
 
 
-// Funções fornecidas:
+// Funções fornecidas
 
 void binarioNaTela(char *nomeArquivoBinario) {
     unsigned long i, cs;

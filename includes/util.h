@@ -36,7 +36,7 @@ void imprimeData(const char *data);
 void imprimeAceitaCartao(const char *aceitaCartao);
 void imprimeCampoInteiro(int campo);
 
-// Funções fornecidas:
+// Funções fornecidas
 void binarioNaTela(char *nomeArquivoBinario);
 void scan_quote_string(char *str);
 

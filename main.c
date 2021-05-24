@@ -163,50 +163,41 @@ void createTableLinha() {
 void selectFromVeiculo() {
     char nomeBinario[255];
 
-    // Leitura do nome do arquivo
     if (scanf("%s", nomeBinario) != 1) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         exit(0);
     }
 
-    // Leitura do arquivo
     FILE *binario = fopen(nomeBinario, "rb");
     if (binario == NULL) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         exit(0);
     }
 
-    // Leitura do cabeçalho do binário
     CabecalhoVeiculo cabecalhoVeiculo;
     leCabecalhoVeiculoBinario(&cabecalhoVeiculo, binario);
 
-    // Caso esteja corrompido
     if (arquivoFoiCorrompido(cabecalhoVeiculo.status)) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         fclose(binario);
         exit(0);
     }
 
-    // Caso não haja registros
     if (cabecalhoVeiculo.nroRegistros == 0) {
         printf("%s\n", MENSAGEM_REGISTRO_INEXISTENTE);
         fclose(binario);
         exit(0);
     }
 
-    // Leitura do corpo do binário
     Veiculo veiculo;
-
-    // Contabiliza todos os registros
     int nroTotalRegistros = cabecalhoVeiculo.nroRegistros + cabecalhoVeiculo.nroRegRemovidos;
 
-    // Percorre até o fim do número de registros
     for (int i = 0; i < nroTotalRegistros; i++) {
-        // Caso seja lido um registro não excluído
+        // Caso registro lido não removido
         if (leVeiculoBinario(&veiculo, binario) == true)
             imprimeVeiculo(&cabecalhoVeiculo, &veiculo);
 
-        // Se for excluído, pula o corpo do registro
+        // Caso removido, pula corpo
         else
             fseek(binario, veiculo.tamanhoRegistro, SEEK_CUR);
     }
@@ -217,50 +208,41 @@ void selectFromVeiculo() {
 void selectFromLinha() {
     char nomeBinario[255];
 
-    // Leitura do nome do arquivo
     if (scanf("%s", nomeBinario) != 1) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         exit(0);
     }
 
-    // Leitura do arquivo
     FILE *binario = fopen(nomeBinario, "rb");
     if (binario == NULL) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         exit(0);
     }
 
-    // Leitura do cabeçalho do binário
     CabecalhoLinha cabecalhoLinha;
     leCabecalhoLinhaBinario(&cabecalhoLinha, binario);
 
-    // Caso esteja corrompido
     if (arquivoFoiCorrompido(cabecalhoLinha.status)) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         fclose(binario);
         exit(0);
     }
 
-    // Caso não haja registros
     if (cabecalhoLinha.nroRegistros == 0) {
         printf("%s\n", MENSAGEM_REGISTRO_INEXISTENTE);
         fclose(binario);
         exit(0);
     }
 
-    // Leitura do corpo do binário
     Linha linha;
-
-    // Contabiliza todos os registros
     int nroTotalRegistros = cabecalhoLinha.nroRegistros + cabecalhoLinha.nroRegRemovidos;
 
-    // Percorre até o fim do número de registros
     for (int i = 0; i < nroTotalRegistros; i++) {
-        // Caso seja lido um registro não excluído
+        // Caso registro lido não removido
         if (leLinhaBinario(&linha, binario) == true)
             imprimeLinha(&cabecalhoLinha, &linha);
 
-        // Se for excluído, pula o corpo do registro
+        // Caso removido, pula corpo
         else
             fseek(binario, linha.tamanhoRegistro, SEEK_CUR);
     }
@@ -272,7 +254,6 @@ void selectFromWhereVeiculo() {
     char nomeBinario[255];
     char campo[20];
 
-    // Leitura do nome do arquivo
     if (scanf("%s %s", nomeBinario, campo) != 2) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         exit(0);
@@ -281,25 +262,21 @@ void selectFromWhereVeiculo() {
     char valor[100];
     scan_quote_string(valor);
 
-    // Leitura do arquivo
     FILE *binario = fopen(nomeBinario, "rb");
     if (binario == NULL) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         exit(0);
     }
 
-    // Leitura do cabeçalho do binário
     CabecalhoVeiculo cabecalhoVeiculo;
     leCabecalhoVeiculoBinario(&cabecalhoVeiculo, binario);
 
-    // Caso esteja corrompido
     if (arquivoFoiCorrompido(cabecalhoVeiculo.status)) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         fclose(binario);
         exit(0);
     }
 
-    // Caso não haja registros
     if (cabecalhoVeiculo.nroRegistros == 0) {
         printf("%s\n", MENSAGEM_REGISTRO_INEXISTENTE);
         fclose(binario);
@@ -307,18 +284,13 @@ void selectFromWhereVeiculo() {
     }
 
     Veiculo veiculo;
-
-    // Contabiliza todos os registros
     int nroTotalRegistros = cabecalhoVeiculo.nroRegistros + cabecalhoVeiculo.nroRegRemovidos;
-
-    // Flag para checar se houve ao menos uma correspondência
     bool houveCorrespondencia = false;
 
-    // Percorre até o fim do número de registros
     for (int i = 0; i < nroTotalRegistros; i++) {
-        // Caso seja lido um registro não excluído
+        // Caso registro lido não removido
         if (leVeiculoBinario(&veiculo, binario) == true) {
-            // Checa se o veículo tem o valor fornecido no campo desejado
+            // Checa valor desejado
             if (comparaVeiculo(&veiculo, campo, valor)) {
                 imprimeVeiculo(&cabecalhoVeiculo, &veiculo);
                 houveCorrespondencia = true;
@@ -340,7 +312,6 @@ void selectFromWhereLinha() {
     char nomeBinario[255];
     char campo[20];
 
-    // Leitura do nome do arquivo
     if (scanf("%s %s", nomeBinario, campo) != 2) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         exit(0);
@@ -349,25 +320,21 @@ void selectFromWhereLinha() {
     char valor[100];
     scan_quote_string(valor);
 
-    // Leitura do arquivo
     FILE *binario = fopen(nomeBinario, "rb");
     if (binario == NULL) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         exit(0);
     }
 
-    // Leitura do cabeçalho do binário
     CabecalhoLinha cabecalhoLinha;
     leCabecalhoLinhaBinario(&cabecalhoLinha, binario);
 
-    // Caso esteja corrompido
     if (arquivoFoiCorrompido(cabecalhoLinha.status)) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         fclose(binario);
         exit(0);
     }
 
-    // Caso não haja registros
     if (cabecalhoLinha.nroRegistros == 0) {
         printf("%s\n", MENSAGEM_REGISTRO_INEXISTENTE);
         fclose(binario);
@@ -375,25 +342,20 @@ void selectFromWhereLinha() {
     }
 
     Linha linha;
-
-    // Contabiliza todos os registros
     int nroTotalRegistros = cabecalhoLinha.nroRegistros + cabecalhoLinha.nroRegRemovidos;
-
-    // Flag para checar se houve ao menos uma correspondência
     bool houveCorrespondencia = false;
 
-    // Percorre até o fim do número de registros
     for (int i = 0; i < nroTotalRegistros; i++) {
-        // Caso seja lido um registro não excluído
+        // Caso registro lido não removido
         if (leLinhaBinario(&linha, binario) == true) {
-            // Checa se a linha tem o valor fornecido no campo desejado
+            // Checa valor desejado
             if (comparaLinha(&linha, campo, valor)) {
                 imprimeLinha(&cabecalhoLinha, &linha);
                 houveCorrespondencia = true;
             }
         }
 
-        // Se for excluído, pula o corpo do registro
+        // Caso removido, pula corpo
         else
             fseek(binario, linha.tamanhoRegistro, SEEK_CUR);
     }
@@ -418,11 +380,9 @@ void insertIntoVeiculo() {
         exit(0);
     }
 
-    // Inicializa o cabeçalho
     CabecalhoVeiculo cabecalhoVeiculo;
     leCabecalhoVeiculoBinario(&cabecalhoVeiculo, binario);
 
-    // Caso esteja corrompido
     if (arquivoFoiCorrompido(cabecalhoVeiculo.status)) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         fclose(binario);
@@ -466,11 +426,9 @@ void insertIntoLinha() {
         exit(0);
     }
 
-    // Inicializa o cabeçalho
     CabecalhoLinha cabecalhoLinha;
     leCabecalhoLinhaBinario(&cabecalhoLinha, binario);
 
-    // Caso esteja corrompido
     if (arquivoFoiCorrompido(cabecalhoLinha.status)) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         fclose(binario);
