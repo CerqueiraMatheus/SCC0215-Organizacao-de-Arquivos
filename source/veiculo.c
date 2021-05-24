@@ -149,36 +149,36 @@ void escreveVeiculoBinario(Veiculo *veiculo, FILE *binario) {
     fwrite(veiculo->categoria, sizeof(char), veiculo->tamanhoCategoria, binario);
 }
 
-bool comparaVeiculo(Veiculo veiculo, const char *campo, const char *valor) {
-    if (comparaCampoString(campo, "prefixo", valor, veiculo.prefixo))
+bool comparaVeiculo(Veiculo *veiculo, const char *campo, const char *valor) {
+    if (comparaCampoString(campo, "prefixo", valor, veiculo->prefixo))
         return true;
-    else if (comparaCampoString(campo, "data", valor, veiculo.data))
+    else if (comparaCampoString(campo, "data", valor, veiculo->data))
         return true;
-    else if (comparaCampoInteiro(campo, "quantidadeLugares", stringParaInteiro(valor),  veiculo.quantidadeLugares))
+    else if (comparaCampoInteiro(campo, "quantidadeLugares", stringParaInteiro(valor),  veiculo->quantidadeLugares))
         return true;
-    else if (comparaCampoString(campo, "modelo", valor,  veiculo.modelo))
+    else if (comparaCampoString(campo, "modelo", valor,  veiculo->modelo))
         return true;
-    else if (comparaCampoString(campo, "categoria", valor,  veiculo.categoria))
+    else if (comparaCampoString(campo, "categoria", valor,  veiculo->categoria))
         return true;
     else
         return false;
 }
 
-void imprimeVeiculo(CabecalhoVeiculo cabecalhoVeiculo, Veiculo veiculo) {
-    printf("%s: ", cabecalhoVeiculo.descrevePrefixo);
-    imprimeCampoString(veiculo.prefixo, strlen(veiculo.prefixo));
+void imprimeVeiculo(CabecalhoVeiculo *cabecalhoVeiculo, Veiculo *veiculo) {
+    printf("%s: ", cabecalhoVeiculo->descrevePrefixo);
+    imprimeCampoString(veiculo->prefixo, strlen(veiculo->prefixo));
 
-    printf("%s: ", cabecalhoVeiculo.descreveModelo);
-    imprimeCampoString(veiculo.modelo, veiculo.tamanhoModelo);
+    printf("%s: ", cabecalhoVeiculo->descreveModelo);
+    imprimeCampoString(veiculo->modelo, veiculo->tamanhoModelo);
 
-    printf("%s: ", cabecalhoVeiculo.descreveCategoria);
-    imprimeCampoString(veiculo.categoria, veiculo.tamanhoCategoria);
+    printf("%s: ", cabecalhoVeiculo->descreveCategoria);
+    imprimeCampoString(veiculo->categoria, veiculo->tamanhoCategoria);
 
-    printf("%s: ", cabecalhoVeiculo.descreveData);
-    imprimeData(veiculo.data);
+    printf("%s: ", cabecalhoVeiculo->descreveData);
+    imprimeData(veiculo->data);
 
-    printf("%s: ", cabecalhoVeiculo.descreveLugares);
-    imprimeCampoInteiro(veiculo.quantidadeLugares);
+    printf("%s: ", cabecalhoVeiculo->descreveLugares);
+    imprimeCampoInteiro(veiculo->quantidadeLugares);
 
     printf("\n");
 }

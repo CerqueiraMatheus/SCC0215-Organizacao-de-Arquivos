@@ -127,31 +127,31 @@ void escreveLinhaBinario(Linha *linha, FILE *binario) {
     fwrite(linha->corLinha, sizeof(char), linha->tamanhoCor, binario);
 }
 
-bool comparaLinha(Linha linha, const char *campo, const char *valor) {
-    if (comparaCampoInteiro(campo, "codLinha", stringParaInteiro(valor), linha.codLinha))
+bool comparaLinha(Linha *linha, const char *campo, const char *valor) {
+    if (comparaCampoInteiro(campo, "codLinha", stringParaInteiro(valor), linha->codLinha))
         return true;
-    else if (comparaCampoString(campo, "aceitaCartao", valor, linha.aceitaCartao))
+    else if (comparaCampoString(campo, "aceitaCartao", valor, linha->aceitaCartao))
         return true;
-    else if (comparaCampoString(campo, "nomeLinha", valor, linha.nomeLinha))
+    else if (comparaCampoString(campo, "nomeLinha", valor, linha->nomeLinha))
         return true;
-    else if (comparaCampoString(campo, "corLinha", valor, linha.corLinha))
+    else if (comparaCampoString(campo, "corLinha", valor, linha->corLinha))
         return true;
     else
         return false;
 }
 
-void imprimeLinha(CabecalhoLinha cabecalhoLinha, Linha linha) {
-    printf("%s: ", cabecalhoLinha.descreveCodigo);
-    imprimeCampoInteiro(linha.codLinha);
+void imprimeLinha(CabecalhoLinha *cabecalhoLinha, Linha *linha) {
+    printf("%s: ", cabecalhoLinha->descreveCodigo);
+    imprimeCampoInteiro(linha->codLinha);
 
-    printf("%s: ", cabecalhoLinha.descreveNome);
-    imprimeCampoString(linha.nomeLinha, linha.tamanhoNome);
+    printf("%s: ", cabecalhoLinha->descreveNome);
+    imprimeCampoString(linha->nomeLinha, linha->tamanhoNome);
 
-    printf("%s: ", cabecalhoLinha.descreveLinha);
-    imprimeCampoString(linha.corLinha, linha.tamanhoCor);
+    printf("%s: ", cabecalhoLinha->descreveLinha);
+    imprimeCampoString(linha->corLinha, linha->tamanhoCor);
 
-    printf("%s: ", cabecalhoLinha.descreveCartao);
-    imprimeAceitaCartao(linha.aceitaCartao);
+    printf("%s: ", cabecalhoLinha->descreveCartao);
+    imprimeAceitaCartao(linha->aceitaCartao);
 
     printf("\n");
 }

@@ -203,9 +203,8 @@ void selectFromVeiculo() {
     // Percorre até o fim do número de registros
     for (int i = 0; i < nroTotalRegistros; i++) {
         // Caso seja lido um registro não excluído
-        if (leVeiculoBinario(&veiculo, binario) == true) {
-            imprimeVeiculo(cabecalhoVeiculo, veiculo);
-        }
+        if (leVeiculoBinario(&veiculo, binario) == true)
+            imprimeVeiculo(&cabecalhoVeiculo, &veiculo);
 
         // Se for excluído, pula o corpo do registro
         else
@@ -259,7 +258,7 @@ void selectFromLinha() {
     for (int i = 0; i < nroTotalRegistros; i++) {
         // Caso seja lido um registro não excluído
         if (leLinhaBinario(&linha, binario) == true)
-            imprimeLinha(cabecalhoLinha, linha);
+            imprimeLinha(&cabecalhoLinha, &linha);
 
         // Se for excluído, pula o corpo do registro
         else
@@ -320,8 +319,8 @@ void selectFromWhereVeiculo() {
         // Caso seja lido um registro não excluído
         if (leVeiculoBinario(&veiculo, binario) == true) {
             // Checa se o veículo tem o valor fornecido no campo desejado
-            if (comparaVeiculo(veiculo, campo, valor)) {
-                imprimeVeiculo(cabecalhoVeiculo, veiculo);
+            if (comparaVeiculo(&veiculo, campo, valor)) {
+                imprimeVeiculo(&cabecalhoVeiculo, &veiculo);
                 houveCorrespondencia = true;
             }
         }
@@ -388,8 +387,8 @@ void selectFromWhereLinha() {
         // Caso seja lido um registro não excluído
         if (leLinhaBinario(&linha, binario) == true) {
             // Checa se a linha tem o valor fornecido no campo desejado
-            if (comparaLinha(linha, campo, valor)) {
-                imprimeLinha(cabecalhoLinha, linha);
+            if (comparaLinha(&linha, campo, valor)) {
+                imprimeLinha(&cabecalhoLinha, &linha);
                 houveCorrespondencia = true;
             }
         }
