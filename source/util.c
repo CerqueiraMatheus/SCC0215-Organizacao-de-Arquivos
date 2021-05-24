@@ -87,14 +87,14 @@ bool comparaCampoInteiro(const char *campo, const char *campoRegistro, int valor
 
 // Impressão
 
-void imprimeCampoString(char *campo, int tamanho) {
+void imprimeCampoString(const char *campo, int tamanho) {
     if (tamanho == 0)
         printf("%s\n", MENSAGEM_CAMPO_NULO);
     else
         printf("%s\n", campo);
 }
 
-void imprimeData(char *data) {
+void imprimeData(const char *data) {
     if (data[0] == '\0') {
         printf("%s\n", MENSAGEM_CAMPO_NULO);
         return;
@@ -121,7 +121,7 @@ void imprimeData(char *data) {
     printf("%02d de %s de %d\n", dia, MESES[mes - 1], ano);
 }
 
-void imprimeAceitaCartao(char *aceitaCartao) {
+void imprimeAceitaCartao(const char *aceitaCartao) {
     if (aceitaCartao[0] == '\0') {
         printf("%s\n", MENSAGEM_CAMPO_NULO);
         return;
@@ -152,8 +152,6 @@ void imprimeCampoInteiro(int campo) {
 
 // Funções fornecidas:
 
-/* Use essa função para comparação no run.codes. Lembre-se de ter fechado (fclose) o arquivo anteriormente.
-*  Ela vai abrir de novo para leitura e depois fechar (você não vai perder pontos por isso se usar ela). */
 void binarioNaTela(char *nomeArquivoBinario) {
     unsigned long i, cs;
     unsigned char *mb;
@@ -178,22 +176,10 @@ void binarioNaTela(char *nomeArquivoBinario) {
     fclose(fs);
 }
 
-/*
-*	Use essa função para ler um campo string delimitado entre aspas (").
-*	Chame ela na hora que for ler tal campo. Por exemplo:
-*
-*	A entrada está da seguinte forma:
-*		nomeDoCampo "MARIA DA SILVA"
-*
-*	Para ler isso para as strings já alocadas str1 e str2 do seu programa, você faz:
-*		scanf("%s", str1); // Vai salvar nomeDoCampo em str1
-*		scan_quote_string(str2); // Vai salvar MARIA DA SILVA em str2 (sem as aspas)
-*/
 void scan_quote_string(char *str) {
     char R;
 
-    while ((R = getchar()) != EOF && isspace(R))
-        ;  // ignorar espaços, \r, \n...
+    while ((R = getchar()) != EOF && isspace(R));  // ignorar espaços, \r, \n...
 
     if (R == 'N' || R == 'n') {  // campo NULO
         getchar();

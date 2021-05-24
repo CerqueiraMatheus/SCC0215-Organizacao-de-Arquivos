@@ -149,7 +149,7 @@ void escreveVeiculoBinario(Veiculo *veiculo, FILE *binario) {
     fwrite(veiculo->categoria, sizeof(char), veiculo->tamanhoCategoria, binario);
 }
 
-bool comparaVeiculo(Veiculo veiculo, char *campo, char *valor) {
+bool comparaVeiculo(Veiculo veiculo, const char *campo, const char *valor) {
     if (comparaCampoString(campo, "prefixo", valor, veiculo.prefixo))
         return true;
     else if (comparaCampoString(campo, "data", valor, veiculo.data))

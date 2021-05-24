@@ -45,7 +45,7 @@ int leVeiculoCsv(Veiculo *veiculo, FILE *csv);
 bool leVeiculoBinario(Veiculo *veiculo, FILE *binario);
 void leVeiculoEntrada(Veiculo *veiculo);
 void escreveVeiculoBinario(Veiculo *veiculo, FILE *binario);
-bool comparaVeiculo(Veiculo veiculo, char *nomeCampo, char *valor);
+bool comparaVeiculo(Veiculo veiculo, const char *campo, const char *valor);
 void imprimeVeiculo(CabecalhoVeiculo cabecalhoVeiculo, Veiculo veiculo);
 
 #endif  // VEICULO_H

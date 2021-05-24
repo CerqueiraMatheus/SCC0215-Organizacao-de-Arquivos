@@ -31,9 +31,9 @@ bool comparaCampoString(const char *campo, const char *campoRegistro, const char
 bool comparaCampoInteiro(const char *campo, const char *campoRegistro, int valor, int valorRegistro);
 
 // Impressão
-void imprimeCampoString(char *campo, int tamanho);
-void imprimeData(char *data);
-void imprimeAceitaCartao(char *aceitaCartao);
+void imprimeCampoString(const char *campo, int tamanho);
+void imprimeData(const char *data);
+void imprimeAceitaCartao(const char *aceitaCartao);
 void imprimeCampoInteiro(int campo);
 
 // Funções fornecidas:

@@ -127,7 +127,7 @@ void escreveLinhaBinario(Linha *linha, FILE *binario) {
     fwrite(linha->corLinha, sizeof(char), linha->tamanhoCor, binario);
 }
 
-bool comparaLinha(Linha linha, char *campo, char *valor) {
+bool comparaLinha(Linha linha, const char *campo, const char *valor) {
     if (comparaCampoInteiro(campo, "codLinha", stringParaInteiro(valor), linha.codLinha))
         return true;
     else if (comparaCampoString(campo, "aceitaCartao", valor, linha.aceitaCartao))
