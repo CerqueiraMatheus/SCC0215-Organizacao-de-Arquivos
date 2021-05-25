@@ -168,7 +168,7 @@ void selectFromVeiculo() {
         exit(0);
     }
 
-    FILE *binario = fopen(nomeBinario, "rb");
+    FILE *binario = fopen(nomeBinario, "rb+");
     if (binario == NULL) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         exit(0);
@@ -215,7 +215,7 @@ void selectFromLinha() {
         exit(0);
     }
 
-    FILE *binario = fopen(nomeBinario, "rb");
+    FILE *binario = fopen(nomeBinario, "rb+");
     if (binario == NULL) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         exit(0);
@@ -266,7 +266,7 @@ void selectFromWhereVeiculo() {
     char valor[100];
     scan_quote_string(valor);
 
-    FILE *binario = fopen(nomeBinario, "rb");
+    FILE *binario = fopen(nomeBinario, "rb+");
     if (binario == NULL) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         exit(0);
@@ -326,7 +326,7 @@ void selectFromWhereLinha() {
     char valor[100];
     scan_quote_string(valor);
 
-    FILE *binario = fopen(nomeBinario, "rb");
+    FILE *binario = fopen(nomeBinario, "rb+");
     if (binario == NULL) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         exit(0);
