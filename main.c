@@ -42,8 +42,7 @@ int main() {
             insertIntoLinha();
             break;
         default:
-            printf("Falha na identificacao da funcionalidade %d.",
-                   funcionalidade);
+            printf("Falha na identificacao da funcionalidade %d.", funcionalidade);
             exit(0);
             break;
     }

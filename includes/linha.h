@@ -58,7 +58,7 @@ int leLinhaCsv(Linha *linha, FILE *csv);
 // Lê uma Linha a partir de um binário e retorna se ela foi removida
 bool leLinhaBinario(Linha *linha, FILE *binario);
 
-// Lê uma Linha a partir de um CSV
+// Lê uma Linha a partir da entrada padrão
 void leLinhaEntrada(Linha *linha);
 
 // Escreve uma Linha num binário

@@ -154,7 +154,7 @@ void selectFromVeiculo() {
         exit(0);
     }
 
-    // Inicializa o cabeçalho
+    // Lê o Cabeçalho do Veículo
     CabecalhoVeiculo cabecalhoVeiculo;
     leCabecalhoVeiculoBinario(&cabecalhoVeiculo, binario);
     atualizaStatusBinario('0', binario);
@@ -260,7 +260,7 @@ void selectFromWhereVeiculo() {
         exit(0);
     }
 
-    // Trata o campo
+    // Recebe o valor
     char valor[100];
     scan_quote_string(valor);
 
@@ -307,7 +307,7 @@ void selectFromWhereVeiculo() {
             }
         }
 
-        // Se for excluído, pula o corpo do registro
+        // Caso removido, pula corpo
         else
             fseek(binario, veiculo.tamanhoRegistro, SEEK_CUR);
     }
@@ -329,7 +329,7 @@ void selectFromWhereLinha() {
         exit(0);
     }
 
-    // Trata o campo
+    // Recebe o valor
     char valor[100];
     scan_quote_string(valor);
 

@@ -28,7 +28,8 @@ const char *MESES[12] = {
     "setembro",
     "outubro",
     "novembro",
-    "dezembro"};
+    "dezembro"
+};
 
 /**
  * 
@@ -184,7 +185,7 @@ void imprimeCampoInteiro(int campo) {
 
 /**
  * 
- * Funções fornecidas para o projeto
+ * Funções fornecidas
  * 
  */
 
@@ -216,8 +217,7 @@ void binarioNaTela(char *nomeArquivoBinario) {
 void scan_quote_string(char *str) {
     char R;
 
-    while ((R = getchar()) != EOF && isspace(R))
-        ;
+    while ((R = getchar()) != EOF && isspace(R));
 
     if (R == 'N' || R == 'n') {
         getchar();

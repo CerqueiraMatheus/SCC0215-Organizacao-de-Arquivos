@@ -62,7 +62,7 @@ int leVeiculoCsv(Veiculo *veiculo, FILE *csv);
 // Lê um Veículo a partir de um binário e retorna se ele foi removido
 bool leVeiculoBinario(Veiculo *veiculo, FILE *binario);
 
-// Lê um Veículo a partir de um CSV
+// Lê um Veículo a partir da entrada padrão
 void leVeiculoEntrada(Veiculo *veiculo);
 
 // Escreve um Veículo num binário

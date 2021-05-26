@@ -17,7 +17,7 @@
 
 /**  Manipulação de CSV **/
 
-// Retorna uma string a partir de um CSV
+// Atribui valor a uma string a partir de um CSV
 void leStringCsv(char *string, FILE *csv);
 
 // Retorna um inteiro partir de um CSV
@@ -33,7 +33,7 @@ void leStringBinario(char *string, int tamanho, FILE *binario);
 // Adiciona uma string nula a um binário
 void escreveStringNuloBinario(int tamanho, FILE *binario);
 
-// Altera o status de um binário ('0' -> aberto, '1' - > fechado)
+// Altera o status de um binário ('0' -> invalido, '1' - > válido)
 void atualizaStatusBinario(char status, FILE *binario);
 
 
@@ -49,6 +49,8 @@ int leInteiroEntrada();
 
 // Retorna uma string convertida em inteiro (-1 caso string = "")
 int stringParaInteiro(const char *string);
+
+
 
 /** Checagem de estados **/
 
