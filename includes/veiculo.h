@@ -1,12 +1,17 @@
-// Pedro Lucas de Moliner de Castro - 11795784
-// Matheus Henrique de Cerqueira Pinto - 11911104
+/**
+ * @author Matheus Henrique de Cerqueira Pinto (11911104)
+ * @author Pedro Lucas de Moliner de Castro (11795784)
+ * @date 2021-05-26
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
 
 #ifndef VEICULO_H
 #define VEICULO_H
 
-#include <stdio.h>
 #include <stdbool.h>
-
+#include <stdio.h>
 
 typedef struct {
     char status;
@@ -35,17 +40,38 @@ typedef struct {
 } Veiculo;
 
 
-// Cabeçalho Veículo
+
+/** Cabeçalho do Veículo **/
+
+// Lê o cabeçalho de um Veículo a partir de um CSV
 void leCabecalhoVeiculoCsv(CabecalhoVeiculo *cabecalhoVeiculo, FILE *csv);
+
+// Lê o cabeçalho de um Veículo a partir de um binário
 void leCabecalhoVeiculoBinario(CabecalhoVeiculo *cabecalhoVeiculo, FILE *binario);
+
+// Escreve o cabeçalho de um Veículo num binário
 void escreveCabecalhoVeiculoBinario(CabecalhoVeiculo *cabecalhoVeiculo, FILE *binario);
 
-// Veículo
+
+
+/** Corpo do Veículo **/
+
+// Lê um Veículo a partir de um CSV
 int leVeiculoCsv(Veiculo *veiculo, FILE *csv);
+
+// Lê um Veículo a partir de um binário e retorna se ele foi removido
 bool leVeiculoBinario(Veiculo *veiculo, FILE *binario);
+
+// Lê um Veículo a partir de um CSV
 void leVeiculoEntrada(Veiculo *veiculo);
+
+// Escreve um Veículo num binário
 void escreveVeiculoBinario(Veiculo *veiculo, FILE *binario);
+
+// Verifica se um Veículo corresponde ao campo e valor pesquisados
 bool comparaVeiculo(Veiculo *veiculo, const char *campo, const char *valor);
+
+// Imprime um Veículo
 void imprimeVeiculo(CabecalhoVeiculo *cabecalhoVeiculo, Veiculo *veiculo);
 
 #endif  // VEICULO_H

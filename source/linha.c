@@ -1,15 +1,25 @@
-// Pedro Lucas de Moliner de Castro - 11795784
-// Matheus Henrique de Cerqueira Pinto - 11911104
+/**
+ * @author Matheus Henrique de Cerqueira Pinto (11911104)
+ * @author Pedro Lucas de Moliner de Castro (11795784)
+ * @date 2021-05-26
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
 
-#include <stdio.h>
-#include <string.h>
-#include <stdbool.h>
-
-#include "util.h"
 #include "linha.h"
 
+#include <stdbool.h>
+#include <stdio.h>
+#include <string.h>
 
-// Cabeçalho Linha
+#include "util.h"
+
+/**
+ *
+ * Cabeçalho da Linha 
+ * 
+ */
 
 void leCabecalhoLinhaCsv(CabecalhoLinha *cabecalhoLinha, FILE *csv) {
     cabecalhoLinha->status = '0';
@@ -47,8 +57,11 @@ void escreveCabecalhoLinhaBinario(CabecalhoLinha *cabecalhoLinha, FILE *binario)
     fwrite(cabecalhoLinha->descreveLinha, sizeof(char), 24, binario);
 }
 
-
-// Linha
+/**
+ *
+ * Corpo da Linha 
+ * 
+ */
 
 int leLinhaCsv(Linha *linha, FILE *csv) {
     // Checa pelo fim do arquivo

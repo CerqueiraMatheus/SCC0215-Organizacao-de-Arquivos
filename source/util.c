@@ -1,19 +1,40 @@
-// Pedro Lucas de Moliner de Castro - 11795784
-// Matheus Henrique de Cerqueira Pinto - 11911104
-
-#include <stdio.h>
-#include <ctype.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdbool.h>
+/**
+ * @author Matheus Henrique de Cerqueira Pinto (11911104)
+ * @author Pedro Lucas de Moliner de Castro (11795784)
+ * @date 2021-05-26
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
 
 #include "util.h"
 
+#include <ctype.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 const char *MENSAGEM_CAMPO_NULO = "campo com valor nulo";
+const char *MESES[12] = {
+    "janeiro",
+    "fevereiro",
+    "março",
+    "abril",
+    "maio",
+    "junho",
+    "julho",
+    "agosto",
+    "setembro",
+    "outubro",
+    "novembro",
+    "dezembro"};
 
-
-// CSV
+/**
+ * 
+ * Manipulação de CSV
+ * 
+ */
 
 void leStringCsv(char *string, FILE *csv) {
     fscanf(csv, "%[^,\n]%*c", string);
@@ -29,8 +50,11 @@ int leInteiroCsv(FILE *csv) {
     return strcmp(inteiro, "NULO") == 0 ? -1 : atoi(inteiro);
 }
 
-
-// Binário
+/**
+ * 
+ * Manipulação de binário
+ * 
+ */
 
 void leStringBinario(char *string, int tamanho, FILE *binario) {
     fread(string, sizeof(char), tamanho, binario);
@@ -54,8 +78,11 @@ void atualizaStatusBinario(char status, FILE *binario) {
     fseek(binario, posicao, SEEK_SET);
 }
 
-
-// Entrada
+/**
+ * 
+ * Leitura de entradas
+ * 
+ */
 
 int leInteiroEntrada() {
     char inteiro[20];
@@ -64,15 +91,21 @@ int leInteiroEntrada() {
     return strcmp(inteiro, "NULO") == 0 ? -1 : atoi(inteiro);
 }
 
-
-// Conversão
+/**
+ * 
+ * Conversões
+ * 
+ */
 
 int stringParaInteiro(const char *string) {
     return strcmp(string, "") == 0 ? -1 : atoi(string);
 }
 
-
-// Checagem
+/**
+ * 
+ * Checagem de estados
+ * 
+ */
 
 bool arquivoFoiCorrompido(char status) {
     return status == '0';
@@ -82,8 +115,11 @@ bool registroFoiRemovido(char removido) {
     return removido == '0';
 }
 
-
-// Comparação
+/**
+ * 
+ * Comparação de valores
+ * 
+ */
 
 bool comparaCampoString(const char *campo, const char *campoRegistro, const char *valor, const char *valorRegistro) {
     return strcmp(campo, campoRegistro) == 0 && strcmp(valor, valorRegistro) == 0;
@@ -93,8 +129,11 @@ bool comparaCampoInteiro(const char *campo, const char *campoRegistro, int valor
     return strcmp(campo, campoRegistro) == 0 && valor == valorRegistro;
 }
 
-
-// Impressão
+/**
+ * 
+ * Impressão de resultados
+ * 
+ */
 
 void imprimeCampoString(const char *campo, int tamanho) {
     if (tamanho == 0)
@@ -108,21 +147,6 @@ void imprimeData(const char *data) {
         printf("%s\n", MENSAGEM_CAMPO_NULO);
         return;
     }
-
-    const char *MESES[12] = {
-        "janeiro",
-        "fevereiro",
-        "março",
-        "abril",
-        "maio",
-        "junho",
-        "julho",
-        "agosto",
-        "setembro",
-        "outubro",
-        "novembro",
-        "dezembro"
-    };
 
     int dia, mes, ano;
     sscanf(data, "%d-%d-%d", &ano, &mes, &dia);
@@ -158,8 +182,11 @@ void imprimeCampoInteiro(int campo) {
         printf("%d\n", campo);
 }
 
-
-// Funções fornecidas
+/**
+ * 
+ * Funções fornecidas para o projeto
+ * 
+ */
 
 void binarioNaTela(char *nomeArquivoBinario) {
     unsigned long i, cs;
@@ -167,7 +194,8 @@ void binarioNaTela(char *nomeArquivoBinario) {
     size_t fl;
     FILE *fs;
     if (nomeArquivoBinario == NULL || !(fs = fopen(nomeArquivoBinario, "rb"))) {
-        fprintf(stderr, "ERRO AO ESCREVER O BINARIO NA TELA (função binarioNaTela): não foi possível abrir o arquivo que me passou para leitura. Ele existe e você tá passando o nome certo? Você lembrou de fechar ele com fclose depois de usar?\n");
+        fprintf(stderr,
+                "ERRO AO ESCREVER O BINARIO NA TELA (função binarioNaTela): não foi possível abrir o arquivo que me passou para leitura. Ele existe e você tá passando o nome certo? Você lembrou de fechar ele com fclose depois de usar?\n");
         return;
     }
     fseek(fs, 0, SEEK_END);
@@ -188,22 +216,23 @@ void binarioNaTela(char *nomeArquivoBinario) {
 void scan_quote_string(char *str) {
     char R;
 
-    while ((R = getchar()) != EOF && isspace(R));  // ignorar espaços, \r, \n...
+    while ((R = getchar()) != EOF && isspace(R))
+        ;
 
-    if (R == 'N' || R == 'n') {  // campo NULO
+    if (R == 'N' || R == 'n') {
         getchar();
         getchar();
-        getchar();        // ignorar o "ULO" de NULO.
-        strcpy(str, "");  // copia string vazia
+        getchar();
+        strcpy(str, "");
     } else if (R == '\"') {
-        if (scanf("%[^\"]", str) != 1) {  // ler até o fechamento das aspas
+        if (scanf("%[^\"]", str) != 1) {
             strcpy(str, "");
         }
-        getchar();          // ignorar aspas fechando
-    } else if (R != EOF) {  // vc tá tentando ler uma string que não tá entre aspas! Fazer leitura normal %s então, pois deve ser algum inteiro ou algo assim...
+        getchar();
+    } else if (R != EOF) {
         str[0] = R;
         scanf("%s", &str[1]);
-    } else {  // EOF
+    } else {
         strcpy(str, "");
     }
 }

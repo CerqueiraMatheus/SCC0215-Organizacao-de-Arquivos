@@ -1,14 +1,19 @@
-// Pedro Lucas de Moliner de Castro - 11795784
-// Matheus Henrique de Cerqueira Pinto - 11911104
+/**
+ * @author Matheus Henrique de Cerqueira Pinto (11911104)
+ * @author Pedro Lucas de Moliner de Castro (11795784)
+ * @date 2021-05-26
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include "util.h"
 #include "linha.h"
+#include "util.h"
 #include "veiculo.h"
-
 
 void createTableVeiculo();
 void createTableLinha();
@@ -19,10 +24,8 @@ void selectFromWhereLinha();
 void insertIntoVeiculo();
 void insertIntoLinha();
 
-
 const char *MENSAGEM_FALHA_PROCESSAMENTO = "Falha no processamento do arquivo.";
 const char *MENSAGEM_REGISTRO_INEXISTENTE = "Registro inexistente.";
-
 
 int main() {
     int funcionalidade;
@@ -54,7 +57,8 @@ int main() {
             insertIntoLinha();
             break;
         default:
-            printf("Falha na identificacao da funcionalidade %d.", funcionalidade);
+            printf("Falha na identificacao da funcionalidade %d.",
+                   funcionalidade);
             exit(0);
             break;
     }
@@ -66,17 +70,20 @@ void createTableVeiculo() {
     char nomeCsv[255];
     char nomeBinario[255];
 
+    // Recebe os nomes dos arquivos
     if (scanf("%s %s", nomeCsv, nomeBinario) != 2) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         exit(0);
     }
 
+    // Abre o CSV
     FILE *csv = fopen(nomeCsv, "r");
     if (csv == NULL) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         exit(0);
     }
 
+    // Abre o binário
     FILE *binario = fopen(nomeBinario, "wb");
     if (binario == NULL) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
@@ -115,17 +122,20 @@ void createTableLinha() {
     char nomeCsv[255];
     char nomeBinario[255];
 
+    // Recebe os nomes dos arquivos
     if (scanf("%s %s", nomeCsv, nomeBinario) != 2) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         exit(0);
     }
 
+    // Abre o CSV
     FILE *csv = fopen(nomeCsv, "r");
     if (csv == NULL) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         exit(0);
     }
 
+    // Abre o binário
     FILE *binario = fopen(nomeBinario, "wb");
     if (binario == NULL) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
@@ -163,27 +173,32 @@ void createTableLinha() {
 void selectFromVeiculo() {
     char nomeBinario[255];
 
+    // Recebe o nome do arquivo
     if (scanf("%s", nomeBinario) != 1) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         exit(0);
     }
 
+    // Abre o binário
     FILE *binario = fopen(nomeBinario, "rb+");
     if (binario == NULL) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         exit(0);
     }
 
+    // Inicializa o cabeçalho
     CabecalhoVeiculo cabecalhoVeiculo;
     leCabecalhoVeiculoBinario(&cabecalhoVeiculo, binario);
     atualizaStatusBinario('0', binario);
 
+    // Checa a integridade do arquivo
     if (arquivoFoiCorrompido(cabecalhoVeiculo.status)) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         fclose(binario);
         exit(0);
     }
 
+    // Checa a existência de registros não removidos
     if (cabecalhoVeiculo.nroRegistros == 0) {
         printf("%s\n", MENSAGEM_REGISTRO_INEXISTENTE);
         fclose(binario);
@@ -193,6 +208,7 @@ void selectFromVeiculo() {
     Veiculo veiculo;
     int nroTotalRegistros = cabecalhoVeiculo.nroRegistros + cabecalhoVeiculo.nroRegRemovidos;
 
+    // Percorre os registros
     for (int i = 0; i < nroTotalRegistros; i++) {
         // Caso registro lido não removido
         if (leVeiculoBinario(&veiculo, binario) == true)
@@ -210,27 +226,32 @@ void selectFromVeiculo() {
 void selectFromLinha() {
     char nomeBinario[255];
 
+    // Recebe o nome do arquivo
     if (scanf("%s", nomeBinario) != 1) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         exit(0);
     }
 
+    // Abre o binário
     FILE *binario = fopen(nomeBinario, "rb+");
     if (binario == NULL) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         exit(0);
     }
 
+    // Lê o Cabeçalho da Linha
     CabecalhoLinha cabecalhoLinha;
     leCabecalhoLinhaBinario(&cabecalhoLinha, binario);
     atualizaStatusBinario('0', binario);
 
+    // Checa a integridade do arquivo
     if (arquivoFoiCorrompido(cabecalhoLinha.status)) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         fclose(binario);
         exit(0);
     }
 
+    // Checa a existência de registros não removidos
     if (cabecalhoLinha.nroRegistros == 0) {
         printf("%s\n", MENSAGEM_REGISTRO_INEXISTENTE);
         fclose(binario);
@@ -240,6 +261,7 @@ void selectFromLinha() {
     Linha linha;
     int nroTotalRegistros = cabecalhoLinha.nroRegistros + cabecalhoLinha.nroRegRemovidos;
 
+    // Percorre os registros
     for (int i = 0; i < nroTotalRegistros; i++) {
         // Caso registro lido não removido
         if (leLinhaBinario(&linha, binario) == true)
@@ -258,30 +280,36 @@ void selectFromWhereVeiculo() {
     char nomeBinario[255];
     char campo[20];
 
+    // Recebe os nomes do arquivo e do campo
     if (scanf("%s %s", nomeBinario, campo) != 2) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         exit(0);
     }
 
+    // Trata o campo
     char valor[100];
     scan_quote_string(valor);
 
+    // Abre o binário
     FILE *binario = fopen(nomeBinario, "rb+");
     if (binario == NULL) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         exit(0);
     }
 
+    // Lê o Cabeçalho do Veículo
     CabecalhoVeiculo cabecalhoVeiculo;
     leCabecalhoVeiculoBinario(&cabecalhoVeiculo, binario);
     atualizaStatusBinario('0', binario);
 
+    // Checa a integridade do arquivo
     if (arquivoFoiCorrompido(cabecalhoVeiculo.status)) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         fclose(binario);
         exit(0);
     }
 
+    // Checa a existência de registros não removidos
     if (cabecalhoVeiculo.nroRegistros == 0) {
         printf("%s\n", MENSAGEM_REGISTRO_INEXISTENTE);
         fclose(binario);
@@ -290,8 +318,11 @@ void selectFromWhereVeiculo() {
 
     Veiculo veiculo;
     int nroTotalRegistros = cabecalhoVeiculo.nroRegistros + cabecalhoVeiculo.nroRegRemovidos;
+
+    // Flag para indicar se houve ao menos um registro encontrado
     bool houveCorrespondencia = false;
 
+    // Percorre os registros
     for (int i = 0; i < nroTotalRegistros; i++) {
         // Caso registro lido não removido
         if (leVeiculoBinario(&veiculo, binario) == true) {
@@ -318,30 +349,36 @@ void selectFromWhereLinha() {
     char nomeBinario[255];
     char campo[20];
 
+    // Recebe os nomes do arquivo e do campo
     if (scanf("%s %s", nomeBinario, campo) != 2) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         exit(0);
     }
 
+    // Trata o campo
     char valor[100];
     scan_quote_string(valor);
 
+    // Abre o binário
     FILE *binario = fopen(nomeBinario, "rb+");
     if (binario == NULL) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         exit(0);
     }
 
+    // Lê o Cabeçalho da Linha
     CabecalhoLinha cabecalhoLinha;
     leCabecalhoLinhaBinario(&cabecalhoLinha, binario);
     atualizaStatusBinario('0', binario);
 
+    // Checa a integridade do arquivo
     if (arquivoFoiCorrompido(cabecalhoLinha.status)) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         fclose(binario);
         exit(0);
     }
 
+    // Checa a existência de registros não removidos
     if (cabecalhoLinha.nroRegistros == 0) {
         printf("%s\n", MENSAGEM_REGISTRO_INEXISTENTE);
         fclose(binario);
@@ -350,8 +387,11 @@ void selectFromWhereLinha() {
 
     Linha linha;
     int nroTotalRegistros = cabecalhoLinha.nroRegistros + cabecalhoLinha.nroRegRemovidos;
+
+    // Flag para indicar se houve ao menos um registro encontrado
     bool houveCorrespondencia = false;
 
+    // Percorre os registros
     for (int i = 0; i < nroTotalRegistros; i++) {
         // Caso registro lido não removido
         if (leLinhaBinario(&linha, binario) == true) {
@@ -377,27 +417,32 @@ void selectFromWhereLinha() {
 void insertIntoVeiculo() {
     char nomeBinario[255];
 
+    // Recebe o nome do arquivo
     if (scanf("%s", nomeBinario) != 1) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         exit(0);
     }
 
+    // Abre o binário
     FILE *binario = fopen(nomeBinario, "rb+");
     if (binario == NULL) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         exit(0);
     }
 
+    // Lê o Cabeçalho do Veículo
     CabecalhoVeiculo cabecalhoVeiculo;
     leCabecalhoVeiculoBinario(&cabecalhoVeiculo, binario);
     atualizaStatusBinario('0', binario);
 
+    // Checa a integridade do arquivo
     if (arquivoFoiCorrompido(cabecalhoVeiculo.status)) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         fclose(binario);
         exit(0);
     }
 
+    // Recebe o número de inserções e posiciona o arquivo
     int insercoes;
     scanf("%d", &insercoes);
     fseek(binario, cabecalhoVeiculo.byteProxReg, SEEK_SET);
@@ -423,27 +468,32 @@ void insertIntoVeiculo() {
 void insertIntoLinha() {
     char nomeBinario[255];
 
+    // Recebe o nome do arquivo
     if (scanf("%s", nomeBinario) != 1) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         exit(0);
     }
 
+    // Abre o binário
     FILE *binario = fopen(nomeBinario, "rb+");
     if (binario == NULL) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         exit(0);
     }
 
+    // Lê o Cabeçalho da Linha
     CabecalhoLinha cabecalhoLinha;
     leCabecalhoLinhaBinario(&cabecalhoLinha, binario);
     atualizaStatusBinario('0', binario);
 
+    // Checa a integridade do arquivo
     if (arquivoFoiCorrompido(cabecalhoLinha.status)) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         fclose(binario);
         exit(0);
     }
 
+    // Recebe o número de inserções e posiciona o arquivo
     int insercoes;
     scanf("%d", &insercoes);
     fseek(binario, cabecalhoLinha.byteProxReg, SEEK_SET);

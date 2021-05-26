@@ -1,15 +1,25 @@
-// Pedro Lucas de Moliner de Castro - 11795784
-// Matheus Henrique de Cerqueira Pinto - 11911104
+/**
+ * @author Matheus Henrique de Cerqueira Pinto (11911104)
+ * @author Pedro Lucas de Moliner de Castro (11795784)
+ * @date 2021-05-26
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
 
-#include <stdio.h>
-#include <string.h>
-#include <stdbool.h>
-
-#include "util.h"
 #include "veiculo.h"
 
+#include <stdbool.h>
+#include <stdio.h>
+#include <string.h>
 
-// Cabeçalho Veículo
+#include "util.h"
+
+/**
+ *
+ * Cabeçalho do Veículo 
+ * 
+ */
 
 void leCabecalhoVeiculoCsv(CabecalhoVeiculo *cabecalhoVeiculo, FILE *csv) {
     cabecalhoVeiculo->status = '0';
@@ -53,8 +63,11 @@ void escreveCabecalhoVeiculoBinario(CabecalhoVeiculo *cabecalhoVeiculo, FILE *bi
     fwrite(cabecalhoVeiculo->descreveCategoria, sizeof(char), 20, binario);
 }
 
-
-// Veículo
+/**
+ *
+ * Corpo do Veículo 
+ * 
+ */
 
 int leVeiculoCsv(Veiculo *veiculo, FILE *csv) {
     // Checa pelo fim do CSV
@@ -114,7 +127,7 @@ void leVeiculoEntrada(Veiculo *veiculo) {
 
     scan_quote_string(veiculo->prefixo);
     scan_quote_string(veiculo->data);
-    
+
     veiculo->quantidadeLugares = leInteiroEntrada();
     veiculo->codLinha = leInteiroEntrada();
 
@@ -153,11 +166,11 @@ bool comparaVeiculo(Veiculo *veiculo, const char *campo, const char *valor) {
         return true;
     else if (comparaCampoString(campo, "data", valor, veiculo->data))
         return true;
-    else if (comparaCampoInteiro(campo, "quantidadeLugares", stringParaInteiro(valor),  veiculo->quantidadeLugares))
+    else if (comparaCampoInteiro(campo, "quantidadeLugares", stringParaInteiro(valor), veiculo->quantidadeLugares))
         return true;
-    else if (comparaCampoString(campo, "modelo", valor,  veiculo->modelo))
+    else if (comparaCampoString(campo, "modelo", valor, veiculo->modelo))
         return true;
-    else if (comparaCampoString(campo, "categoria", valor,  veiculo->categoria))
+    else if (comparaCampoString(campo, "categoria", valor, veiculo->categoria))
         return true;
     else
         return false;

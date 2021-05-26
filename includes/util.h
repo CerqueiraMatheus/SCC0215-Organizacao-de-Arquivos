@@ -1,43 +1,93 @@
-// Pedro Lucas de Moliner de Castro - 11795784
-// Matheus Henrique de Cerqueira Pinto - 11911104
+/**
+ * @author Matheus Henrique de Cerqueira Pinto (11911104)
+ * @author Pedro Lucas de Moliner de Castro (11795784)
+ * @date 2021-05-26
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
 
 #ifndef UTIL_H
 #define UTIL_H
 
-#include <stdio.h>
 #include <stdbool.h>
+#include <stdio.h>
 
 
-// CSV
+
+/**  Manipulação de CSV **/
+
+// Retorna uma string a partir de um CSV
 void leStringCsv(char *string, FILE *csv);
+
+// Retorna um inteiro partir de um CSV
 int leInteiroCsv(FILE *csv);
 
-// Binário
+
+
+/** Manipulação de binário **/
+
+// Atribui valor a uma string a partir de um binário
 void leStringBinario(char *string, int tamanho, FILE *binario);
+
+// Adiciona uma string nula a um binário
 void escreveStringNuloBinario(int tamanho, FILE *binario);
+
+// Altera o status de um binário ('0' -> aberto, '1' - > fechado)
 void atualizaStatusBinario(char status, FILE *binario);
 
-// Entrada
+
+
+/** Leitura de entradas **/
+
+// Retorna um inteiro a partir da entrada padrão
 int leInteiroEntrada();
 
-// Conversão
+
+
+/** Conversões **/
+
+// Retorna uma string convertida em inteiro (-1 caso string = "")
 int stringParaInteiro(const char *string);
 
-// Checagem
+/** Checagem de estados **/
+
+// Verifica se o status do arquivo equivale a '0'
 bool arquivoFoiCorrompido(char status);
+
+// Verifica se o status de remoção arquivo equivale a '0'
 bool registroFoiRemovido(char removido);
 
-// Comparação
+
+
+/** Comparação de valores **/
+
+// Compara um campo e um valor string a um campo e um valor pesquisados
 bool comparaCampoString(const char *campo, const char *campoRegistro, const char *valor, const char *valorRegistro);
+
+// Compara um campo e um valor inteiro a um campo e um valor pesquisados
 bool comparaCampoInteiro(const char *campo, const char *campoRegistro, int valor, int valorRegistro);
 
-// Impressão
+
+
+/** Impressão de resultados **/
+
+// Imprime um campo string (trata casos nulos)
 void imprimeCampoString(const char *campo, int tamanho);
+
+// Imprime uma data por extenso (trata casos nulos)
 void imprimeData(const char *data);
+
+// Imprime o aceite de cartão por extenso (trata casos nulos)
 void imprimeAceitaCartao(const char *aceitaCartao);
+
+// Imprime um campo inteiro (trata casos iguais a -1)
 void imprimeCampoInteiro(int campo);
 
-// Funções fornecidas
+
+
+/** Funções fornecidas **/
+
 void binarioNaTela(char *nomeArquivoBinario);
 void scan_quote_string(char *str);
 
