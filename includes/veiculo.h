@@ -39,39 +39,17 @@ typedef struct {
     char categoria[100];
 } Veiculo;
 
-
-
 /** Cabeçalho do Veículo **/
-
-// Lê o cabeçalho de um Veículo a partir de um CSV
 void leCabecalhoVeiculoCsv(CabecalhoVeiculo *cabecalhoVeiculo, FILE *csv);
-
-// Lê o cabeçalho de um Veículo a partir de um binário
 void leCabecalhoVeiculoBinario(CabecalhoVeiculo *cabecalhoVeiculo, FILE *binario);
-
-// Escreve o cabeçalho de um Veículo num binário
 void escreveCabecalhoVeiculoBinario(CabecalhoVeiculo *cabecalhoVeiculo, FILE *binario);
 
-
-
 /** Corpo do Veículo **/
-
-// Lê um Veículo a partir de um CSV
 int leVeiculoCsv(Veiculo *veiculo, FILE *csv);
-
-// Lê um Veículo a partir de um binário e retorna se ele foi removido
 bool leVeiculoBinario(Veiculo *veiculo, FILE *binario);
-
-// Lê um Veículo a partir da entrada padrão
 void leVeiculoEntrada(Veiculo *veiculo);
-
-// Escreve um Veículo num binário
 void escreveVeiculoBinario(Veiculo *veiculo, FILE *binario);
-
-// Verifica se um Veículo corresponde ao campo e valor pesquisados
 bool comparaVeiculo(Veiculo *veiculo, const char *campo, const char *valor);
-
-// Imprime um Veículo
 void imprimeVeiculo(CabecalhoVeiculo *cabecalhoVeiculo, Veiculo *veiculo);
 
 #endif  // VEICULO_H

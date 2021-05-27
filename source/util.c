@@ -37,6 +37,7 @@ const char *MESES[12] = {
  * 
  */
 
+// Atribui valor a uma string a partir de um CSV
 void leStringCsv(char *string, FILE *csv) {
     fscanf(csv, "%[^,\n]%*c", string);
 
@@ -44,6 +45,7 @@ void leStringCsv(char *string, FILE *csv) {
         strcpy(string, "");
 }
 
+// Retorna um inteiro partir de um CSV
 int leInteiroCsv(FILE *csv) {
     char inteiro[20];
     fscanf(csv, "%[^,\n]%*c", inteiro);
@@ -57,11 +59,13 @@ int leInteiroCsv(FILE *csv) {
  * 
  */
 
+// Atribui valor a uma string a partir de um binário
 void leStringBinario(char *string, int tamanho, FILE *binario) {
     fread(string, sizeof(char), tamanho, binario);
     string[tamanho] = '\0';
 }
 
+// Adiciona uma string nula a um binário
 void escreveStringNuloBinario(int tamanho, FILE *binario) {
     fwrite("\0", sizeof(char), 1, binario);
 
@@ -70,6 +74,7 @@ void escreveStringNuloBinario(int tamanho, FILE *binario) {
         fwrite("@", sizeof(char), 1, binario);
 }
 
+// Altera o status de um binário ('0' -> invalido, '1' - > válido)
 void atualizaStatusBinario(char status, FILE *binario) {
     long long int posicao = ftell(binario);
 
@@ -85,6 +90,7 @@ void atualizaStatusBinario(char status, FILE *binario) {
  * 
  */
 
+// Retorna um inteiro a partir da entrada padrão
 int leInteiroEntrada() {
     char inteiro[20];
     scanf(" %s", inteiro);
@@ -98,6 +104,7 @@ int leInteiroEntrada() {
  * 
  */
 
+// Retorna uma string convertida em inteiro (-1 caso string = "")
 int stringParaInteiro(const char *string) {
     return strcmp(string, "") == 0 ? -1 : atoi(string);
 }
@@ -108,10 +115,12 @@ int stringParaInteiro(const char *string) {
  * 
  */
 
+// Verifica se o status do arquivo equivale a '0'
 bool arquivoFoiCorrompido(char status) {
     return status == '0';
 }
 
+// Verifica se o status de remoção arquivo equivale a '0'
 bool registroFoiRemovido(char removido) {
     return removido == '0';
 }
@@ -122,10 +131,12 @@ bool registroFoiRemovido(char removido) {
  * 
  */
 
+// Compara um campo e um valor string a um campo e um valor pesquisados
 bool comparaCampoString(const char *campo, const char *campoRegistro, const char *valor, const char *valorRegistro) {
     return strcmp(campo, campoRegistro) == 0 && strcmp(valor, valorRegistro) == 0;
 }
 
+// Compara um campo e um valor inteiro a um campo e um valor pesquisados
 bool comparaCampoInteiro(const char *campo, const char *campoRegistro, int valor, int valorRegistro) {
     return strcmp(campo, campoRegistro) == 0 && valor == valorRegistro;
 }
@@ -136,6 +147,7 @@ bool comparaCampoInteiro(const char *campo, const char *campoRegistro, int valor
  * 
  */
 
+// Imprime um campo string (trata casos nulos)
 void imprimeCampoString(const char *campo, int tamanho) {
     if (tamanho == 0)
         printf("%s\n", MENSAGEM_CAMPO_NULO);
@@ -143,6 +155,7 @@ void imprimeCampoString(const char *campo, int tamanho) {
         printf("%s\n", campo);
 }
 
+// Imprime uma data por extenso (trata casos nulos)
 void imprimeData(const char *data) {
     if (data[0] == '\0') {
         printf("%s\n", MENSAGEM_CAMPO_NULO);
@@ -155,6 +168,7 @@ void imprimeData(const char *data) {
     printf("%02d de %s de %d\n", dia, MESES[mes - 1], ano);
 }
 
+// Imprime o aceite de cartão por extenso (trata casos nulos)
 void imprimeAceitaCartao(const char *aceitaCartao) {
     if (aceitaCartao[0] == '\0') {
         printf("%s\n", MENSAGEM_CAMPO_NULO);
@@ -176,6 +190,7 @@ void imprimeAceitaCartao(const char *aceitaCartao) {
     }
 }
 
+// Imprime um campo inteiro (trata casos iguais a -1)
 void imprimeCampoInteiro(int campo) {
     if (campo == -1)
         printf("%s\n", MENSAGEM_CAMPO_NULO);

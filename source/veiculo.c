@@ -21,6 +21,7 @@
  * 
  */
 
+// Lê o cabeçalho de um Veículo a partir de um CSV
 void leCabecalhoVeiculoCsv(CabecalhoVeiculo *cabecalhoVeiculo, FILE *csv) {
     cabecalhoVeiculo->status = '0';
     cabecalhoVeiculo->byteProxReg = 0;
@@ -35,6 +36,7 @@ void leCabecalhoVeiculoCsv(CabecalhoVeiculo *cabecalhoVeiculo, FILE *csv) {
     leStringCsv(cabecalhoVeiculo->descreveCategoria, csv);
 }
 
+// Lê o cabeçalho de um Veículo a partir de um binário
 void leCabecalhoVeiculoBinario(CabecalhoVeiculo *cabecalhoVeiculo, FILE *binario) {
     fread(&cabecalhoVeiculo->status, sizeof(char), 1, binario);
     fread(&cabecalhoVeiculo->byteProxReg, sizeof(long long int), 1, binario);
@@ -49,6 +51,7 @@ void leCabecalhoVeiculoBinario(CabecalhoVeiculo *cabecalhoVeiculo, FILE *binario
     leStringBinario(cabecalhoVeiculo->descreveCategoria, 20, binario);
 }
 
+// Escreve o cabeçalho de um Veículo num binário
 void escreveCabecalhoVeiculoBinario(CabecalhoVeiculo *cabecalhoVeiculo, FILE *binario) {
     fwrite(&cabecalhoVeiculo->status, sizeof(char), 1, binario);
     fwrite(&cabecalhoVeiculo->byteProxReg, sizeof(long long int), 1, binario);
@@ -69,6 +72,7 @@ void escreveCabecalhoVeiculoBinario(CabecalhoVeiculo *cabecalhoVeiculo, FILE *bi
  * 
  */
 
+// Lê um Veículo a partir de um CSV
 int leVeiculoCsv(Veiculo *veiculo, FILE *csv) {
     // Checa pelo fim do CSV
     char verificador = fgetc(csv);
@@ -99,6 +103,7 @@ int leVeiculoCsv(Veiculo *veiculo, FILE *csv) {
     return 0;
 }
 
+// Lê um Veículo a partir de um binário e retorna se ele foi removido
 bool leVeiculoBinario(Veiculo *veiculo, FILE *binario) {
     fread(&veiculo->removido, sizeof(char), 1, binario);
     fread(&veiculo->tamanhoRegistro, sizeof(int), 1, binario);
@@ -122,6 +127,7 @@ bool leVeiculoBinario(Veiculo *veiculo, FILE *binario) {
     return true;
 }
 
+// Lê um Veículo a partir da entrada padrão
 void leVeiculoEntrada(Veiculo *veiculo) {
     veiculo->removido = '1';
 
@@ -139,6 +145,7 @@ void leVeiculoEntrada(Veiculo *veiculo) {
     veiculo->tamanhoRegistro = 31 + veiculo->tamanhoModelo + veiculo->tamanhoCategoria;
 }
 
+// Escreve um Veículo num binário
 void escreveVeiculoBinario(Veiculo *veiculo, FILE *binario) {
     fwrite(&veiculo->removido, sizeof(char), 1, binario);
     fwrite(&veiculo->tamanhoRegistro, sizeof(int), 1, binario);
@@ -161,6 +168,7 @@ void escreveVeiculoBinario(Veiculo *veiculo, FILE *binario) {
     fwrite(veiculo->categoria, sizeof(char), veiculo->tamanhoCategoria, binario);
 }
 
+// Verifica se um Veículo corresponde ao campo e valor pesquisados
 bool comparaVeiculo(Veiculo *veiculo, const char *campo, const char *valor) {
     if (comparaCampoString(campo, "prefixo", valor, veiculo->prefixo))
         return true;
@@ -176,6 +184,7 @@ bool comparaVeiculo(Veiculo *veiculo, const char *campo, const char *valor) {
         return false;
 }
 
+// Imprime um Veículo
 void imprimeVeiculo(CabecalhoVeiculo *cabecalhoVeiculo, Veiculo *veiculo) {
     printf("%s: ", cabecalhoVeiculo->descrevePrefixo);
     imprimeCampoString(veiculo->prefixo, strlen(veiculo->prefixo));

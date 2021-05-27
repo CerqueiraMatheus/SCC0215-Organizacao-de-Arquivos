@@ -21,6 +21,7 @@
  * 
  */
 
+// Lê o cabeçalho de uma Linha a partir de um CSV
 void leCabecalhoLinhaCsv(CabecalhoLinha *cabecalhoLinha, FILE *csv) {
     cabecalhoLinha->status = '0';
     cabecalhoLinha->byteProxReg = 0;
@@ -33,6 +34,7 @@ void leCabecalhoLinhaCsv(CabecalhoLinha *cabecalhoLinha, FILE *csv) {
     leStringCsv(cabecalhoLinha->descreveLinha, csv);
 }
 
+// Lê o cabeçalho de uma Linha a partir de um binário
 void leCabecalhoLinhaBinario(CabecalhoLinha *cabecalhoLinha, FILE *binario) {
     fread(&cabecalhoLinha->status, sizeof(char), 1, binario);
     fread(&cabecalhoLinha->byteProxReg, sizeof(long long int), 1, binario);
@@ -45,6 +47,7 @@ void leCabecalhoLinhaBinario(CabecalhoLinha *cabecalhoLinha, FILE *binario) {
     leStringBinario(cabecalhoLinha->descreveLinha, 24, binario);
 }
 
+// Escreve o cabeçalho de uma Linha num binário
 void escreveCabecalhoLinhaBinario(CabecalhoLinha *cabecalhoLinha, FILE *binario) {
     fwrite(&cabecalhoLinha->status, sizeof(char), 1, binario);
     fwrite(&cabecalhoLinha->byteProxReg, sizeof(long long int), 1, binario);
@@ -63,6 +66,8 @@ void escreveCabecalhoLinhaBinario(CabecalhoLinha *cabecalhoLinha, FILE *binario)
  * 
  */
 
+
+// Lê uma Linha a partir de um CSV
 int leLinhaCsv(Linha *linha, FILE *csv) {
     // Checa pelo fim do arquivo
     char verificador = fgetc(csv);
@@ -90,6 +95,7 @@ int leLinhaCsv(Linha *linha, FILE *csv) {
     return 0;
 }
 
+// Lê uma Linha a partir de um binário e retorna se ela foi removida
 bool leLinhaBinario(Linha *linha, FILE *binario) {
     fread(&linha->removido, sizeof(char), 1, binario);
     fread(&linha->tamanhoRegistro, sizeof(int), 1, binario);
@@ -111,6 +117,7 @@ bool leLinhaBinario(Linha *linha, FILE *binario) {
     return true;
 }
 
+// Lê uma Linha a partir da entrada padrão
 void leLinhaEntrada(Linha *linha) {
     linha->removido = '1';
 
@@ -125,6 +132,7 @@ void leLinhaEntrada(Linha *linha) {
     linha->tamanhoRegistro = 13 + linha->tamanhoNome + linha->tamanhoCor;
 }
 
+// Escreve uma Linha num binário
 void escreveLinhaBinario(Linha *linha, FILE *binario) {
     fwrite(&linha->removido, sizeof(char), 1, binario);
     fwrite(&linha->tamanhoRegistro, sizeof(int), 1, binario);
@@ -139,6 +147,7 @@ void escreveLinhaBinario(Linha *linha, FILE *binario) {
     fwrite(linha->corLinha, sizeof(char), linha->tamanhoCor, binario);
 }
 
+// Verifica se uma Linha corresponde ao campo e valor pesquisados
 bool comparaLinha(Linha *linha, const char *campo, const char *valor) {
     if (comparaCampoInteiro(campo, "codLinha", stringParaInteiro(valor), linha->codLinha))
         return true;
@@ -152,6 +161,7 @@ bool comparaLinha(Linha *linha, const char *campo, const char *valor) {
         return false;
 }
 
+// Imprime uma Linha
 void imprimeLinha(CabecalhoLinha *cabecalhoLinha, Linha *linha) {
     printf("%s: ", cabecalhoLinha->descreveCodigo);
     imprimeCampoInteiro(linha->codLinha);

@@ -38,36 +38,16 @@ typedef struct {
 
 
 /** Cabeçalho da Linha **/
-
-// Lê o cabeçalho de uma Linha a partir de um CSV
 void leCabecalhoLinhaCsv(CabecalhoLinha *cabecalhoLinha, FILE *csv);
-
-// Lê o cabeçalho de uma Linha a partir de um binário
 void leCabecalhoLinhaBinario(CabecalhoLinha *cabecalhoLinha, FILE *binario);
-
-// Escreve o cabeçalho de uma Linha num binário
 void escreveCabecalhoLinhaBinario(CabecalhoLinha *cabecalhoLinha, FILE *binario);
 
-
-
 /** Corpo da Linha **/
-
-// Lê uma Linha a partir de um CSV
 int leLinhaCsv(Linha *linha, FILE *csv);
-
-// Lê uma Linha a partir de um binário e retorna se ela foi removida
 bool leLinhaBinario(Linha *linha, FILE *binario);
-
-// Lê uma Linha a partir da entrada padrão
 void leLinhaEntrada(Linha *linha);
-
-// Escreve uma Linha num binário
 void escreveLinhaBinario(Linha *linha, FILE *binario);
-
-// Verifica se uma Linha corresponde ao campo e valor pesquisados
 bool comparaLinha(Linha *linha, const char *campo, const char *valor);
-
-// Imprime uma Linha
 void imprimeLinha(CabecalhoLinha *cabecalhoLinha, Linha *linha);
 
 #endif  // LINHA_H
