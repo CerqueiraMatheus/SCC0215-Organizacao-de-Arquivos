@@ -169,6 +169,7 @@ void selectFromVeiculo() {
     // Checa a existência de registros não removidos
     if (cabecalhoVeiculo.nroRegistros == 0) {
         printf("%s\n", MENSAGEM_REGISTRO_INEXISTENTE);
+        atualizaStatusBinario('1', binario);
         fclose(binario);
         exit(0);
     }
@@ -222,6 +223,7 @@ void selectFromLinha() {
     // Checa a existência de registros não removidos
     if (cabecalhoLinha.nroRegistros == 0) {
         printf("%s\n", MENSAGEM_REGISTRO_INEXISTENTE);
+        atualizaStatusBinario('1', binario);
         fclose(binario);
         exit(0);
     }
@@ -286,6 +288,7 @@ void selectFromWhereVeiculo() {
     // Checa a existência de registros não removidos
     if (cabecalhoVeiculo.nroRegistros == 0) {
         printf("%s\n", MENSAGEM_REGISTRO_INEXISTENTE);
+        atualizaStatusBinario('1', binario);
         fclose(binario);
         exit(0);
     }
@@ -355,6 +358,7 @@ void selectFromWhereLinha() {
     // Checa a existência de registros não removidos
     if (cabecalhoLinha.nroRegistros == 0) {
         printf("%s\n", MENSAGEM_REGISTRO_INEXISTENTE);
+        atualizaStatusBinario('1', binario);
         fclose(binario);
         exit(0);
     }
