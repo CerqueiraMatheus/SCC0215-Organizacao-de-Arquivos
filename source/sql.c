@@ -14,9 +14,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "veiculo.h"
 #include "linha.h"
 #include "util.h"
-#include "veiculo.h"
 
 // Mensagens de erro
 const char *MENSAGEM_FALHA_PROCESSAMENTO = "Falha no processamento do arquivo.";
