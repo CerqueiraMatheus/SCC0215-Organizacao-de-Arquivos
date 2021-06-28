@@ -1,7 +1,19 @@
+/**
+ * @author Matheus Henrique de Cerqueira Pinto (11911104)
+ * @author Pedro Lucas de Moliner de Castro (11795784)
+ * @date 2021-06-27
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
+
+
 #ifndef ARVORE_B
 #define ARVORE_B
 
 
+#define NAO_ENCONTRADO -1
+#define TAMANHO_PAGINA 77
 #define MAX_NUMERO_CHAVES 4
 
 
