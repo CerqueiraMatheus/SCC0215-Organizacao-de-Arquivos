@@ -12,6 +12,9 @@
 #define ARVORE_B
 
 
+#include <stdio.h>
+
+
 #define NAO_ENCONTRADO -1
 #define TAMANHO_PAGINA 77
 #define MAX_NUMERO_CHAVES 4
@@ -35,6 +38,17 @@ typedef struct {
     ChaveArvoreB chaves[MAX_NUMERO_CHAVES];
     int P[MAX_NUMERO_CHAVES + 1];
 } NoArvoreB;
+
+typedef enum {
+    PROMOCAO,
+    SEM_PROMOCAO,
+    ERRO
+} RetornoInsercao;
+
+
+long long int buscaArvoreB(int chave, int RRN, FILE *arvoreB);
+RetornoInsercao insereArvoreB(ChaveArvoreB chave, int RRN, ChaveArvoreB *chave_promovida,
+                              int *filho_promovido, CabecalhoArvoreB *cabecalho, FILE *arvoreB);
 
 
 #endif // ARVORE_B
