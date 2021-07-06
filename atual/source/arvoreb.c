@@ -14,15 +14,28 @@
 #include <stdbool.h>
 
 
+typedef enum {
+    PROMOCAO,
+    SEM_PROMOCAO,
+    ERRO
+} _RetornoInsercao;
+
+
 const int NULO = -1;
 
 
+// Nó da Árvore-B
+static void _criaNoArvoreB(NoArvoreB *no, CabecalhoArvoreB *cabecalho);
 static void _leNoArvoreB(NoArvoreB *no, int RRN, FILE *arvoreB);
 static void _escreveNoArvoreB(NoArvoreB no, FILE *arvoreB);
+
+// Busca
 static bool _buscaNoArvoreB(int chave, int *posicao, NoArvoreB no);
+
+// Inserção
 static void _insereNoArvoreB(ChaveArvoreB chave, int filho, NoArvoreB *no);
-static void _particionaNoArvoreB(ChaveArvoreB chave, int filho, NoArvoreB *no, ChaveArvoreB *chave_promovida,
-                                 int *filho_promovido, NoArvoreB *novoNo, CabecalhoArvoreB *cabecalho);
+static _RetornoInsercao _insereArvoreB(ChaveArvoreB chave, int RRN, ChaveArvoreB *chave_promovida,
+                                       int *filho_promovido, CabecalhoArvoreB *cabecalho, FILE *arvoreB);
 
 
 long long int buscaArvoreB(int chave, int RRN, FILE *arvoreB) {
@@ -39,47 +52,31 @@ long long int buscaArvoreB(int chave, int RRN, FILE *arvoreB) {
     return buscaArvoreB(no.P[posicao], chave, arvoreB);
 }
 
-RetornoInsercao insereArvoreB(ChaveArvoreB chave, int RRN, ChaveArvoreB *chave_promovida,
-                              int *filho_promovido, CabecalhoArvoreB *cabecalho, FILE *arvoreB) {
-    // Construção a partir da folha
-    if (RRN == NULO) {
-        *chave_promovida = chave;
-        *filho_promovido = NULO;
-        return PROMOCAO;
-    }
+bool insereArvoreB(ChaveArvoreB chave, CabecalhoArvoreB *cabecalho, FILE *arvoreB) {
+    ChaveArvoreB chave_promovida;
+    int filho_promovido;
 
-    NoArvoreB no;
-    _leNoArvoreB(&no, RRN, arvoreB);
-
-    // Busca pela chave
-    int posicao;
-    if (_buscaNoArvoreB(chave.C, &posicao, no) == true)
-        return ERRO;
-
-    // Recursão até inserir
-    RetornoInsercao retorno = insereArvoreB(chave, no.P[posicao], chave_promovida, filho_promovido,
-                                            cabecalho, arvoreB);
+    // Executa a inserção recursiva
+    _RetornoInsercao retorno = _insereArvoreB(chave, cabecalho->noRaiz, &chave_promovida,
+                                              &filho_promovido, cabecalho, arvoreB);
     
-    if (retorno == SEM_PROMOCAO || retorno == ERRO) {
-        return retorno;
+    if (retorno == ERRO)
+        return false;
+    
+    if (retorno == PROMOCAO) {
+        // Cria uma nova raiz
+        NoArvoreB novaRaiz;
+        _criaNoArvoreB(&novaRaiz, cabecalho);
+
+        // Insere a chave promovida na nova raiz
+        _insereNoArvoreB(chave_promovida, filho_promovido, &novaRaiz);
+        novaRaiz.P[0] = cabecalho->noRaiz;
+        cabecalho->noRaiz = novaRaiz.RRNdoNo;
+
+        _escreveNoArvoreB(novaRaiz, arvoreB);
     }
 
-    // Insere promoção sem particionamento
-    else if (no.nroChavesIndexadas < MAX_NUMERO_CHAVES) {
-        _insereNoArvoreB(*chave_promovida, *filho_promovido, &no);
-        _escreveNoArvoreB(no, arvoreB);
-        return SEM_PROMOCAO;
-    }
-
-    // Insere promoção com particionamento
-    else {
-        NoArvoreB novoNo;
-        _particionaNoArvoreB(*chave_promovida, *filho_promovido, &no,
-                             chave_promovida, filho_promovido, &novoNo, cabecalho);
-        _escreveNoArvoreB(no, arvoreB);
-        _escreveNoArvoreB(novoNo, arvoreB);
-        return PROMOCAO;
-    }
+    return true;
 }
 
 
@@ -117,7 +114,6 @@ static void _criaNoArvoreB(NoArvoreB *no, CabecalhoArvoreB *cabecalho) {
     _limpaNoArvoreB(no);
 }
 
-
 static void _leNoArvoreB(NoArvoreB *no, int RRN, FILE *arvoreB) {
     _posicionaRRN(RRN, arvoreB);
     
@@ -149,6 +145,12 @@ static void _escreveNoArvoreB(NoArvoreB no, FILE *arvoreB) {
 }
 
 
+/**
+ *
+ * Busca
+ * 
+ */
+
 static bool _buscaNoArvoreB(int chave, int *posicao, NoArvoreB no) {
     for (*posicao = 0; *posicao < no.nroChavesIndexadas; (*posicao)++) {
         if (chave < no.chaves[*posicao].C)
@@ -159,27 +161,6 @@ static bool _buscaNoArvoreB(int chave, int *posicao, NoArvoreB no) {
     }
 
     return false;
-}
-
-static void _insereNoArvoreB(ChaveArvoreB chave, int filho, NoArvoreB *no) {
-    // Verifica se continua folha
-    if (filho != NULO)
-        no->folha = '0';
-
-    // Busca a posição da nova chave
-    int posicao;
-    _buscaNoArvoreB(chave.C, &posicao, *no);
-
-    // Desloca as chaves e filhos posteriores
-    for (int i = no->nroChavesIndexadas - 1; i >= posicao; i--) {
-        no->chaves[i + 1] = no->chaves[i];
-        no->P[i + 2] = no->P[i + 1];
-    }
-
-    // Insere a nova chave
-    no->chaves[posicao] = chave;
-    no->P[posicao + 1] = filho;
-    no->nroChavesIndexadas++;
 }
 
 
@@ -238,4 +219,75 @@ static void _particionaNoArvoreB(ChaveArvoreB chave, int filho, NoArvoreB *no, C
     _limpaNoArvoreB(no);
     _copiaNoTemporario(no, 0, temporario);
     _copiaNoTemporario(novoNo, MAX_NUMERO_CHAVES / 2 + 1, temporario);
+}
+
+
+/**
+ *
+ * Inserção
+ * 
+ */
+
+static void _insereNoArvoreB(ChaveArvoreB chave, int filho, NoArvoreB *no) {
+    // Verifica se continua folha
+    if (filho != NULO)
+        no->folha = '0';
+
+    // Busca a posição da nova chave
+    int posicao;
+    _buscaNoArvoreB(chave.C, &posicao, *no);
+
+    // Desloca as chaves e filhos posteriores
+    for (int i = no->nroChavesIndexadas - 1; i >= posicao; i--) {
+        no->chaves[i + 1] = no->chaves[i];
+        no->P[i + 2] = no->P[i + 1];
+    }
+
+    // Insere a nova chave
+    no->chaves[posicao] = chave;
+    no->P[posicao + 1] = filho;
+    no->nroChavesIndexadas++;
+}
+
+static _RetornoInsercao _insereArvoreB(ChaveArvoreB chave, int RRN, ChaveArvoreB *chave_promovida,
+                                       int *filho_promovido, CabecalhoArvoreB *cabecalho, FILE *arvoreB) {
+    // Construção a partir da folha
+    if (RRN == NULO) {
+        *chave_promovida = chave;
+        *filho_promovido = NULO;
+        return PROMOCAO;
+    }
+
+    NoArvoreB no;
+    _leNoArvoreB(&no, RRN, arvoreB);
+
+    // Busca pela chave
+    int posicao;
+    if (_buscaNoArvoreB(chave.C, &posicao, no) == true)
+        return ERRO;
+
+    // Recursão até inserir
+    _RetornoInsercao retorno = _insereArvoreB(chave, no.P[posicao], chave_promovida, filho_promovido,
+                                              cabecalho, arvoreB);
+    
+    if (retorno == SEM_PROMOCAO || retorno == ERRO) {
+        return retorno;
+    }
+
+    // Insere promoção sem particionamento
+    else if (no.nroChavesIndexadas < MAX_NUMERO_CHAVES) {
+        _insereNoArvoreB(*chave_promovida, *filho_promovido, &no);
+        _escreveNoArvoreB(no, arvoreB);
+        return SEM_PROMOCAO;
+    }
+
+    // Insere promoção com particionamento
+    else {
+        NoArvoreB novoNo;
+        _particionaNoArvoreB(*chave_promovida, *filho_promovido, &no,
+                             chave_promovida, filho_promovido, &novoNo, cabecalho);
+        _escreveNoArvoreB(no, arvoreB);
+        _escreveNoArvoreB(novoNo, arvoreB);
+        return PROMOCAO;
+    }
 }

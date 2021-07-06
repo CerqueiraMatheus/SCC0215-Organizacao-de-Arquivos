@@ -13,6 +13,7 @@
 
 
 #include <stdio.h>
+#include <stdbool.h>
 
 
 #define NAO_ENCONTRADO -1
@@ -39,16 +40,9 @@ typedef struct {
     int P[MAX_NUMERO_CHAVES + 1];
 } NoArvoreB;
 
-typedef enum {
-    PROMOCAO,
-    SEM_PROMOCAO,
-    ERRO
-} RetornoInsercao;
-
 
 long long int buscaArvoreB(int chave, int RRN, FILE *arvoreB);
-RetornoInsercao insereArvoreB(ChaveArvoreB chave, int RRN, ChaveArvoreB *chave_promovida,
-                              int *filho_promovido, CabecalhoArvoreB *cabecalho, FILE *arvoreB);
+bool insereArvoreB(ChaveArvoreB chave, CabecalhoArvoreB *cabecalho, FILE *arvoreB);
 
 
 #endif // ARVORE_B
