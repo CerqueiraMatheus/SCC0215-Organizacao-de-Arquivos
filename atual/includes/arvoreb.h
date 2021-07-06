@@ -41,6 +41,12 @@ typedef struct {
 } NoArvoreB;
 
 
+// Cabeçalho da Árvore-B
+void criaCabecalhoArvoreB(CabecalhoArvoreB *cabecalho);
+void leCabecalhoArvoreB(CabecalhoArvoreB *cabecalho, FILE *arvoreB);
+void escreveCabecalhoArvoreB(CabecalhoArvoreB cabecalho, FILE *arvoreB);
+
+// Árvore-B
 long long int buscaArvoreB(int chave, int RRN, FILE *arvoreB);
 bool insereArvoreB(ChaveArvoreB chave, CabecalhoArvoreB *cabecalho, FILE *arvoreB);
 

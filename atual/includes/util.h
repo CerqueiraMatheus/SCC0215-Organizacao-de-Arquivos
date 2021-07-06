@@ -19,6 +19,7 @@ int leInteiroCsv(FILE *csv);
 
 /** Manipulação de binário **/
 void leStringBinario(char *string, int tamanho, FILE *binario);
+void escreveLixoBinario(int numero, FILE *binario);
 void escreveStringNuloBinario(int tamanho, FILE *binario);
 void atualizaStatusBinario(char status, FILE *binario);
 

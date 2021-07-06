@@ -13,6 +13,51 @@
 #include <stdio.h>
 #include <stdbool.h>
 
+#include "util.h"
+
+
+const int NULO = -1;
+
+
+/**
+ *
+ * Cabeçalho da Árvore-B
+ * 
+ */
+
+void criaCabecalhoArvoreB(CabecalhoArvoreB *cabecalho) {
+    cabecalho->status = '0';
+    cabecalho->noRaiz = NULO;
+    cabecalho->RRNproxNo = 0;
+}
+
+void leCabecalhoArvoreB(CabecalhoArvoreB *cabecalho, FILE *arvoreB) {
+    // Posiciona o ponteiro no cabeçalho
+    fseek(arvoreB, 0, SEEK_SET);
+
+    fread(&cabecalho->status, sizeof(char), 1, arvoreB);
+    fread(&cabecalho->noRaiz, sizeof(int), 1, arvoreB);
+    fread(&cabecalho->RRNproxNo, sizeof(int), 1, arvoreB);
+}
+
+void escreveCabecalhoArvoreB(CabecalhoArvoreB cabecalho, FILE *arvoreB) {
+    // Posiciona o ponteiro no cabeçalho
+    fseek(arvoreB, 0, SEEK_SET);
+
+    fread(&cabecalho.status, sizeof(char), 1, arvoreB);
+    fread(&cabecalho.noRaiz, sizeof(int), 1, arvoreB);
+    fread(&cabecalho.RRNproxNo, sizeof(int), 1, arvoreB);
+
+    escreveLixoBinario(68, arvoreB);
+}
+
+
+/**
+ *
+ * Árvore-B
+ * 
+ */
+
 
 typedef enum {
     PROMOCAO,
@@ -21,18 +66,11 @@ typedef enum {
 } _RetornoInsercao;
 
 
-const int NULO = -1;
-
-
-// Nó da Árvore-B
+// Funções auxiliares
 static void _criaNoArvoreB(NoArvoreB *no, CabecalhoArvoreB *cabecalho);
 static void _leNoArvoreB(NoArvoreB *no, int RRN, FILE *arvoreB);
 static void _escreveNoArvoreB(NoArvoreB no, FILE *arvoreB);
-
-// Busca
 static bool _buscaNoArvoreB(int chave, int *posicao, NoArvoreB no);
-
-// Inserção
 static void _insereNoArvoreB(ChaveArvoreB chave, int filho, NoArvoreB *no);
 static _RetornoInsercao _insereArvoreB(ChaveArvoreB chave, int RRN, ChaveArvoreB *chave_promovida,
                                        int *filho_promovido, CabecalhoArvoreB *cabecalho, FILE *arvoreB);

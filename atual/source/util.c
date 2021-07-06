@@ -65,13 +65,16 @@ void leStringBinario(char *string, int tamanho, FILE *binario) {
     string[tamanho] = '\0';
 }
 
+// Adiciona lixo a um binário
+void escreveLixoBinario(int numero, FILE *binario) {
+    for (int i = 0; i < numero; i++)
+        fwrite("@", sizeof(char), 1, binario);
+}
+
 // Adiciona uma string nula a um binário
 void escreveStringNuloBinario(int tamanho, FILE *binario) {
     fwrite("\0", sizeof(char), 1, binario);
-
-    // Adiciona o lixo
-    for (int i = 0; i < tamanho - 1; i++)
-        fwrite("@", sizeof(char), 1, binario);
+    escreveLixoBinario(tamanho - 1, binario);
 }
 
 // Altera o status de um binário ('0' -> invalido, '1' - > válido)
