@@ -113,7 +113,7 @@ static void _limpaNoArvoreB(NoArvoreB *no) {
 }
 
 static void _criaNoArvoreB(NoArvoreB *no, CabecalhoArvoreB *cabecalho) {
-    no->RRNdoNo = cabecalho->RRNproxNo++;
+    no->RRNdoNo = (cabecalho->RRNproxNo)++;
     _limpaNoArvoreB(no);
 }
 
