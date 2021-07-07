@@ -27,12 +27,12 @@ void insertIntoVeiculo();
 void insertIntoLinha();
 
 /** Create Table Index **/
-void createTableIndexVeiculo();
-void createTableIndexLinha();
+void createIndexVeiculo();
+void createIndexLinha();
 
 /** Create Where Index **/
-void selectWhereIndexVeiculo();
-void selectWhereIndexLinha();
+void selectFromWhereIndexVeiculo();
+void selectFromWhereIndexLinha();
 
 /** Insert Into Index **/
 void insertIntoIndexVeiculo();

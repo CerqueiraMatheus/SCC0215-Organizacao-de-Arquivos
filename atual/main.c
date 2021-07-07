@@ -42,16 +42,16 @@ int main() {
             insertIntoLinha();
             break;
         case 9:
-            createTableIndexVeiculo();
+            createIndexVeiculo();
             break;
         case 10:
-            createTableIndexLinha();
+            createIndexLinha();
             break;
         case 11:
-            selectWhereIndexVeiculo();
+            selectFromWhereIndexVeiculo();
             break;
         case 12:
-            selectWhereIndexLinha();
+            selectFromWhereIndexLinha();
             break;
         case 13:
             insertIntoIndexVeiculo();
