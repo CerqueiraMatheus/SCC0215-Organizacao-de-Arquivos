@@ -14,9 +14,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "veiculo.h"
+#include "arvoreb.h"
 #include "linha.h"
 #include "util.h"
+#include "veiculo.h"
 
 // Mensagens de erro
 const char *MENSAGEM_FALHA_PROCESSAMENTO = "Falha no processamento do arquivo.";
@@ -498,4 +499,82 @@ void insertIntoLinha() {
 
     fclose(binario);
     binarioNaTela(nomeBinario);
+}
+
+void createTableIndexVeiculo() {
+    char nomeVeiculosBinario[255];
+    char nomeArvoreB[255];
+
+    // Recebe o nome do arquivo
+    if (scanf("%s %s", nomeVeiculosBinario, nomeArvoreB) != 2) {
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        exit(0);
+    }
+
+    // Abre o binário
+    FILE *veiculosBinario = fopen(nomeVeiculosBinario, "rb");
+    if (veiculosBinario == NULL) {
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        exit(0);
+    }
+
+    // Abre o binário
+    FILE *arvoreB = fopen(nomeArvoreB, "wb+");
+    if (arvoreB == NULL) {
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        exit(0);
+    }
+
+    // Lê o Cabeçalho do Veículo
+    CabecalhoVeiculo cabecalhoVeiculo;
+    leCabecalhoVeiculoBinario(&cabecalhoVeiculo, veiculosBinario);
+
+    // Checa a integridade do arquivo
+    if (arquivoFoiCorrompido(cabecalhoVeiculo.status)) {
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        fclose(veiculosBinario);
+        exit(0);
+    }
+
+    // Checa a existência de registros não removidos
+    if (cabecalhoVeiculo.nroRegistros == 0) {
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        fclose(veiculosBinario);
+        exit(0);
+    }
+
+    CabecalhoArvoreB cabecalhoArvoreB;
+    criaCabecalhoArvoreB(&cabecalhoArvoreB);
+    escreveCabecalhoArvoreB(cabecalhoArvoreB, arvoreB);
+
+    Veiculo veiculo;
+    int nroTotalRegistros = cabecalhoVeiculo.nroRegistros + cabecalhoVeiculo.nroRegRemovidos;
+
+    // Percorre os registros
+    for (int i = 0; i < nroTotalRegistros; i++) {
+        long long int offsetAtual = ftell(veiculosBinario);
+
+        // Caso registro lido não removido
+        if (leVeiculoBinario(&veiculo, veiculosBinario)) {
+            // imprimeVeiculo(&cabecalhoVeiculo, &veiculo);
+            ChaveArvoreB chave;
+            chave.C = convertePrefixo(veiculo.prefixo);
+            chave.PR = offsetAtual;
+            insereArvoreB(chave, &cabecalhoArvoreB, arvoreB);
+        }
+
+        // Caso removido, pula corpo
+        else {
+            fseek(veiculosBinario, veiculo.tamanhoRegistro, SEEK_CUR);
+        }
+    }
+
+    cabecalhoArvoreB.status = '1';
+    escreveCabecalhoArvoreB(cabecalhoArvoreB, arvoreB);
+
+    // atualizaStatusBinario('1', binario);
+    fclose(veiculosBinario);
+    fclose(arvoreB);
+
+    binarioNaTela(nomeArvoreB);
 }

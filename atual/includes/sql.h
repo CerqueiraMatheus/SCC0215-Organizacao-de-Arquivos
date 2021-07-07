@@ -14,19 +14,18 @@
 void createTableVeiculo();
 void createTableLinha();
 
-
 /** Select From **/
 void selectFromVeiculo();
 void selectFromLinha();
-
 
 /** Select From Where **/
 void selectFromWhereVeiculo();
 void selectFromWhereLinha();
 
-
 /** Insert Into **/
 void insertIntoVeiculo();
 void insertIntoLinha();
+
+void createTableIndexVeiculo();
 
 #endif  // SQL_H

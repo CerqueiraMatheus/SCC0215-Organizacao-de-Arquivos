@@ -46,5 +46,6 @@ void imprimeCampoInteiro(int campo);
 /** Funções fornecidas **/
 void binarioNaTela(char *nomeArquivoBinario);
 void scan_quote_string(char *str);
+int convertePrefixo(char *str);
 
 #endif  // UTIL_H
