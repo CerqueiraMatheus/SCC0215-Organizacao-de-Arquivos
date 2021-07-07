@@ -44,6 +44,9 @@ int main() {
         case 9:
             createTableIndexVeiculo();
             break;
+        case 10:
+            createTableIndexLinha();
+            break;
 
         default:
             printf("Falha na identificacao da funcionalidade %d.", funcionalidade);

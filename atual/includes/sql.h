@@ -27,5 +27,6 @@ void insertIntoVeiculo();
 void insertIntoLinha();
 
 void createTableIndexVeiculo();
+void createTableIndexLinha();
 
 #endif  // SQL_H
