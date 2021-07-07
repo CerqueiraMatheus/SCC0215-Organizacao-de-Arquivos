@@ -228,7 +228,7 @@ static void _copiaNoTemporario(NoArvoreB *no, int inicio, _NoTemporario temporar
     no->folha = no->P[0] == NULO ? '1' : '0';
 
     for (int i = 0; i < MAX_NUMERO_CHAVES / 2; i++)
-        _insereNoArvoreB(temporario.chaves[inicio], temporario.filhos[inicio + 1], no);
+        _insereNoArvoreB(temporario.chaves[inicio + i], temporario.filhos[inicio + 1 + i], no);
 }
 
 static void _particionaNoArvoreB(ChaveArvoreB chave, int filho, NoArvoreB *no, ChaveArvoreB *chave_promovida,
