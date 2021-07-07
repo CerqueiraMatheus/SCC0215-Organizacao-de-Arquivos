@@ -26,7 +26,16 @@ void selectFromWhereLinha();
 void insertIntoVeiculo();
 void insertIntoLinha();
 
+/** Create Table Index **/
 void createTableIndexVeiculo();
 void createTableIndexLinha();
+
+/** Create Where Index **/
+void selectWhereIndexVeiculo();
+void selectWhereIndexLinha();
+
+/** Insert Into Index **/
+void insertIntoIndexVeiculo();
+void insertIntoIndexLinha();
 
 #endif  // SQL_H

@@ -80,7 +80,7 @@ long long int buscaArvoreB(int chave, int RRN, FILE *arvoreB) {
     if (_buscaNoArvoreB(chave, &posicao, no) == true)
         return no.chaves[posicao].PR;
 
-    return buscaArvoreB(no.P[posicao], chave, arvoreB);
+    return buscaArvoreB(chave, no.P[posicao], arvoreB);
 }
 
 bool insereArvoreB(ChaveArvoreB chave, CabecalhoArvoreB *cabecalho, FILE *arvoreB) {

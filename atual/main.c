@@ -47,6 +47,18 @@ int main() {
         case 10:
             createTableIndexLinha();
             break;
+        case 11:
+            selectWhereIndexVeiculo();
+            break;
+        case 12:
+            selectWhereIndexLinha();
+            break;
+        case 13:
+            insertIntoIndexVeiculo();
+            break;
+        case 14:
+            insertIntoIndexLinha();
+            break;
 
         default:
             printf("Falha na identificacao da funcionalidade %d.", funcionalidade);
