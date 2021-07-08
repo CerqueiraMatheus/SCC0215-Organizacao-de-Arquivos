@@ -503,7 +503,7 @@ void insertIntoLinha() {
 
 
 /**
- * Create table index
+ * Create Index
  */
 
 void createIndexVeiculo() {
@@ -523,14 +523,6 @@ void createIndexVeiculo() {
         exit(0);
     }
 
-    // Abre a árvore-B
-    FILE *arvoreB = fopen(nomeArvoreB, "wb+");
-    if (arvoreB == NULL) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
-        fclose(veiculosBinario);
-        exit(0);
-    }
-
     // Lê o cabeçalho do veículo
     CabecalhoVeiculo cabecalhoVeiculo;
     leCabecalhoVeiculoBinario(&cabecalhoVeiculo, veiculosBinario);
@@ -539,7 +531,6 @@ void createIndexVeiculo() {
     if (arquivoFoiCorrompido(cabecalhoVeiculo.status)) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         fclose(veiculosBinario);
-        fclose(arvoreB);
         exit(0);
     }
 
@@ -547,7 +538,14 @@ void createIndexVeiculo() {
     if (cabecalhoVeiculo.nroRegistros == 0) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         fclose(veiculosBinario);
-        fclose(arvoreB);
+        exit(0);
+    }
+
+    // Abre a árvore-B
+    FILE *arvoreB = fopen(nomeArvoreB, "wb+");
+    if (arvoreB == NULL) {
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        fclose(veiculosBinario);
         exit(0);
     }
 
@@ -556,15 +554,15 @@ void createIndexVeiculo() {
     criaCabecalhoArvoreB(&cabecalhoArvoreB);
     escreveCabecalhoArvoreB(cabecalhoArvoreB, arvoreB);
 
-    Veiculo veiculo;
     int nroTotalRegistros = cabecalhoVeiculo.nroRegistros + cabecalhoVeiculo.nroRegRemovidos;
 
     // Percorre os registros
     for (int i = 0; i < nroTotalRegistros; i++) {
+        Veiculo veiculo;
         long long int offset = ftell(veiculosBinario);
 
         // Caso registro não removido
-        if (leVeiculoBinario(&veiculo, veiculosBinario)) {
+        if (leVeiculoBinario(&veiculo, veiculosBinario) == true) {
             // Cria a chave a ser inserida
             ChaveArvoreB chave;
             chave.C = convertePrefixo(veiculo.prefixo);
@@ -580,7 +578,7 @@ void createIndexVeiculo() {
         }
     }
 
-    // Reescreve o cabeçalho da árvore-B atualizado
+    // Atualiza o cabeçalho da árvore-B
     cabecalhoArvoreB.status = '1';
     escreveCabecalhoArvoreB(cabecalhoArvoreB, arvoreB);
 
@@ -608,14 +606,6 @@ void createIndexLinha() {
         exit(0);
     }
 
-    // Abre a árvore-B
-    FILE *arvoreB = fopen(nomeArvoreB, "wb+");
-    if (arvoreB == NULL) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
-        fclose(linhasBinario);
-        exit(0);
-    }
-
     // Lê o cabeçalho da linha
     CabecalhoLinha cabecalhoLinha;
     leCabecalhoLinhaBinario(&cabecalhoLinha, linhasBinario);
@@ -624,7 +614,6 @@ void createIndexLinha() {
     if (arquivoFoiCorrompido(cabecalhoLinha.status)) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         fclose(linhasBinario);
-        fclose(arvoreB);
         exit(0);
     }
 
@@ -632,7 +621,14 @@ void createIndexLinha() {
     if (cabecalhoLinha.nroRegistros == 0) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         fclose(linhasBinario);
-        fclose(arvoreB);
+        exit(0);
+    }
+
+    // Abre a árvore-B
+    FILE *arvoreB = fopen(nomeArvoreB, "wb+");
+    if (arvoreB == NULL) {
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        fclose(linhasBinario);
         exit(0);
     }
 
@@ -641,15 +637,15 @@ void createIndexLinha() {
     criaCabecalhoArvoreB(&cabecalhoArvoreB);
     escreveCabecalhoArvoreB(cabecalhoArvoreB, arvoreB);
 
-    Linha linha;
     int nroTotalRegistros = cabecalhoLinha.nroRegistros + cabecalhoLinha.nroRegRemovidos;
 
     // Percorre os registros
     for (int i = 0; i < nroTotalRegistros; i++) {
+        Linha linha;
         long long int offset = ftell(linhasBinario);
 
         // Caso registro não removido
-        if (leLinhaBinario(&linha, linhasBinario)) {
+        if (leLinhaBinario(&linha, linhasBinario) == true) {
             // Cria a chave a ser inserida
             ChaveArvoreB chave;
             chave.C = linha.codLinha;
@@ -665,7 +661,7 @@ void createIndexLinha() {
         }
     }
 
-    // Reescreve o cabeçalho da árvore-B atualizado
+    // Atualiza o cabeçalho da árvore-B
     cabecalhoArvoreB.status = '1';
     escreveCabecalhoArvoreB(cabecalhoArvoreB, arvoreB);
 
@@ -709,6 +705,17 @@ void selectFromWhereIndexVeiculo() {
         exit(0);
     }
 
+    // Lê o cabeçalho do veículo
+    CabecalhoVeiculo cabecalhoVeiculo;
+    leCabecalhoVeiculoBinario(&cabecalhoVeiculo, veiculosBinario);
+
+    // Checa a integridade do binário veículo
+    if (arquivoFoiCorrompido(cabecalhoVeiculo.status)) {
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        fclose(veiculosBinario);
+        exit(0);
+    }
+
     // Abre a árvore-B
     FILE *arvoreB = fopen(nomeArvoreB, "rb");
     if (arvoreB == NULL) {
@@ -721,15 +728,19 @@ void selectFromWhereIndexVeiculo() {
     CabecalhoArvoreB cabecalhoArvoreB;
     leCabecalhoArvoreB(&cabecalhoArvoreB, arvoreB);
 
+    // Checa a integridade da árvore-B
+    if (arquivoFoiCorrompido(cabecalhoArvoreB.status)) {
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        fclose(veiculosBinario);
+        fclose(arvoreB);
+        exit(0);
+    }
+
     // Busca na árvore-B
     long long int offset = buscaArvoreB(convertePrefixo(prefixo), cabecalhoArvoreB.noRaiz, arvoreB);
 
     // Caso encontrado
     if (offset != NAO_ENCONTRADO) {
-        // Lê o cabeçalho do veículo
-        CabecalhoVeiculo cabecalhoVeiculo;
-        leCabecalhoVeiculoBinario(&cabecalhoVeiculo, veiculosBinario);
-
         // Lê o veículo especificado
         Veiculo veiculo;
         fseek(veiculosBinario, offset, SEEK_SET);
@@ -777,6 +788,17 @@ void selectFromWhereIndexLinha() {
         exit(0);
     }
 
+    // Lê o cabeçalho da linha
+    CabecalhoLinha cabecalhoLinha;
+    leCabecalhoLinhaBinario(&cabecalhoLinha, linhasBinario);
+
+    // Checa a integridade do binário linha
+    if (arquivoFoiCorrompido(cabecalhoLinha.status)) {
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        fclose(linhasBinario);
+        exit(0);
+    }
+
     // Abre a árvore-B
     FILE *arvoreB = fopen(nomeArvoreB, "rb");
     if (arvoreB == NULL) {
@@ -789,15 +811,19 @@ void selectFromWhereIndexLinha() {
     CabecalhoArvoreB cabecalhoArvoreB;
     leCabecalhoArvoreB(&cabecalhoArvoreB, arvoreB);
 
+    // Checa a integridade da árvore-B
+    if (arquivoFoiCorrompido(cabecalhoArvoreB.status)) {
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        fclose(linhasBinario);
+        fclose(arvoreB);
+        exit(0);
+    }
+
     // Busca na árvore-B
     long long int offset = buscaArvoreB(codLinha, cabecalhoArvoreB.noRaiz, arvoreB);
 
     // Caso encontrado
     if (offset != NAO_ENCONTRADO) {
-        // Lê o cabeçalho da linha
-        CabecalhoLinha cabecalhoLinha;
-        leCabecalhoLinhaBinario(&cabecalhoLinha, linhasBinario);
-
         // Lê a linha especificada
         Linha linha;
         fseek(linhasBinario, offset, SEEK_SET);
@@ -839,6 +865,18 @@ void insertIntoIndexVeiculo() {
         exit(0);
     }
 
+    // Lê o cabeçalho do veículo
+    CabecalhoVeiculo cabecalhoVeiculo;
+    leCabecalhoVeiculoBinario(&cabecalhoVeiculo, veiculosBinario);
+
+    // Checa a integridade do binário veículo
+    if (arquivoFoiCorrompido(cabecalhoVeiculo.status)) {
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        fclose(veiculosBinario);
+        exit(0);
+    }
+    atualizaStatusBinario('0', veiculosBinario);
+
     // Abre a árvore-B
     FILE *arvoreB = fopen(nomeArvoreB, "rb+");
     if (arvoreB == NULL) {
@@ -847,25 +885,17 @@ void insertIntoIndexVeiculo() {
         exit(0);
     }
 
-    // Lê o cabeçalho do veículo
-    CabecalhoVeiculo cabecalhoVeiculo;
-    leCabecalhoVeiculoBinario(&cabecalhoVeiculo, veiculosBinario);
-
     // Lê o cabeçalho da árvore-B
     CabecalhoArvoreB cabecalhoArvoreB;
     leCabecalhoArvoreB(&cabecalhoArvoreB, arvoreB);
 
-    // Checa a integridade dos arquivos
-    if (arquivoFoiCorrompido(cabecalhoVeiculo.status) ||
-        arquivoFoiCorrompido(cabecalhoArvoreB.status)) {
+    // Checa a integridade da árvore-B
+    if (arquivoFoiCorrompido(cabecalhoArvoreB.status)) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         fclose(veiculosBinario);
         fclose(arvoreB);
         exit(0);
     }
-
-    // Configura os status dos arquivos
-    atualizaStatusBinario('0', veiculosBinario);
     atualizaStatusBinario('0', arvoreB);
 
     // Recebe o número de inserções e posiciona o arquivo
@@ -878,23 +908,27 @@ void insertIntoIndexVeiculo() {
         Veiculo veiculo;
         leVeiculoEntrada(&veiculo);
 
-        // Configura uma chave referente ao veículo
-        ChaveArvoreB chaveArvoreB;
-        chaveArvoreB.C = convertePrefixo(veiculo.prefixo);
-        chaveArvoreB.PR = ftell(veiculosBinario);
+        // Cria a chave a ser inserida
+        ChaveArvoreB chave;
+        chave.C = convertePrefixo(veiculo.prefixo);
+        chave.PR = ftell(veiculosBinario);
 
-        // Escreve o veículo no arquivo de dados
+        // Escreve o veículo no binário veículo
         escreveVeiculoBinario(&veiculo, veiculosBinario);
         cabecalhoVeiculo.nroRegistros++;
 
-        // Insere o veículo na árvore-B
-        insereArvoreB(chaveArvoreB, &cabecalhoArvoreB, arvoreB);
+        // Insere a chave na árvore-B
+        insereArvoreB(chave, &cabecalhoArvoreB, arvoreB);
     }
 
-    // Atualiza o cabeçalho dos arquivos
+    // Atualiza o cabeçalho do veículo
+    cabecalhoVeiculo.status = '1';
     cabecalhoVeiculo.byteProxReg = ftell(veiculosBinario);
     fseek(veiculosBinario, 0, SEEK_SET);
     escreveCabecalhoVeiculoBinario(&cabecalhoVeiculo, veiculosBinario);
+
+    // Atualiza o cabeçalho da árvore-B
+    cabecalhoArvoreB.status = '1';
     escreveCabecalhoArvoreB(cabecalhoArvoreB, arvoreB);
 
     // Fecha os arquivos
@@ -921,6 +955,18 @@ void insertIntoIndexLinha() {
         exit(0);
     }
 
+    // Lê o cabeçalho da linha
+    CabecalhoLinha cabecalhoLinha;
+    leCabecalhoLinhaBinario(&cabecalhoLinha, linhasBinario);
+
+    // Checa a integridade dos arquivos
+    if (arquivoFoiCorrompido(cabecalhoLinha.status)) {
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        fclose(linhasBinario);
+        exit(0);
+    }
+    atualizaStatusBinario('0', linhasBinario);
+
     // Abre a árvore-B
     FILE *arvoreB = fopen(nomeArvoreB, "rb+");
     if (arvoreB == NULL) {
@@ -929,25 +975,17 @@ void insertIntoIndexLinha() {
         exit(0);
     }
 
-    // Lê o cabeçalho da linha
-    CabecalhoLinha cabecalhoLinha;
-    leCabecalhoLinhaBinario(&cabecalhoLinha, linhasBinario);
-
     // Lê o cabeçalho da árvore-B
     CabecalhoArvoreB cabecalhoArvoreB;
     leCabecalhoArvoreB(&cabecalhoArvoreB, arvoreB);
 
     // Checa a integridade dos arquivos
-    if (arquivoFoiCorrompido(cabecalhoLinha.status) ||
-        arquivoFoiCorrompido(cabecalhoArvoreB.status)) {
+    if (arquivoFoiCorrompido(cabecalhoArvoreB.status)) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         fclose(linhasBinario);
         fclose(arvoreB);
         exit(0);
     }
-
-    // Configura os status dos arquivos
-    atualizaStatusBinario('0', linhasBinario);
     atualizaStatusBinario('0', arvoreB);
 
     // Recebe o número de inserções e posiciona o arquivo
@@ -960,23 +998,27 @@ void insertIntoIndexLinha() {
         Linha linha;
         leLinhaEntrada(&linha);
 
-        // Configura uma chave referente à linha
-        ChaveArvoreB chaveArvoreB;
-        chaveArvoreB.C = linha.codLinha;
-        chaveArvoreB.PR = ftell(linhasBinario);
+        // Cria a chave a ser inserida
+        ChaveArvoreB chave;
+        chave.C = linha.codLinha;
+        chave.PR = ftell(linhasBinario);
 
-        // Escreve a linha no arquivo de dados
+        // Escreve a linha no binário linha
         escreveLinhaBinario(&linha, linhasBinario);
         cabecalhoLinha.nroRegistros++;
 
-        // Insere a linha na árvore-B
-        insereArvoreB(chaveArvoreB, &cabecalhoArvoreB, arvoreB);
+        // Insere a chave na árvore-B
+        insereArvoreB(chave, &cabecalhoArvoreB, arvoreB);
     }
 
-    // Atualiza o cabeçalho dos arquivos
+    // Atualiza o cabeçalho da linha
+    cabecalhoLinha.status = '1';
     cabecalhoLinha.byteProxReg = ftell(linhasBinario);
     fseek(linhasBinario, 0, SEEK_SET);
     escreveCabecalhoLinhaBinario(&cabecalhoLinha, linhasBinario);
+
+    // Atualiza o cabeçalho da árvore-B
+    cabecalhoArvoreB.status = '1';
     escreveCabecalhoArvoreB(cabecalhoArvoreB, arvoreB);
 
     // Fecha os arquivos
