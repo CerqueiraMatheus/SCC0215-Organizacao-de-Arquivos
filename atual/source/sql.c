@@ -501,6 +501,7 @@ void insertIntoLinha() {
     binarioNaTela(nomeBinario);
 }
 
+
 /**
  * Create table index
  */
@@ -675,6 +676,7 @@ void createIndexLinha() {
     binarioNaTela(nomeArvoreB);
 }
 
+
 /**
  * Select From Where Index
  */
@@ -690,8 +692,14 @@ void selectFromWhereIndexVeiculo() {
         exit(0);
     }
 
+    // Checa se o campo é chave primária
+    if (strcmp(campo, "prefixo") != 0) {
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        exit(0);
+    }
+
     // Recebe o prefixo
-    char prefixo[100];
+    char prefixo[6];
     scan_quote_string(prefixo);
 
     // Abre o binário veículo
@@ -745,13 +753,22 @@ void selectFromWhereIndexLinha() {
     char nomeLinhasBinario[255];
     char nomeArvoreB[255];
     char campo[20];
-    int codLinha;
 
-    // Recebe os nomes dos arquivos, do campo e do código da linha
-    if (scanf("%s %s %s %d", nomeLinhasBinario, nomeArvoreB, campo, &codLinha) != 4) {
+    // Recebe os nomes dos arquivos e do campo
+    if (scanf("%s %s %s", nomeLinhasBinario, nomeArvoreB, campo) != 3) {
         printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
         exit(0);
     }
+
+    // Checa se o campo é chave primária
+    if (strcmp(campo, "codLinha") != 0) {
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        exit(0);
+    }
+
+    // Recebe o código da linha
+    int codLinha;
+    scanf("%d", &codLinha);
 
     // Abre o binário linha
     FILE *linhasBinario = fopen(nomeLinhasBinario, "rb");
@@ -799,6 +816,7 @@ void selectFromWhereIndexLinha() {
     fclose(linhasBinario);
     fclose(arvoreB);
 }
+
 
 /**
  * Insert Into Index
