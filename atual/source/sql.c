@@ -746,8 +746,15 @@ void selectFromWhereIndexVeiculo() {
         fseek(veiculosBinario, offset, SEEK_SET);
         leVeiculoBinario(&veiculo, veiculosBinario);
 
-        // Imprime o veículo
-        imprimeVeiculo(&cabecalhoVeiculo, &veiculo);
+        // Caso não removido
+        if (!registroFoiRemovido(veiculo.removido)) {
+            imprimeVeiculo(&cabecalhoVeiculo, &veiculo);
+        }
+
+        // Caso removido
+        else {
+            printf("%s\n", MENSAGEM_REGISTRO_INEXISTENTE);
+        }
     }
 
     // Caso não encontrado
@@ -829,8 +836,15 @@ void selectFromWhereIndexLinha() {
         fseek(linhasBinario, offset, SEEK_SET);
         leLinhaBinario(&linha, linhasBinario);
 
-        // Imprime a linha
-        imprimeLinha(&cabecalhoLinha, &linha);
+        // Caso não removido
+        if (!registroFoiRemovido(linha.removido)) {
+            imprimeLinha(&cabecalhoLinha, &linha);
+        }
+
+        // Caso removido
+        else {
+            printf("%s\n", MENSAGEM_REGISTRO_INEXISTENTE);
+        }
     }
 
     // Caso não encontrado

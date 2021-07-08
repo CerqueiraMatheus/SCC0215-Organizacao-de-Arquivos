@@ -26,11 +26,11 @@ void selectFromWhereLinha();
 void insertIntoVeiculo();
 void insertIntoLinha();
 
-/** Create Table Index **/
+/** Create Index **/
 void createIndexVeiculo();
 void createIndexLinha();
 
-/** Create Where Index **/
+/** Select From Where Index **/
 void selectFromWhereIndexVeiculo();
 void selectFromWhereIndexLinha();
 
