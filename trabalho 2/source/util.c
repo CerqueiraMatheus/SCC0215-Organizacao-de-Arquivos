@@ -80,17 +80,6 @@ int leInteiroEntrada() {
 
 /**
  * 
- * Conversões
- * 
- */
-
-// Retorna uma string convertida em inteiro (-1 caso string = "")
-int stringParaInteiro(const char *string) {
-    return strcmp(string, "") == 0 ? -1 : atoi(string);
-}
-
-/**
- * 
  * Checagem de estados
  * 
  */

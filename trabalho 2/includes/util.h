@@ -22,16 +22,9 @@ void atualizaStatusBinario(char status, FILE *binario);
 // Leitura de entradas
 int leInteiroEntrada();
 
-// Conversões
-int stringParaInteiro(const char *string);
-
 // Checagem de estados
 bool arquivoFoiCorrompido(char status);
 bool registroFoiRemovido(char removido);
-
-// Comparação de valores
-bool comparaCampoString(const char *campo, const char *campoRegistro, const char *valor, const char *valorRegistro);
-bool comparaCampoInteiro(const char *campo, const char *campoRegistro, int valor, int valorRegistro);
 
 // Impressão de resultados
 void imprimeCampoString(const char *campo, int tamanho);
