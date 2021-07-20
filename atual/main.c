@@ -59,7 +59,21 @@ int main() {
         case 14:
             insertIntoIndexLinha();
             break;
-
+        case 15:
+            selectFromJoinOnLoop();
+            break;
+        case 16:
+            selectFromJoinOnIndex();
+            break;
+        case 17:
+            orderByVeiculo();
+            break;
+        case 18:
+            orderByLinha();
+            break;
+        case 19:
+            selectFromJoinOnMerge();
+            break;
         default:
             printf("Falha na identificacao da funcionalidade %d.", funcionalidade);
             exit(0);

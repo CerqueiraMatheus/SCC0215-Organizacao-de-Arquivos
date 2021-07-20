@@ -38,4 +38,13 @@ void selectFromWhereIndexLinha();
 void insertIntoIndexVeiculo();
 void insertIntoIndexLinha();
 
+/** Order By **/
+void orderByVeiculo();
+void orderByLinha();
+
+/** Select From Join On **/
+void selectFromJoinOnLoop();
+void selectFromJoinOnIndex();
+void selectFromJoinOnMerge();
+
 #endif  // SQL_H

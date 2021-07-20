@@ -503,7 +503,9 @@ void insertIntoLinha() {
 
 
 /**
+ *
  * Create Index
+ * 
  */
 
 void createIndexVeiculo() {
@@ -674,7 +676,9 @@ void createIndexLinha() {
 
 
 /**
+ *
  * Select From Where Index
+ * 
  */
 
 void selectFromWhereIndexVeiculo() {
@@ -859,7 +863,9 @@ void selectFromWhereIndexLinha() {
 
 
 /**
+ *
  * Insert Into Index
+ * 
  */
 
 void insertIntoIndexVeiculo() {
@@ -1040,4 +1046,38 @@ void insertIntoIndexLinha() {
     fclose(arvoreB);
 
     binarioNaTela(nomeArvoreB);
+}
+
+
+/**
+ * 
+ * Order By
+ * 
+ */
+
+void orderByVeiculo() {
+
+}
+
+void orderByLinha() {
+
+}
+
+
+/**
+ * 
+ * Select From Join On
+ * 
+ */
+
+void selectFromJoinOnLoop() {
+
+}
+
+void selectFromJoinOnIndex() {
+
+}
+
+void selectFromJoinOnMerge() {
+
 }
