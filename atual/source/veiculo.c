@@ -12,8 +12,11 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include "util.h"
+
+static int _comparaVeiculos(const void *primeiro, const void *segundo);
 
 /**
  *
@@ -65,6 +68,22 @@ void escreveCabecalhoVeiculoBinario(CabecalhoVeiculo *cabecalhoVeiculo, FILE *bi
     fwrite(cabecalhoVeiculo->descreveModelo, sizeof(char), 17, binario);
     fwrite(cabecalhoVeiculo->descreveCategoria, sizeof(char), 20, binario);
 }
+
+void criaCabecalhoVeiculoNovo(CabecalhoVeiculo *novo, CabecalhoVeiculo original) {
+    novo->status = '0';
+    novo->byteProxReg = 0;
+
+    strcpy(novo->descrevePrefixo, original.descrevePrefixo);
+    strcpy(novo->descreveData, original.descreveData);
+    strcpy(novo->descreveLugares, original.descreveLugares);
+    strcpy(novo->descreveLinha, original.descreveLinha);
+    strcpy(novo->descreveModelo, original.descreveModelo);
+    strcpy(novo->descreveCategoria, original.descreveCategoria);
+
+    novo->nroRegistros = original.nroRegistros;
+    novo->nroRegRemovidos = 0;
+}
+
 
 /**
  *
@@ -202,4 +221,44 @@ void imprimeVeiculo(CabecalhoVeiculo *cabecalhoVeiculo, Veiculo *veiculo) {
     imprimeCampoInteiro(veiculo->quantidadeLugares);
 
     printf("\n");
+}
+
+
+/**
+ *
+ * Vetores
+ * 
+ */
+
+void leVeiculosValidosBinario(Veiculo *veiculos, int total, FILE *binario) {
+    for (int i = 0, j = 0; i < total; i++) {
+        Veiculo temporario;
+        if (leVeiculoBinario(&temporario, binario) == true) {
+            veiculos[j++] = temporario;
+        }
+        else {
+            fseek(binario, temporario.tamanhoRegistro, SEEK_CUR);
+        }
+    }
+}
+
+void escreveVeiculosBinario(Veiculo *veiculos, int numero, FILE *binario) {
+    for (int i = 0; i < numero; i++) {
+        escreveVeiculoBinario(&veiculos[i], binario);
+    }
+}
+
+void ordenaVeiculos(Veiculo *veiculos, int numero) {
+    qsort(veiculos, numero, sizeof(Veiculo), _comparaVeiculos);
+}
+
+
+/**
+ *
+ * Auxiliares
+ * 
+ */
+
+static int _comparaVeiculos(const void *primeiro, const void *segundo) {
+    return ((Veiculo *)primeiro)->codLinha - ((Veiculo *)segundo)->codLinha;
 }

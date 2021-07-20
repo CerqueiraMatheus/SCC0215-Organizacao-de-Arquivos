@@ -43,6 +43,7 @@ typedef struct {
 void leCabecalhoVeiculoCsv(CabecalhoVeiculo *cabecalhoVeiculo, FILE *csv);
 void leCabecalhoVeiculoBinario(CabecalhoVeiculo *cabecalhoVeiculo, FILE *binario);
 void escreveCabecalhoVeiculoBinario(CabecalhoVeiculo *cabecalhoVeiculo, FILE *binario);
+void criaCabecalhoVeiculoNovo(CabecalhoVeiculo *novo, CabecalhoVeiculo original);
 
 /** Corpo do Veículo **/
 int leVeiculoCsv(Veiculo *veiculo, FILE *csv);
@@ -51,5 +52,10 @@ void leVeiculoEntrada(Veiculo *veiculo);
 void escreveVeiculoBinario(Veiculo *veiculo, FILE *binario);
 bool comparaVeiculo(Veiculo *veiculo, const char *campo, const char *valor);
 void imprimeVeiculo(CabecalhoVeiculo *cabecalhoVeiculo, Veiculo *veiculo);
+
+/** Vetores **/
+void leVeiculosValidosBinario(Veiculo *veiculos, int total, FILE *binario);
+void escreveVeiculosBinario(Veiculo *veiculos, int numero, FILE *binario);
+void ordenaVeiculos(Veiculo *veiculos, int numero);
 
 #endif  // VEICULO_H

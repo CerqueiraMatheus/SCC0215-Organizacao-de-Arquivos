@@ -129,6 +129,16 @@ bool registroFoiRemovido(char removido) {
 
 /**
  * 
+ * Checagem de campos
+ * 
+ */
+
+bool ehCampoOrdenavel(const char *campo) {
+    return strcmp(campo, "codLinha") == 0;
+}
+
+/**
+ * 
  * Comparação de valores
  * 
  */

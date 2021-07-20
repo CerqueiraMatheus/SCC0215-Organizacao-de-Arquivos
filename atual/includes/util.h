@@ -33,6 +33,9 @@ int stringParaInteiro(const char *string);
 bool arquivoFoiCorrompido(char status);
 bool registroFoiRemovido(char removido);
 
+/** Checagem de campos **/
+bool ehCampoOrdenavel(const char *campo);
+
 /** Comparação de valores **/
 bool comparaCampoString(const char *campo, const char *campoRegistro, const char *valor, const char *valorRegistro);
 bool comparaCampoInteiro(const char *campo, const char *campoRegistro, int valor, int valorRegistro);

@@ -1056,7 +1056,63 @@ void insertIntoIndexLinha() {
  */
 
 void orderByVeiculo() {
+    char nomeArquivoOriginal[255];
+    char nomeArquivoOrdenado[255];
+    char campo[20];
 
+    if (scanf("%s %s %s", nomeArquivoOriginal, nomeArquivoOrdenado, campo) != 3) {
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        exit(0);
+    }
+
+    if (!ehCampoOrdenavel(campo)) {
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        exit(0);
+    }
+
+    FILE *arquivoOriginal = fopen(nomeArquivoOriginal, "rb");
+    if (arquivoOriginal == NULL) {
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        exit(0);
+    }
+
+    CabecalhoVeiculo cabecalhoOriginal;
+    leCabecalhoVeiculoBinario(&cabecalhoOriginal, arquivoOriginal);
+
+    if (arquivoFoiCorrompido(cabecalhoOriginal.status)) {
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        fclose(arquivoOriginal);
+        exit(0);
+    }
+
+    FILE *arquivoOrdenado = fopen(nomeArquivoOrdenado, "wb");
+    if (arquivoOrdenado == NULL) {
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        fclose(arquivoOriginal);
+        exit(0);
+    }
+
+    CabecalhoVeiculo cabecalhoOrdenado;
+    criaCabecalhoVeiculoNovo(&cabecalhoOrdenado, cabecalhoOriginal);
+    escreveCabecalhoVeiculoBinario(&cabecalhoOrdenado, arquivoOrdenado);
+
+    int nroTotalRegistros = cabecalhoOriginal.nroRegistros + cabecalhoOriginal.nroRegRemovidos;
+
+    Veiculo veiculos[cabecalhoOrdenado.nroRegistros];
+    leVeiculosValidosBinario(veiculos, nroTotalRegistros, arquivoOriginal);
+    ordenaVeiculos(veiculos, cabecalhoOrdenado.nroRegistros);
+
+    escreveVeiculosBinario(veiculos, cabecalhoOrdenado.nroRegistros, arquivoOrdenado);
+
+    cabecalhoOrdenado.status = '1';
+    cabecalhoOrdenado.byteProxReg = ftell(arquivoOrdenado);
+    fseek(arquivoOrdenado, 0, SEEK_SET);
+    escreveCabecalhoVeiculoBinario(&cabecalhoOrdenado, arquivoOrdenado);
+
+    fclose(arquivoOriginal);
+    fclose(arquivoOrdenado);
+
+    binarioNaTela(nomeArquivoOrdenado);
 }
 
 void orderByLinha() {
