@@ -219,8 +219,6 @@ void imprimeVeiculo(CabecalhoVeiculo *cabecalhoVeiculo, Veiculo *veiculo) {
 
     printf("%s: ", cabecalhoVeiculo->descreveLugares);
     imprimeCampoInteiro(veiculo->quantidadeLugares);
-
-    printf("\n");
 }
 
 

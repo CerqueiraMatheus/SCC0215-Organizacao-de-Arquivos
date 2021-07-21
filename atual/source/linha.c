@@ -174,6 +174,4 @@ void imprimeLinha(CabecalhoLinha *cabecalhoLinha, Linha *linha) {
 
     printf("%s: ", cabecalhoLinha->descreveCartao);
     imprimeAceitaCartao(linha->aceitaCartao);
-
-    printf("\n");
 }
