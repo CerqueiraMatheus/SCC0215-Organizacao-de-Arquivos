@@ -501,7 +501,6 @@ void insertIntoLinha() {
     binarioNaTela(nomeBinario);
 }
 
-
 /**
  *
  * Create Index
@@ -673,7 +672,6 @@ void createIndexLinha() {
 
     binarioNaTela(nomeArvoreB);
 }
-
 
 /**
  *
@@ -861,7 +859,6 @@ void selectFromWhereIndexLinha() {
     fclose(arvoreB);
 }
 
-
 /**
  *
  * Insert Into Index
@@ -1048,7 +1045,6 @@ void insertIntoIndexLinha() {
     binarioNaTela(nomeArvoreB);
 }
 
-
 /**
  * 
  * Order By
@@ -1116,9 +1112,7 @@ void orderByVeiculo() {
 }
 
 void orderByLinha() {
-
 }
-
 
 /**
  * 
@@ -1127,13 +1121,252 @@ void orderByLinha() {
  */
 
 void selectFromJoinOnLoop() {
+    char nomeArquivoVeiculo[255];
+    char nomeArquivoLinha[255];
+    char nomeCampoVeiculo[20];
+    char nomeCampoLinha[20];
 
+    // Leitura dos campos
+    if (scanf("%s %s %s %s",
+              nomeArquivoVeiculo, nomeArquivoLinha, nomeCampoVeiculo, nomeCampoLinha) != 4) {
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        exit(0);
+    }
+
+    // Abertura do arquivo de veículos
+    FILE *binarioVeiculo = fopen(nomeArquivoVeiculo, "rb");
+    if (binarioVeiculo == NULL) {
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        exit(0);
+    }
+
+    // Abertura do arquivo de linhas
+    FILE *binarioLinha = fopen(nomeArquivoLinha, "rb");
+    if (binarioLinha == NULL) {
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        fclose(binarioVeiculo);
+        exit(0);
+    }
+
+    // Leitura do cabeçalho do veículo
+    CabecalhoVeiculo cabecalhoVeiculo;
+    leCabecalhoVeiculoBinario(&cabecalhoVeiculo, binarioVeiculo);
+
+    // Leitura do cabeçalho da linha
+    CabecalhoLinha cabecalhoLinha;
+    leCabecalhoLinhaBinario(&cabecalhoLinha, binarioLinha);
+
+    // Checa se os arquivos foram corrompidos
+    if (arquivoFoiCorrompido(cabecalhoVeiculo.status) ||
+        arquivoFoiCorrompido(cabecalhoLinha.status)) {
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        fclose(binarioVeiculo);
+        fclose(binarioLinha);
+        exit(0);
+    }
+
+    // Checa se os campos são válidos
+    if (strcmp(nomeCampoLinha, "codLinha") != 0 ||
+        strcmp(nomeCampoLinha, nomeCampoVeiculo) != 0) {
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        fclose(binarioVeiculo);
+        fclose(binarioLinha);
+        exit(0);
+    }
+
+    // Caso não haja veículo ou linha
+    if (cabecalhoLinha.nroRegistros == 0 || cabecalhoVeiculo.nroRegistros == 0) {
+        printf("%s\n", MENSAGEM_REGISTRO_INEXISTENTE);
+        fclose(binarioVeiculo);
+        fclose(binarioLinha);
+        exit(0);
+    }
+
+    // Armazena o início dos registros de linha
+    long long int cur_offset = ftell(binarioLinha);
+
+    // Contabiliza o total de registros
+    int registrosVeiculo = cabecalhoVeiculo.nroRegistros + cabecalhoVeiculo.nroRegRemovidos;
+    int registrosLinha = cabecalhoLinha.nroRegistros + cabecalhoLinha.nroRegRemovidos;
+
+    // Operador para encontro
+    bool encontrado = false;
+
+    // Percorre os veículos
+    Veiculo veiculo;
+    for (int i = 0; i < registrosVeiculo; i++) {
+
+        // Caso seja um veículo válido
+        if (leVeiculoBinario(&veiculo, binarioVeiculo)) {
+
+            // Percorre as linhas
+            Linha linha;
+            for (int j = 0; j < registrosLinha; j++) {
+
+                // Caso seja uma linha válida
+                if (leLinhaBinario(&linha, binarioLinha)) {
+
+                    // Caso haja o "match"
+                    if (veiculo.codLinha == linha.codLinha) {
+                        encontrado = true;
+                        imprimeVeiculo(&cabecalhoVeiculo, &veiculo);
+                        imprimeLinha(&cabecalhoLinha, &linha);
+                        printf("\n");
+                    }
+                }
+
+                // Pula a linha
+                else {
+                    fseek(binarioLinha, linha.tamanhoRegistro, SEEK_CUR);
+                }
+            }
+
+            // Reinicia o arquivo da linha
+            fseek(binarioLinha, cur_offset, SEEK_SET);
+        }
+
+        // Pula o veículo
+        else {
+            fseek(binarioVeiculo, veiculo.tamanhoRegistro, SEEK_CUR);
+        }
+    }
+
+    // Caso não tenha ocorrido match
+    if (!encontrado) printf("%s\n", MENSAGEM_REGISTRO_INEXISTENTE);
+
+    // Fecha os arquivos
+    fclose(binarioVeiculo);
+    fclose(binarioLinha);
 }
 
 void selectFromJoinOnIndex() {
+    char nomeArquivoVeiculo[255];
+    char nomeArquivoLinha[255];
+    char nomeCampoVeiculo[20];
+    char nomeCampoLinha[20];
+    char nomeIndiceLinha[255];
 
+    // Leitura dos campos
+    if (scanf("%s %s %s %s %s",
+              nomeArquivoVeiculo, nomeArquivoLinha, nomeCampoVeiculo,
+              nomeCampoLinha, nomeIndiceLinha) != 5) {
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        exit(0);
+    }
+
+    // Abertura do arquivo de veículos
+    FILE *binarioVeiculo = fopen(nomeArquivoVeiculo, "rb");
+    if (binarioVeiculo == NULL) {
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        exit(0);
+    }
+
+    // Abertura do arquivo de linhas
+    FILE *binarioLinha = fopen(nomeArquivoLinha, "rb");
+    if (binarioLinha == NULL) {
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        fclose(binarioVeiculo);
+        exit(0);
+    }
+
+    // Abertura do arquivo de índices de linhas
+    FILE *binarioIndiceLinha = fopen(nomeIndiceLinha, "rb");
+    if (binarioIndiceLinha == NULL) {
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        fclose(binarioVeiculo);
+        fclose(binarioLinha);
+        exit(0);
+    }
+
+    // Leitura do cabeçalho do veículo
+    CabecalhoVeiculo cabecalhoVeiculo;
+    leCabecalhoVeiculoBinario(&cabecalhoVeiculo, binarioVeiculo);
+
+    // Leitura do cabeçalho da linha
+    CabecalhoLinha cabecalhoLinha;
+    leCabecalhoLinhaBinario(&cabecalhoLinha, binarioLinha);
+
+    // Leitura do cabeçalho do índice da linha
+    CabecalhoArvoreB cabecalhoIndiceLinha;
+    leCabecalhoArvoreB(&cabecalhoIndiceLinha, binarioIndiceLinha);
+
+    // Checa se os arquivos foram corrompidos
+    if (arquivoFoiCorrompido(cabecalhoVeiculo.status) ||
+        arquivoFoiCorrompido(cabecalhoLinha.status) ||
+        arquivoFoiCorrompido(cabecalhoIndiceLinha.status)) {
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        fclose(binarioVeiculo);
+        fclose(binarioLinha);
+        fclose(binarioIndiceLinha);
+        exit(0);
+    }
+
+    // Checa se os campos são válidos
+    if (strcmp(nomeCampoLinha, "codLinha") != 0 ||
+        strcmp(nomeCampoLinha, nomeCampoVeiculo) != 0) {
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        fclose(binarioVeiculo);
+        fclose(binarioLinha);
+        fclose(binarioIndiceLinha);
+        exit(0);
+    }
+
+    // Caso não haja veículo
+    if (cabecalhoVeiculo.nroRegistros == 0) {
+        printf("%s\n", MENSAGEM_REGISTRO_INEXISTENTE);
+        fclose(binarioVeiculo);
+        fclose(binarioLinha);
+        fclose(binarioIndiceLinha);
+        exit(0);
+    }
+
+    // Contabiliza o total de registros
+    int registrosVeiculo = cabecalhoVeiculo.nroRegistros + cabecalhoVeiculo.nroRegRemovidos;
+
+    // Operador para encontro
+    bool encontrado = false;
+
+    // Percorre os veículos
+    Veiculo veiculo;
+    for (int i = 0; i < registrosVeiculo; i++) {
+
+        // Se o veículo não foi excluído
+        if (leVeiculoBinario(&veiculo, binarioVeiculo)) {
+
+            // Caso a busca retorne um offset válido
+            long long int offset;
+            if ((offset = buscaArvoreB(veiculo.codLinha,
+                                       cabecalhoIndiceLinha.noRaiz,
+                                       binarioIndiceLinha)) != NAO_ENCONTRADO) {
+                                           
+                // Executa a leitura da linha
+                Linha linha;
+                fseek(binarioLinha, offset, SEEK_SET);
+
+                // Caso a linha seja válida
+                if (leLinhaBinario(&linha, binarioLinha)) {
+                    encontrado = true;
+                    imprimeVeiculo(&cabecalhoVeiculo, &veiculo);
+                    imprimeLinha(&cabecalhoLinha, &linha);
+                    printf("\n");
+                }
+            }
+        }
+
+        // Pula o veículo
+        else {
+            fseek(binarioVeiculo, veiculo.tamanhoRegistro, SEEK_CUR);
+        }
+    }
+
+    // Caso não tenha ocorrido match
+    if (!encontrado) printf("%s\n", MENSAGEM_REGISTRO_INEXISTENTE);
+
+    // Fecha os arquivos
+    fclose(binarioVeiculo);
+    fclose(binarioLinha);
+    fclose(binarioIndiceLinha);
 }
 
 void selectFromJoinOnMerge() {
-
 }
