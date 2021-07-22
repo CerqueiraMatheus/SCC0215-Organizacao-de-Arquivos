@@ -12,15 +12,12 @@
 #include <string.h>
 #include <stdio.h>
 
+#include "mensagem.h"
 #include "veiculo.h"
 #include "arvoreb.h"
 #include "linha.h"
 #include "util.h"
 #include "sql.h"
-
-
-const char *MENSAGEM_FALHA_PROCESSAMENTO = "Falha no processamento do arquivo.";
-const char *MENSAGEM_REGISTRO_INEXISTENTE = "Registro inexistente.";
 
 
 /**
@@ -35,7 +32,7 @@ void createTableVeiculo() {
 
     // Recebe os nomes dos arquivos
     if (scanf("%s %s", nomeCsv, nomeBinario) != 2) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        printf("%s\n", FALHA_PROCESSAMENTO);
         exit(0);
     }
 
@@ -82,7 +79,7 @@ void createTableLinha() {
 
     // Recebe os nomes dos arquivos
     if (scanf("%s %s", nomeCsv, nomeBinario) != 2) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        printf("%s\n", FALHA_PROCESSAMENTO);
         exit(0);
     }
 
@@ -136,7 +133,7 @@ void selectFromVeiculo() {
 
     // Recebe o nome do arquivo
     if (scanf("%s", nomeBinario) != 1) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        printf("%s\n", FALHA_PROCESSAMENTO);
         exit(0);
     }
 
@@ -148,7 +145,7 @@ void selectFromVeiculo() {
 
     // Checa a existência de registros não removidos
     if (cabecalhoVeiculo.nroRegistros == 0) {
-        printf("%s\n", MENSAGEM_REGISTRO_INEXISTENTE);
+        printf("%s\n", REGISTRO_INEXISTENTE);
         atualizaStatusBinario('1', binario);
         fclose(binario);
         exit(0);
@@ -175,7 +172,7 @@ void selectFromLinha() {
 
     // Recebe o nome do arquivo
     if (scanf("%s", nomeBinario) != 1) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        printf("%s\n", FALHA_PROCESSAMENTO);
         exit(0);
     }
 
@@ -187,7 +184,7 @@ void selectFromLinha() {
 
     // Checa a existência de registros não removidos
     if (cabecalhoLinha.nroRegistros == 0) {
-        printf("%s\n", MENSAGEM_REGISTRO_INEXISTENTE);
+        printf("%s\n", REGISTRO_INEXISTENTE);
         atualizaStatusBinario('1', binario);
         fclose(binario);
         exit(0);
@@ -222,7 +219,7 @@ void selectFromWhereVeiculo() {
 
     // Recebe os nomes do arquivo e do campo
     if (scanf("%s %s", nomeBinario, campo) != 2) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        printf("%s\n", FALHA_PROCESSAMENTO);
         exit(0);
     }
 
@@ -238,7 +235,7 @@ void selectFromWhereVeiculo() {
 
     // Checa a existência de registros não removidos
     if (cabecalhoVeiculo.nroRegistros == 0) {
-        printf("%s\n", MENSAGEM_REGISTRO_INEXISTENTE);
+        printf("%s\n", REGISTRO_INEXISTENTE);
         atualizaStatusBinario('1', binario);
         fclose(binario);
         exit(0);
@@ -264,7 +261,7 @@ void selectFromWhereVeiculo() {
     }
 
     if (!houveCorrespondencia)
-        printf("%s\n", MENSAGEM_REGISTRO_INEXISTENTE);
+        printf("%s\n", REGISTRO_INEXISTENTE);
 
     atualizaStatusBinario('1', binario);
     fclose(binario);
@@ -276,7 +273,7 @@ void selectFromWhereLinha() {
 
     // Recebe os nomes do arquivo e do campo
     if (scanf("%s %s", nomeBinario, campo) != 2) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        printf("%s\n", FALHA_PROCESSAMENTO);
         exit(0);
     }
 
@@ -292,7 +289,7 @@ void selectFromWhereLinha() {
 
     // Checa a existência de registros não removidos
     if (cabecalhoLinha.nroRegistros == 0) {
-        printf("%s\n", MENSAGEM_REGISTRO_INEXISTENTE);
+        printf("%s\n", REGISTRO_INEXISTENTE);
         atualizaStatusBinario('1', binario);
         fclose(binario);
         exit(0);
@@ -318,7 +315,7 @@ void selectFromWhereLinha() {
     }
 
     if (!houveCorrespondencia)
-        printf("%s\n", MENSAGEM_REGISTRO_INEXISTENTE);
+        printf("%s\n", REGISTRO_INEXISTENTE);
 
     atualizaStatusBinario('1', binario);
     fclose(binario);
@@ -336,7 +333,7 @@ void insertIntoVeiculo() {
 
     // Recebe o nome do arquivo
     if (scanf("%s", nomeBinario) != 1) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        printf("%s\n", FALHA_PROCESSAMENTO);
         exit(0);
     }
 
@@ -373,7 +370,7 @@ void insertIntoLinha() {
 
     // Recebe o nome do arquivo
     if (scanf("%s", nomeBinario) != 1) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        printf("%s\n", FALHA_PROCESSAMENTO);
         exit(0);
     }
 
@@ -418,7 +415,7 @@ void createIndexVeiculo() {
 
     // Recebe o nome dos arquivos
     if (scanf("%s %s", nomeVeiculosBinario, nomeArvoreB) != 2) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        printf("%s\n", FALHA_PROCESSAMENTO);
         exit(0);
     }
 
@@ -429,7 +426,7 @@ void createIndexVeiculo() {
 
     // Checa a existência de registros não removidos
     if (cabecalhoVeiculo.nroRegistros == 0) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        printf("%s\n", FALHA_PROCESSAMENTO);
         fclose(veiculosBinario);
         exit(0);
     }
@@ -477,7 +474,7 @@ void createIndexLinha() {
 
     // Recebe o nome dos arquivos
     if (scanf("%s %s", nomeLinhasBinario, nomeArvoreB) != 2) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        printf("%s\n", FALHA_PROCESSAMENTO);
         exit(0);
     }
 
@@ -488,7 +485,7 @@ void createIndexLinha() {
 
     // Checa a existência de registros não removidos
     if (cabecalhoLinha.nroRegistros == 0) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        printf("%s\n", FALHA_PROCESSAMENTO);
         fclose(linhasBinario);
         exit(0);
     }
@@ -544,13 +541,13 @@ void selectFromWhereIndexVeiculo() {
 
     // Recebe os nomes dos arquivos e do campo
     if (scanf("%s %s %s", nomeVeiculosBinario, nomeArvoreB, campo) != 3) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        printf("%s\n", FALHA_PROCESSAMENTO);
         exit(0);
     }
 
     // Checa se o campo é chave primária
     if (strcmp(campo, "prefixo") != 0) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        printf("%s\n", FALHA_PROCESSAMENTO);
         exit(0);
     }
 
@@ -584,13 +581,13 @@ void selectFromWhereIndexVeiculo() {
 
         // Caso removido
         else {
-            printf("%s\n", MENSAGEM_REGISTRO_INEXISTENTE);
+            printf("%s\n", REGISTRO_INEXISTENTE);
         }
     }
 
     // Caso não encontrado
     else {
-        printf("%s\n", MENSAGEM_REGISTRO_INEXISTENTE);
+        printf("%s\n", REGISTRO_INEXISTENTE);
     }
 
     // Fecha os arquivos
@@ -605,13 +602,13 @@ void selectFromWhereIndexLinha() {
 
     // Recebe os nomes dos arquivos e do campo
     if (scanf("%s %s %s", nomeLinhasBinario, nomeArvoreB, campo) != 3) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        printf("%s\n", FALHA_PROCESSAMENTO);
         exit(0);
     }
 
     // Checa se o campo é chave primária
     if (strcmp(campo, "codLinha") != 0) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        printf("%s\n", FALHA_PROCESSAMENTO);
         exit(0);
     }
 
@@ -645,13 +642,13 @@ void selectFromWhereIndexLinha() {
 
         // Caso removido
         else {
-            printf("%s\n", MENSAGEM_REGISTRO_INEXISTENTE);
+            printf("%s\n", REGISTRO_INEXISTENTE);
         }
     }
 
     // Caso não encontrado
     else {
-        printf("%s\n", MENSAGEM_REGISTRO_INEXISTENTE);
+        printf("%s\n", REGISTRO_INEXISTENTE);
     }
 
     // Fecha os arquivos
@@ -672,7 +669,7 @@ void insertIntoIndexVeiculo() {
 
     // Recebe os nomes dos arquivos
     if (scanf("%s %s", nomeVeiculosBinario, nomeArvoreB) != 2) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        printf("%s\n", FALHA_PROCESSAMENTO);
         exit(0);
     }
 
@@ -733,7 +730,7 @@ void insertIntoIndexLinha() {
 
     // Recebe os nome do arquivos
     if (scanf("%s %s", nomeLinhasBinario, nomeArvoreB) != 2) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        printf("%s\n", FALHA_PROCESSAMENTO);
         exit(0);
     }
 
@@ -801,12 +798,12 @@ void orderByVeiculo() {
     char campo[20];
 
     if (scanf("%s %s %s", nomeArquivoOriginal, nomeArquivoOrdenado, campo) != 3) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        printf("%s\n", FALHA_PROCESSAMENTO);
         exit(0);
     }
 
     if (!ehCampoOrdenavel(campo)) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        printf("%s\n", FALHA_PROCESSAMENTO);
         exit(0);
     }
 
@@ -858,7 +855,7 @@ void selectFromJoinOnLoop() {
     // Leitura dos campos
     if (scanf("%s %s %s %s",
               nomeArquivoVeiculo, nomeArquivoLinha, nomeCampoVeiculo, nomeCampoLinha) != 4) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        printf("%s\n", FALHA_PROCESSAMENTO);
         exit(0);
     }
 
@@ -875,7 +872,7 @@ void selectFromJoinOnLoop() {
     // Checa se os campos são válidos
     if (strcmp(nomeCampoLinha, "codLinha") != 0 ||
         strcmp(nomeCampoLinha, nomeCampoVeiculo) != 0) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        printf("%s\n", FALHA_PROCESSAMENTO);
         fclose(binarioVeiculo);
         fclose(binarioLinha);
         exit(0);
@@ -883,7 +880,7 @@ void selectFromJoinOnLoop() {
 
     // Caso não haja veículo ou linha
     if (cabecalhoLinha.nroRegistros == 0 || cabecalhoVeiculo.nroRegistros == 0) {
-        printf("%s\n", MENSAGEM_REGISTRO_INEXISTENTE);
+        printf("%s\n", REGISTRO_INEXISTENTE);
         fclose(binarioVeiculo);
         fclose(binarioLinha);
         exit(0);
@@ -927,7 +924,7 @@ void selectFromJoinOnLoop() {
     }
 
     // Caso não tenha ocorrido match
-    if (!encontrado) printf("%s\n", MENSAGEM_REGISTRO_INEXISTENTE);
+    if (!encontrado) printf("%s\n", REGISTRO_INEXISTENTE);
 
     // Fecha os arquivos
     fclose(binarioVeiculo);
@@ -945,7 +942,7 @@ void selectFromJoinOnIndex() {
     if (scanf("%s %s %s %s %s",
               nomeArquivoVeiculo, nomeArquivoLinha, nomeCampoVeiculo,
               nomeCampoLinha, nomeIndiceLinha) != 5) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        printf("%s\n", FALHA_PROCESSAMENTO);
         exit(0);
     }
 
@@ -967,7 +964,7 @@ void selectFromJoinOnIndex() {
     // Checa se os campos são válidos
     if (strcmp(nomeCampoLinha, "codLinha") != 0 ||
         strcmp(nomeCampoLinha, nomeCampoVeiculo) != 0) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        printf("%s\n", FALHA_PROCESSAMENTO);
         fclose(binarioVeiculo);
         fclose(binarioLinha);
         fclose(binarioIndiceLinha);
@@ -976,7 +973,7 @@ void selectFromJoinOnIndex() {
 
     // Caso não haja veículo
     if (cabecalhoVeiculo.nroRegistros == 0) {
-        printf("%s\n", MENSAGEM_REGISTRO_INEXISTENTE);
+        printf("%s\n", REGISTRO_INEXISTENTE);
         fclose(binarioVeiculo);
         fclose(binarioLinha);
         fclose(binarioIndiceLinha);
@@ -1018,7 +1015,7 @@ void selectFromJoinOnIndex() {
     }
 
     // Caso não tenha ocorrido match
-    if (!encontrado) printf("%s\n", MENSAGEM_REGISTRO_INEXISTENTE);
+    if (!encontrado) printf("%s\n", REGISTRO_INEXISTENTE);
 
     // Fecha os arquivos
     fclose(binarioVeiculo);
@@ -1027,5 +1024,5 @@ void selectFromJoinOnIndex() {
 }
 
 void selectFromJoinOnMerge() {
-    
+
 }

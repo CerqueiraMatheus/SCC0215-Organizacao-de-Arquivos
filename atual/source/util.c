@@ -7,17 +7,15 @@
  * 
  */
 
-#include "util.h"
-
-#include <ctype.h>
 #include <stdbool.h>
-#include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <stdarg.h>
+#include <string.h>
+#include <stdio.h>
+#include <ctype.h>
 
-static const char *MENSAGEM_FALHA_PROCESSAMENTO = "Falha no processamento do arquivo.";
-static const char *MENSAGEM_CAMPO_NULO = "campo com valor nulo";
+#include "mensagem.h"
+#include "util.h"
 
 
 /**
@@ -40,7 +38,7 @@ FILE *abreArquivo(const char *nome, const char *modo, int nroFechamentos, ...) {
 
         va_end(fechamentos);
 
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        printf("%s\n", FALHA_PROCESSAMENTO);
         exit(0);
     }
 
@@ -59,7 +57,7 @@ void validaArquivo(char status, int nroFechamentos, ...) {
 
         va_end(fechamentos);
 
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        printf("%s\n", FALHA_PROCESSAMENTO);
         exit(0);
     }
 }
@@ -196,7 +194,7 @@ bool comparaCampoInteiro(const char *campo, const char *campoRegistro, int valor
 // Imprime um campo string (trata casos nulos)
 void imprimeCampoString(const char *campo, int tamanho) {
     if (tamanho == 0)
-        printf("%s\n", MENSAGEM_CAMPO_NULO);
+        printf("%s\n", CAMPO_NULO);
     else
         printf("%s\n", campo);
 }
@@ -204,7 +202,7 @@ void imprimeCampoString(const char *campo, int tamanho) {
 // Imprime um campo inteiro (trata casos iguais a -1)
 void imprimeCampoInteiro(int campo) {
     if (campo == -1)
-        printf("%s\n", MENSAGEM_CAMPO_NULO);
+        printf("%s\n", CAMPO_NULO);
     else
         printf("%d\n", campo);
 }

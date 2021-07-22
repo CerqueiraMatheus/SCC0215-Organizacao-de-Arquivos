@@ -12,6 +12,7 @@
 #include <string.h>
 #include <stdio.h>
 
+#include "mensagem.h"
 #include "veiculo.h"
 #include "util.h"
 
@@ -282,27 +283,10 @@ void ordenaVeiculos(Veiculo *veiculos, int numero) {
  * 
  */
 
-static const char *MENSAGEM_CAMPO_NULO = "campo com valor nulo";
-static const char *MESES[12] = {
-    "janeiro",
-    "fevereiro",
-    "março",
-    "abril",
-    "maio",
-    "junho",
-    "julho",
-    "agosto",
-    "setembro",
-    "outubro",
-    "novembro",
-    "dezembro"
-};
-
-
 // Imprime uma data por extenso (trata casos nulos)
 static void _imprimeData(const char *data) {
     if (data[0] == '\0') {
-        printf("%s\n", MENSAGEM_CAMPO_NULO);
+        printf("%s\n", CAMPO_NULO);
         return;
     }
 

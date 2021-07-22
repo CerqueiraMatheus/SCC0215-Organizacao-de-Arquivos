@@ -11,6 +11,7 @@
 #include <string.h>
 #include <stdio.h>
 
+#include "mensagem.h"
 #include "linha.h"
 #include "util.h"
 
@@ -207,13 +208,10 @@ bool comparaLinha(Linha *linha, const char *campo, const char *valor) {
  * 
  */
 
-static const char *MENSAGEM_CAMPO_NULO = "campo com valor nulo";
-
-
 // Imprime o aceite de cartão por extenso (trata casos nulos)
 static void _imprimeAceitaCartao(const char *aceitaCartao) {
     if (aceitaCartao[0] == '\0') {
-        printf("%s\n", MENSAGEM_CAMPO_NULO);
+        printf("%s\n", CAMPO_NULO);
         return;
     }
 
