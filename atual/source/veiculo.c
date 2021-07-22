@@ -131,45 +131,53 @@ int leVeiculoCsv(Veiculo *veiculo, FILE *csv) {
 }
 
 // Lê um Veículo a partir de um binário e retorna se ele foi removido
-bool leVeiculoBinario(Veiculo *veiculo, FILE *binario) {
-    fread(&veiculo->removido, sizeof(char), 1, binario);
-    fread(&veiculo->tamanhoRegistro, sizeof(int), 1, binario);
+Veiculo leVeiculoBinario(FILE *binario) {
+    Veiculo veiculo;
+
+    fread(&veiculo.removido, sizeof(char), 1, binario);
+    fread(&veiculo.tamanhoRegistro, sizeof(int), 1, binario);
 
     // Checa por registro removido e retorna se sim
-    if (registroFoiRemovido(veiculo->removido))
-        return false;
+    if (registroFoiRemovido(veiculo.removido)) {
+        fseek(binario, veiculo.tamanhoRegistro, SEEK_CUR);
+        return veiculo;
+    }
 
-    leStringBinario(veiculo->prefixo, 5, binario);
-    leStringBinario(veiculo->data, 10, binario);
+    leStringBinario(veiculo.prefixo, 5, binario);
+    leStringBinario(veiculo.data, 10, binario);
 
-    fread(&veiculo->quantidadeLugares, sizeof(int), 1, binario);
-    fread(&veiculo->codLinha, sizeof(int), 1, binario);
+    fread(&veiculo.quantidadeLugares, sizeof(int), 1, binario);
+    fread(&veiculo.codLinha, sizeof(int), 1, binario);
 
-    fread(&veiculo->tamanhoModelo, sizeof(int), 1, binario);
-    leStringBinario(veiculo->modelo, veiculo->tamanhoModelo, binario);
+    fread(&veiculo.tamanhoModelo, sizeof(int), 1, binario);
+    leStringBinario(veiculo.modelo, veiculo.tamanhoModelo, binario);
 
-    fread(&veiculo->tamanhoCategoria, sizeof(int), 1, binario);
-    leStringBinario(veiculo->categoria, veiculo->tamanhoCategoria, binario);
+    fread(&veiculo.tamanhoCategoria, sizeof(int), 1, binario);
+    leStringBinario(veiculo.categoria, veiculo.tamanhoCategoria, binario);
 
-    return true;
+    return veiculo;
 }
 
 // Lê um Veículo a partir da entrada padrão
-void leVeiculoEntrada(Veiculo *veiculo) {
-    veiculo->removido = '1';
+Veiculo leVeiculoEntrada() {
+    Veiculo veiculo;
 
-    scan_quote_string(veiculo->prefixo);
-    scan_quote_string(veiculo->data);
+    veiculo.removido = '1';
 
-    veiculo->quantidadeLugares = leInteiroEntrada();
-    veiculo->codLinha = leInteiroEntrada();
+    scan_quote_string(veiculo.prefixo);
+    scan_quote_string(veiculo.data);
 
-    scan_quote_string(veiculo->modelo);
-    scan_quote_string(veiculo->categoria);
+    veiculo.quantidadeLugares = leInteiroEntrada();
+    veiculo.codLinha = leInteiroEntrada();
 
-    veiculo->tamanhoModelo = strlen(veiculo->modelo);
-    veiculo->tamanhoCategoria = strlen(veiculo->categoria);
-    veiculo->tamanhoRegistro = 31 + veiculo->tamanhoModelo + veiculo->tamanhoCategoria;
+    scan_quote_string(veiculo.modelo);
+    scan_quote_string(veiculo.categoria);
+
+    veiculo.tamanhoModelo = strlen(veiculo.modelo);
+    veiculo.tamanhoCategoria = strlen(veiculo.categoria);
+    veiculo.tamanhoRegistro = 31 + veiculo.tamanhoModelo + veiculo.tamanhoCategoria;
+
+    return veiculo;
 }
 
 // Escreve um Veículo num binário
@@ -238,12 +246,9 @@ void imprimeVeiculo(CabecalhoVeiculo *cabecalhoVeiculo, Veiculo *veiculo) {
 
 void leVeiculosValidosBinario(Veiculo *veiculos, int total, FILE *binario) {
     for (int i = 0, j = 0; i < total; i++) {
-        Veiculo temporario;
-        if (leVeiculoBinario(&temporario, binario) == true) {
+        Veiculo temporario = leVeiculoBinario(binario);
+        if (!registroFoiRemovido(temporario.removido)) {
             veiculos[j++] = temporario;
-        }
-        else {
-            fseek(binario, temporario.tamanhoRegistro, SEEK_CUR);
         }
     }
 }

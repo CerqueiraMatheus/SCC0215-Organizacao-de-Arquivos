@@ -44,8 +44,8 @@ void escreveCabecalhoLinhaBinario(CabecalhoLinha *cabecalhoLinha, FILE *binario)
 
 /** Corpo da Linha **/
 int leLinhaCsv(Linha *linha, FILE *csv);
-bool leLinhaBinario(Linha *linha, FILE *binario);
-void leLinhaEntrada(Linha *linha);
+Linha leLinhaBinario(FILE *binario);
+Linha leLinhaEntrada();
 void escreveLinhaBinario(Linha *linha, FILE *binario);
 bool comparaLinha(Linha *linha, const char *campo, const char *valor);
 void imprimeLinha(CabecalhoLinha *cabecalhoLinha, Linha *linha);

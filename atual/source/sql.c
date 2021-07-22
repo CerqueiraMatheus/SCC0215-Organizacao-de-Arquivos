@@ -141,18 +141,16 @@ void selectFromVeiculo() {
         exit(0);
     }
 
-    Veiculo veiculo;
     int nroTotalRegistros = cabecalhoVeiculo.nroRegistros + cabecalhoVeiculo.nroRegRemovidos;
 
     // Percorre os registros
     for (int i = 0; i < nroTotalRegistros; i++) {
-        // Caso registro lido não removido
-        if (leVeiculoBinario(&veiculo, binario) == true)
-            imprimeVeiculo(&cabecalhoVeiculo, &veiculo);
+        Veiculo veiculo = leVeiculoBinario(binario);
 
-        // Caso removido, pula corpo
-        else
-            fseek(binario, veiculo.tamanhoRegistro, SEEK_CUR);
+        // Caso registro lido não removido
+        if (!registroFoiRemovido(veiculo.removido)) {
+            imprimeVeiculo(&cabecalhoVeiculo, &veiculo);
+        }
     }
 
     atualizaStatusBinario('1', binario);
@@ -182,18 +180,16 @@ void selectFromLinha() {
         exit(0);
     }
 
-    Linha linha;
     int nroTotalRegistros = cabecalhoLinha.nroRegistros + cabecalhoLinha.nroRegRemovidos;
 
     // Percorre os registros
     for (int i = 0; i < nroTotalRegistros; i++) {
-        // Caso registro lido não removido
-        if (leLinhaBinario(&linha, binario) == true)
-            imprimeLinha(&cabecalhoLinha, &linha);
+        Linha linha = leLinhaBinario(binario);
 
-        // Caso removido, pula corpo
-        else
-            fseek(binario, linha.tamanhoRegistro, SEEK_CUR);
+        // Caso registro lido não removido
+        if (!registroFoiRemovido(linha.removido)) {
+            imprimeLinha(&cabecalhoLinha, &linha);
+        }
     }
 
     atualizaStatusBinario('1', binario);
@@ -234,7 +230,6 @@ void selectFromWhereVeiculo() {
         exit(0);
     }
 
-    Veiculo veiculo;
     int nroTotalRegistros = cabecalhoVeiculo.nroRegistros + cabecalhoVeiculo.nroRegRemovidos;
 
     // Flag para indicar se houve ao menos um registro encontrado
@@ -242,18 +237,16 @@ void selectFromWhereVeiculo() {
 
     // Percorre os registros
     for (int i = 0; i < nroTotalRegistros; i++) {
+        Veiculo veiculo = leVeiculoBinario(binario);
+
         // Caso registro lido não removido
-        if (leVeiculoBinario(&veiculo, binario) == true) {
+        if (!registroFoiRemovido(veiculo.removido)) {
             // Checa valor desejado
             if (comparaVeiculo(&veiculo, campo, valor)) {
                 imprimeVeiculo(&cabecalhoVeiculo, &veiculo);
                 houveCorrespondencia = true;
             }
         }
-
-        // Caso removido, pula corpo
-        else
-            fseek(binario, veiculo.tamanhoRegistro, SEEK_CUR);
     }
 
     if (!houveCorrespondencia)
@@ -291,7 +284,6 @@ void selectFromWhereLinha() {
         exit(0);
     }
 
-    Linha linha;
     int nroTotalRegistros = cabecalhoLinha.nroRegistros + cabecalhoLinha.nroRegRemovidos;
 
     // Flag para indicar se houve ao menos um registro encontrado
@@ -299,18 +291,16 @@ void selectFromWhereLinha() {
 
     // Percorre os registros
     for (int i = 0; i < nroTotalRegistros; i++) {
+        Linha linha = leLinhaBinario(binario);
+
         // Caso registro lido não removido
-        if (leLinhaBinario(&linha, binario) == true) {
+        if (!registroFoiRemovido(linha.removido)) {
             // Checa valor desejado
             if (comparaLinha(&linha, campo, valor)) {
                 imprimeLinha(&cabecalhoLinha, &linha);
                 houveCorrespondencia = true;
             }
         }
-
-        // Caso removido, pula corpo
-        else
-            fseek(binario, linha.tamanhoRegistro, SEEK_CUR);
     }
 
     if (!houveCorrespondencia)
@@ -347,9 +337,8 @@ void insertIntoVeiculo() {
     fseek(binario, cabecalhoVeiculo.byteProxReg, SEEK_SET);
 
     // Percorre a entrada escrevendo os registros
-    Veiculo veiculo;
     for (int i = 0; i < insercoes; i++) {
-        leVeiculoEntrada(&veiculo);
+        Veiculo veiculo = leVeiculoEntrada();
         escreveVeiculoBinario(&veiculo, binario);
         cabecalhoVeiculo.nroRegistros++;
     }
@@ -385,9 +374,8 @@ void insertIntoLinha() {
     fseek(binario, cabecalhoLinha.byteProxReg, SEEK_SET);
 
     // Percorre a entrada escrevendo os registros
-    Linha linha;
     for (int i = 0; i < insercoes; i++) {
-        leLinhaEntrada(&linha);
+        Linha linha = leLinhaEntrada();
         escreveLinhaBinario(&linha, binario);
         cabecalhoLinha.nroRegistros++;
     }
@@ -441,11 +429,11 @@ void createIndexVeiculo() {
 
     // Percorre os registros
     for (int i = 0; i < nroTotalRegistros; i++) {
-        Veiculo veiculo;
         long long int offset = ftell(veiculosBinario);
+        Veiculo veiculo = leVeiculoBinario(veiculosBinario);
 
         // Caso registro não removido
-        if (leVeiculoBinario(&veiculo, veiculosBinario) == true) {
+        if (!registroFoiRemovido(veiculo.removido)) {
             // Cria a chave a ser inserida
             ChaveArvoreB chave;
             chave.C = convertePrefixo(veiculo.prefixo);
@@ -453,11 +441,6 @@ void createIndexVeiculo() {
 
             // Insere a chave na árvore-B
             insereArvoreB(chave, &cabecalhoArvoreB, arvoreB);
-        }
-
-        // Caso removido, pula corpo
-        else {
-            fseek(veiculosBinario, veiculo.tamanhoRegistro, SEEK_CUR);
         }
     }
 
@@ -505,11 +488,11 @@ void createIndexLinha() {
 
     // Percorre os registros
     for (int i = 0; i < nroTotalRegistros; i++) {
-        Linha linha;
         long long int offset = ftell(linhasBinario);
+        Linha linha = leLinhaBinario(linhasBinario);
 
         // Caso registro não removido
-        if (leLinhaBinario(&linha, linhasBinario) == true) {
+        if (!registroFoiRemovido(linha.removido)) {
             // Cria a chave a ser inserida
             ChaveArvoreB chave;
             chave.C = linha.codLinha;
@@ -517,11 +500,6 @@ void createIndexLinha() {
 
             // Insere a chave na árvore-B
             insereArvoreB(chave, &cabecalhoArvoreB, arvoreB);
-        }
-
-        // Caso removido, pula corpo
-        else {
-            fseek(linhasBinario, linha.tamanhoRegistro, SEEK_CUR);
         }
     }
 
@@ -579,9 +557,8 @@ void selectFromWhereIndexVeiculo() {
     // Caso encontrado
     if (offset != NAO_ENCONTRADO) {
         // Lê o veículo especificado
-        Veiculo veiculo;
         fseek(veiculosBinario, offset, SEEK_SET);
-        leVeiculoBinario(&veiculo, veiculosBinario);
+        Veiculo veiculo = leVeiculoBinario(veiculosBinario);
 
         // Caso não removido
         if (!registroFoiRemovido(veiculo.removido)) {
@@ -641,9 +618,8 @@ void selectFromWhereIndexLinha() {
     // Caso encontrado
     if (offset != NAO_ENCONTRADO) {
         // Lê a linha especificada
-        Linha linha;
         fseek(linhasBinario, offset, SEEK_SET);
-        leLinhaBinario(&linha, linhasBinario);
+        Linha linha = leLinhaBinario(linhasBinario);
 
         // Caso não removido
         if (!registroFoiRemovido(linha.removido)) {
@@ -701,8 +677,7 @@ void insertIntoIndexVeiculo() {
 
     // Percorre a entrada escrevendo os registros
     for (int i = 0; i < insercoes; i++) {
-        Veiculo veiculo;
-        leVeiculoEntrada(&veiculo);
+        Veiculo veiculo = leVeiculoEntrada();
 
         // Cria a chave a ser inserida
         ChaveArvoreB chave;
@@ -763,8 +738,7 @@ void insertIntoIndexLinha() {
 
     // Percorre a entrada escrevendo os registros
     for (int i = 0; i < insercoes; i++) {
-        Linha linha;
-        leLinhaEntrada(&linha);
+        Linha linha = leLinhaEntrada();
 
         // Cria a chave a ser inserida
         ChaveArvoreB chave;
@@ -905,19 +879,17 @@ void selectFromJoinOnLoop() {
     bool encontrado = false;
 
     // Percorre os veículos
-    Veiculo veiculo;
     for (int i = 0; i < registrosVeiculo; i++) {
+        Veiculo veiculo = leVeiculoBinario(binarioVeiculo);
 
         // Caso seja um veículo válido
-        if (leVeiculoBinario(&veiculo, binarioVeiculo)) {
-
+        if (!registroFoiRemovido(veiculo.removido)) {
             // Percorre as linhas
-            Linha linha;
             for (int j = 0; j < registrosLinha; j++) {
+                Linha linha = leLinhaBinario(binarioLinha);
 
                 // Caso seja uma linha válida
-                if (leLinhaBinario(&linha, binarioLinha)) {
-
+                if (!registroFoiRemovido(linha.removido)) {
                     // Caso haja o "match"
                     if (veiculo.codLinha == linha.codLinha) {
                         encontrado = true;
@@ -926,20 +898,10 @@ void selectFromJoinOnLoop() {
                         printf("\n");
                     }
                 }
-
-                // Pula a linha
-                else {
-                    fseek(binarioLinha, linha.tamanhoRegistro, SEEK_CUR);
-                }
             }
 
             // Reinicia o arquivo da linha
             fseek(binarioLinha, cur_offset, SEEK_SET);
-        }
-
-        // Pula o veículo
-        else {
-            fseek(binarioVeiculo, veiculo.tamanhoRegistro, SEEK_CUR);
         }
     }
 
@@ -1007,11 +969,11 @@ void selectFromJoinOnIndex() {
     bool encontrado = false;
 
     // Percorre os veículos
-    Veiculo veiculo;
     for (int i = 0; i < registrosVeiculo; i++) {
+        Veiculo veiculo = leVeiculoBinario(binarioVeiculo);
 
         // Se o veículo não foi excluído
-        if (leVeiculoBinario(&veiculo, binarioVeiculo)) {
+        if (!registroFoiRemovido(veiculo.removido)) {
 
             // Caso a busca retorne um offset válido
             long long int offset;
@@ -1020,22 +982,17 @@ void selectFromJoinOnIndex() {
                                        binarioIndiceLinha)) != NAO_ENCONTRADO) {
                                            
                 // Executa a leitura da linha
-                Linha linha;
                 fseek(binarioLinha, offset, SEEK_SET);
+                Linha linha = leLinhaBinario(binarioLinha);
 
                 // Caso a linha seja válida
-                if (leLinhaBinario(&linha, binarioLinha)) {
+                if (!registroFoiRemovido(linha.removido)) {
                     encontrado = true;
                     imprimeVeiculo(&cabecalhoVeiculo, &veiculo);
                     imprimeLinha(&cabecalhoLinha, &linha);
                     printf("\n");
                 }
             }
-        }
-
-        // Pula o veículo
-        else {
-            fseek(binarioVeiculo, veiculo.tamanhoRegistro, SEEK_CUR);
         }
     }
 

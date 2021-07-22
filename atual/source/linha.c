@@ -100,40 +100,48 @@ int leLinhaCsv(Linha *linha, FILE *csv) {
 }
 
 // Lê uma Linha a partir de um binário e retorna se ela foi removida
-bool leLinhaBinario(Linha *linha, FILE *binario) {
-    fread(&linha->removido, sizeof(char), 1, binario);
-    fread(&linha->tamanhoRegistro, sizeof(int), 1, binario);
+Linha leLinhaBinario(FILE *binario) {
+    Linha linha;
+
+    fread(&linha.removido, sizeof(char), 1, binario);
+    fread(&linha.tamanhoRegistro, sizeof(int), 1, binario);
 
     // Checa por registro removido e retorna se sim
-    if (registroFoiRemovido(linha->removido))
-        return false;
+    if (registroFoiRemovido(linha.removido)) {
+        fseek(binario, linha.tamanhoRegistro, SEEK_CUR);
+        return linha;
+    }
 
-    fread(&linha->codLinha, sizeof(int), 1, binario);
+    fread(&linha.codLinha, sizeof(int), 1, binario);
 
-    leStringBinario(linha->aceitaCartao, 1, binario);
+    leStringBinario(linha.aceitaCartao, 1, binario);
 
-    fread(&linha->tamanhoNome, sizeof(int), 1, binario);
-    leStringBinario(linha->nomeLinha, linha->tamanhoNome, binario);
+    fread(&linha.tamanhoNome, sizeof(int), 1, binario);
+    leStringBinario(linha.nomeLinha, linha.tamanhoNome, binario);
 
-    fread(&linha->tamanhoCor, sizeof(int), 1, binario);
-    leStringBinario(linha->corLinha, linha->tamanhoCor, binario);
+    fread(&linha.tamanhoCor, sizeof(int), 1, binario);
+    leStringBinario(linha.corLinha, linha.tamanhoCor, binario);
 
-    return true;
+    return linha;
 }
 
 // Lê uma Linha a partir da entrada padrão
-void leLinhaEntrada(Linha *linha) {
-    linha->removido = '1';
+Linha leLinhaEntrada() {
+    Linha linha;
 
-    linha->codLinha = leInteiroEntrada();
+    linha.removido = '1';
 
-    scan_quote_string(linha->aceitaCartao);
-    scan_quote_string(linha->nomeLinha);
-    scan_quote_string(linha->corLinha);
+    linha.codLinha = leInteiroEntrada();
 
-    linha->tamanhoNome = strlen(linha->nomeLinha);
-    linha->tamanhoCor = strlen(linha->corLinha);
-    linha->tamanhoRegistro = 13 + linha->tamanhoNome + linha->tamanhoCor;
+    scan_quote_string(linha.aceitaCartao);
+    scan_quote_string(linha.nomeLinha);
+    scan_quote_string(linha.corLinha);
+
+    linha.tamanhoNome = strlen(linha.nomeLinha);
+    linha.tamanhoCor = strlen(linha.corLinha);
+    linha.tamanhoRegistro = 13 + linha.tamanhoNome + linha.tamanhoCor;
+
+    return linha;
 }
 
 // Escreve uma Linha num binário
