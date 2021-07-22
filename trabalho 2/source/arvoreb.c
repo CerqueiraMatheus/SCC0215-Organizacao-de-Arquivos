@@ -125,7 +125,7 @@ bool insereArvoreB(ChaveArvoreB chave, CabecalhoArvoreB *cabecalho, FILE *arvore
  */
 
 // Posiciona o ponteiro numa Árvore B a partir do RRN
-static void _posicionaRRN(int RRN, FILE *arvoreB) {
+static void _posicionaArvoreBRRN(int RRN, FILE *arvoreB) {
     fseek(arvoreB, (RRN + 1) * TAMANHO_PAGINA, SEEK_SET);
 }
 
@@ -156,7 +156,7 @@ static void _criaNoArvoreB(NoArvoreB *no, CabecalhoArvoreB *cabecalho) {
 
 // Lê um nó da Árvore B por referência a partir de um RRN e uma Árvore B
 static void _leNoArvoreB(NoArvoreB *no, int RRN, FILE *arvoreB) {
-    _posicionaRRN(RRN, arvoreB);
+    _posicionaArvoreBRRN(RRN, arvoreB);
 
     fread(&no->folha, sizeof(char), 1, arvoreB);
     fread(&no->nroChavesIndexadas, sizeof(int), 1, arvoreB);
@@ -172,7 +172,7 @@ static void _leNoArvoreB(NoArvoreB *no, int RRN, FILE *arvoreB) {
 
 // Escreve um nó na Árvore B
 static void _escreveNoArvoreB(NoArvoreB no, FILE *arvoreB) {
-    _posicionaRRN(no.RRNdoNo, arvoreB);
+    _posicionaArvoreBRRN(no.RRNdoNo, arvoreB);
 
     fwrite(&no.folha, sizeof(char), 1, arvoreB);
     fwrite(&no.nroChavesIndexadas, sizeof(int), 1, arvoreB);

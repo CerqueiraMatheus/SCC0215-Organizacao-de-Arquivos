@@ -69,8 +69,8 @@ typedef enum {
 } _RetornoInsercao;
 
 // Funções auxiliares
-static void _criaNoArvoreB(NoArvoreB *no, CabecalhoArvoreB *cabecalho);
-static void _leNoArvoreB(NoArvoreB *no, int RRN, FILE *arvoreB);
+static NoArvoreB _criaNoArvoreB(CabecalhoArvoreB *cabecalho);
+static NoArvoreB _leNoArvoreB(int RRN, FILE *arvoreB);
 static void _escreveNoArvoreB(NoArvoreB no, FILE *arvoreB);
 static bool _buscaNoArvoreB(int chave, int *posicao, NoArvoreB no);
 static void _insereNoArvoreB(ChaveArvoreB chave, int filho, NoArvoreB *no);
@@ -81,8 +81,7 @@ long long int buscaArvoreB(int chave, int RRN, FILE *arvoreB) {
     if (RRN == NULO)
         return NAO_ENCONTRADO;
 
-    NoArvoreB no;
-    _leNoArvoreB(&no, RRN, arvoreB);
+    NoArvoreB no = _leNoArvoreB(RRN, arvoreB);
 
     int posicao;
     if (_buscaNoArvoreB(chave, &posicao, no) == true)
@@ -104,8 +103,7 @@ bool insereArvoreB(ChaveArvoreB chave, CabecalhoArvoreB *cabecalho, FILE *arvore
 
     if (retorno == PROMOCAO) {
         // Cria uma nova raiz
-        NoArvoreB novaRaiz;
-        _criaNoArvoreB(&novaRaiz, cabecalho);
+        NoArvoreB novaRaiz = _criaNoArvoreB(cabecalho);
 
         // Insere a chave promovida na nova raiz
         _insereNoArvoreB(chave_promovida, filho_promovido, &novaRaiz);
@@ -124,7 +122,7 @@ bool insereArvoreB(ChaveArvoreB chave, CabecalhoArvoreB *cabecalho, FILE *arvore
  * 
  */
 
-static void _posicionaRRN(int RRN, FILE *arvoreB) {
+static void _posicionaArvoreBRRN(FILE *arvoreB, int RRN) {
     fseek(arvoreB, (RRN + 1) * TAMANHO_PAGINA, SEEK_SET);
 }
 
@@ -146,28 +144,36 @@ static void _limpaNoArvoreB(NoArvoreB *no) {
     no->P[MAX_NUMERO_CHAVES] = NULO;
 }
 
-static void _criaNoArvoreB(NoArvoreB *no, CabecalhoArvoreB *cabecalho) {
-    no->RRNdoNo = (cabecalho->RRNproxNo)++;
-    _limpaNoArvoreB(no);
+static NoArvoreB _criaNoArvoreB(CabecalhoArvoreB *cabecalho) {
+    NoArvoreB no;
+
+    no.RRNdoNo = (cabecalho->RRNproxNo)++;
+    _limpaNoArvoreB(&no);
+
+    return no;
 }
 
-static void _leNoArvoreB(NoArvoreB *no, int RRN, FILE *arvoreB) {
-    _posicionaRRN(RRN, arvoreB);
+static NoArvoreB _leNoArvoreB(int RRN, FILE *arvoreB) {
+    _posicionaArvoreBRRN(arvoreB, RRN);
 
-    fread(&no->folha, sizeof(char), 1, arvoreB);
-    fread(&no->nroChavesIndexadas, sizeof(int), 1, arvoreB);
-    fread(&no->RRNdoNo, sizeof(int), 1, arvoreB);
+    NoArvoreB no;
+
+    fread(&no.folha, sizeof(char), 1, arvoreB);
+    fread(&no.nroChavesIndexadas, sizeof(int), 1, arvoreB);
+    fread(&no.RRNdoNo, sizeof(int), 1, arvoreB);
 
     for (int i = 0; i < MAX_NUMERO_CHAVES; i++) {
-        fread(&no->P[i], sizeof(int), 1, arvoreB);
-        fread(&no->chaves[i].C, sizeof(int), 1, arvoreB);
-        fread(&no->chaves[i].PR, sizeof(long long int), 1, arvoreB);
+        fread(&no.P[i], sizeof(int), 1, arvoreB);
+        fread(&no.chaves[i].C, sizeof(int), 1, arvoreB);
+        fread(&no.chaves[i].PR, sizeof(long long int), 1, arvoreB);
     }
-    fread(&no->P[MAX_NUMERO_CHAVES], sizeof(int), 1, arvoreB);
+    fread(&no.P[MAX_NUMERO_CHAVES], sizeof(int), 1, arvoreB);
+
+    return no;
 }
 
 static void _escreveNoArvoreB(NoArvoreB no, FILE *arvoreB) {
-    _posicionaRRN(no.RRNdoNo, arvoreB);
+    _posicionaArvoreBRRN(arvoreB, no.RRNdoNo);
 
     fwrite(&no.folha, sizeof(char), 1, arvoreB);
     fwrite(&no.nroChavesIndexadas, sizeof(int), 1, arvoreB);
@@ -210,25 +216,29 @@ typedef struct {
     int filhos[MAX_NUMERO_CHAVES + 2];
 } _NoTemporario;
 
-static void _criaNoTemporario(_NoTemporario *temporario, NoArvoreB no, ChaveArvoreB chave, int filho) {
-    temporario->filhos[0] = no.P[0];
+static _NoTemporario _criaNoTemporario(NoArvoreB no, ChaveArvoreB chave, int filho) {
+    _NoTemporario temporario;
+    
+    temporario.filhos[0] = no.P[0];
     int posicao;
 
     // Copia chaves e filhos anteriores a nova chave
     for (posicao = 0; posicao < MAX_NUMERO_CHAVES && no.chaves[posicao].C < chave.C; posicao++) {
-        temporario->chaves[posicao] = no.chaves[posicao];
-        temporario->filhos[posicao + 1] = no.P[posicao + 1];
+        temporario.chaves[posicao] = no.chaves[posicao];
+        temporario.filhos[posicao + 1] = no.P[posicao + 1];
     }
 
     // Insere a nova chave
-    temporario->chaves[posicao] = chave;
-    temporario->filhos[posicao + 1] = filho;
+    temporario.chaves[posicao] = chave;
+    temporario.filhos[posicao + 1] = filho;
 
     // Copia chaves e filhos posteriores a nova chave
     for (posicao += 1; posicao <= MAX_NUMERO_CHAVES; posicao++) {
-        temporario->chaves[posicao] = no.chaves[posicao - 1];
-        temporario->filhos[posicao + 1] = no.P[posicao];
+        temporario.chaves[posicao] = no.chaves[posicao - 1];
+        temporario.filhos[posicao + 1] = no.P[posicao];
     }
+
+    return temporario;
 }
 
 static void _copiaNoTemporario(NoArvoreB *no, int inicio, _NoTemporario temporario) {
@@ -241,10 +251,9 @@ static void _copiaNoTemporario(NoArvoreB *no, int inicio, _NoTemporario temporar
 
 static void _particionaNoArvoreB(ChaveArvoreB chave, int filho, NoArvoreB *no, ChaveArvoreB *chave_promovida,
                                  int *filho_promovido, NoArvoreB *novoNo, CabecalhoArvoreB *cabecalho) {
-    _NoTemporario temporario;
-    _criaNoTemporario(&temporario, *no, chave, filho);
+    _NoTemporario temporario = _criaNoTemporario(*no, chave, filho);
 
-    _criaNoArvoreB(novoNo, cabecalho);
+    *novoNo = _criaNoArvoreB(cabecalho);
 
     // Seleciona chave e filho promovidos
     *chave_promovida = temporario.chaves[MAX_NUMERO_CHAVES / 2];
@@ -291,8 +300,7 @@ static _RetornoInsercao _insereArvoreB(ChaveArvoreB chave, int RRN, ChaveArvoreB
         return PROMOCAO;
     }
 
-    NoArvoreB no;
-    _leNoArvoreB(&no, RRN, arvoreB);
+    NoArvoreB no = _leNoArvoreB(RRN, arvoreB);
 
     // Busca pela chave
     int posicao;
