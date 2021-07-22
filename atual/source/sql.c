@@ -149,7 +149,7 @@ void selectFromVeiculo() {
 
         // Caso registro lido não removido
         if (!registroFoiRemovido(veiculo.removido)) {
-            imprimeVeiculo(&cabecalhoVeiculo, &veiculo);
+            imprimeVeiculo(veiculo, cabecalhoVeiculo);
         }
     }
 
@@ -188,7 +188,7 @@ void selectFromLinha() {
 
         // Caso registro lido não removido
         if (!registroFoiRemovido(linha.removido)) {
-            imprimeLinha(&cabecalhoLinha, &linha);
+            imprimeLinha(linha, cabecalhoLinha);
         }
     }
 
@@ -243,7 +243,7 @@ void selectFromWhereVeiculo() {
         if (!registroFoiRemovido(veiculo.removido)) {
             // Checa valor desejado
             if (comparaVeiculo(&veiculo, campo, valor)) {
-                imprimeVeiculo(&cabecalhoVeiculo, &veiculo);
+                imprimeVeiculo(veiculo, cabecalhoVeiculo);
                 houveCorrespondencia = true;
             }
         }
@@ -297,7 +297,7 @@ void selectFromWhereLinha() {
         if (!registroFoiRemovido(linha.removido)) {
             // Checa valor desejado
             if (comparaLinha(&linha, campo, valor)) {
-                imprimeLinha(&cabecalhoLinha, &linha);
+                imprimeLinha(linha, cabecalhoLinha);
                 houveCorrespondencia = true;
             }
         }
@@ -562,7 +562,7 @@ void selectFromWhereIndexVeiculo() {
 
         // Caso não removido
         if (!registroFoiRemovido(veiculo.removido)) {
-            imprimeVeiculo(&cabecalhoVeiculo, &veiculo);
+            imprimeVeiculo(veiculo, cabecalhoVeiculo);
         }
 
         // Caso removido
@@ -623,7 +623,7 @@ void selectFromWhereIndexLinha() {
 
         // Caso não removido
         if (!registroFoiRemovido(linha.removido)) {
-            imprimeLinha(&cabecalhoLinha, &linha);
+            imprimeLinha(linha, cabecalhoLinha);
         }
 
         // Caso removido
@@ -893,8 +893,8 @@ void selectFromJoinOnLoop() {
                     // Caso haja o "match"
                     if (veiculo.codLinha == linha.codLinha) {
                         encontrado = true;
-                        imprimeVeiculo(&cabecalhoVeiculo, &veiculo);
-                        imprimeLinha(&cabecalhoLinha, &linha);
+                        imprimeVeiculo(veiculo, cabecalhoVeiculo);
+                        imprimeLinha(linha, cabecalhoLinha);
                         printf("\n");
                     }
                 }
@@ -988,8 +988,8 @@ void selectFromJoinOnIndex() {
                 // Caso a linha seja válida
                 if (!registroFoiRemovido(linha.removido)) {
                     encontrado = true;
-                    imprimeVeiculo(&cabecalhoVeiculo, &veiculo);
-                    imprimeLinha(&cabecalhoLinha, &linha);
+                    imprimeVeiculo(veiculo, cabecalhoVeiculo);
+                    imprimeLinha(linha, cabecalhoLinha);
                     printf("\n");
                 }
             }

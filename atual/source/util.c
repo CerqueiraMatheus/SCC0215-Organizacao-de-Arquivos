@@ -17,20 +17,7 @@
 #include <stdarg.h>
 
 static const char *MENSAGEM_FALHA_PROCESSAMENTO = "Falha no processamento do arquivo.";
-const char *MENSAGEM_CAMPO_NULO = "campo com valor nulo";
-const char *MESES[12] = {
-    "janeiro",
-    "fevereiro",
-    "março",
-    "abril",
-    "maio",
-    "junho",
-    "julho",
-    "agosto",
-    "setembro",
-    "outubro",
-    "novembro",
-    "dezembro"};
+static const char *MENSAGEM_CAMPO_NULO = "campo com valor nulo";
 
 
 /**
@@ -212,41 +199,6 @@ void imprimeCampoString(const char *campo, int tamanho) {
         printf("%s\n", MENSAGEM_CAMPO_NULO);
     else
         printf("%s\n", campo);
-}
-
-// Imprime uma data por extenso (trata casos nulos)
-void imprimeData(const char *data) {
-    if (data[0] == '\0') {
-        printf("%s\n", MENSAGEM_CAMPO_NULO);
-        return;
-    }
-
-    int dia, mes, ano;
-    sscanf(data, "%d-%d-%d", &ano, &mes, &dia);
-
-    printf("%02d de %s de %d\n", dia, MESES[mes - 1], ano);
-}
-
-// Imprime o aceite de cartão por extenso (trata casos nulos)
-void imprimeAceitaCartao(const char *aceitaCartao) {
-    if (aceitaCartao[0] == '\0') {
-        printf("%s\n", MENSAGEM_CAMPO_NULO);
-        return;
-    }
-
-    switch (aceitaCartao[0]) {
-        case 'S':
-            printf("PAGAMENTO SOMENTE COM CARTAO SEM PRESENCA DE COBRADOR\n");
-            break;
-
-        case 'N':
-            printf("PAGAMENTO EM CARTAO E DINHEIRO\n");
-            break;
-
-        case 'F':
-            printf("PAGAMENTO EM CARTAO SOMENTE NO FINAL DE SEMANA\n");
-            break;
-    }
 }
 
 // Imprime um campo inteiro (trata casos iguais a -1)

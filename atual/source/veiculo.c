@@ -16,6 +16,7 @@
 
 #include "util.h"
 
+static void _imprimeData(const char *data);
 static int _comparaVeiculos(const void *primeiro, const void *segundo);
 
 /**
@@ -220,21 +221,21 @@ bool comparaVeiculo(Veiculo *veiculo, const char *campo, const char *valor) {
 }
 
 // Imprime um Veículo
-void imprimeVeiculo(CabecalhoVeiculo *cabecalhoVeiculo, Veiculo *veiculo) {
-    printf("%s: ", cabecalhoVeiculo->descrevePrefixo);
-    imprimeCampoString(veiculo->prefixo, strlen(veiculo->prefixo));
+void imprimeVeiculo(Veiculo veiculo, CabecalhoVeiculo cabecalho) {
+    printf("%s: ", cabecalho.descrevePrefixo);
+    imprimeCampoString(veiculo.prefixo, strlen(veiculo.prefixo));
 
-    printf("%s: ", cabecalhoVeiculo->descreveModelo);
-    imprimeCampoString(veiculo->modelo, veiculo->tamanhoModelo);
+    printf("%s: ", cabecalho.descreveModelo);
+    imprimeCampoString(veiculo.modelo, veiculo.tamanhoModelo);
 
-    printf("%s: ", cabecalhoVeiculo->descreveCategoria);
-    imprimeCampoString(veiculo->categoria, veiculo->tamanhoCategoria);
+    printf("%s: ", cabecalho.descreveCategoria);
+    imprimeCampoString(veiculo.categoria, veiculo.tamanhoCategoria);
 
-    printf("%s: ", cabecalhoVeiculo->descreveData);
-    imprimeData(veiculo->data);
+    printf("%s: ", cabecalho.descreveData);
+    _imprimeData(veiculo.data);
 
-    printf("%s: ", cabecalhoVeiculo->descreveLugares);
-    imprimeCampoInteiro(veiculo->quantidadeLugares);
+    printf("%s: ", cabecalho.descreveLugares);
+    imprimeCampoInteiro(veiculo.quantidadeLugares);
 }
 
 
@@ -270,6 +271,36 @@ void ordenaVeiculos(Veiculo *veiculos, int numero) {
  * Auxiliares
  * 
  */
+
+static const char *MENSAGEM_CAMPO_NULO = "campo com valor nulo";
+static const char *MESES[12] = {
+    "janeiro",
+    "fevereiro",
+    "março",
+    "abril",
+    "maio",
+    "junho",
+    "julho",
+    "agosto",
+    "setembro",
+    "outubro",
+    "novembro",
+    "dezembro"
+};
+
+
+// Imprime uma data por extenso (trata casos nulos)
+static void _imprimeData(const char *data) {
+    if (data[0] == '\0') {
+        printf("%s\n", MENSAGEM_CAMPO_NULO);
+        return;
+    }
+
+    int dia, mes, ano;
+    sscanf(data, "%d-%d-%d", &ano, &mes, &dia);
+
+    printf("%02d de %s de %d\n", dia, MESES[mes - 1], ano);
+}
 
 static int _comparaVeiculos(const void *primeiro, const void *segundo) {
     return ((Veiculo *)primeiro)->codLinha - ((Veiculo *)segundo)->codLinha;

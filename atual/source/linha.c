@@ -15,6 +15,8 @@
 
 #include "util.h"
 
+static void _imprimeAceitaCartao(const char *aceitaCartao);
+
 /**
  *
  * Cabeçalho da Linha 
@@ -159,6 +161,21 @@ void escreveLinhaBinario(Linha linha, FILE *binario) {
     fwrite(linha.corLinha, sizeof(char), linha.tamanhoCor, binario);
 }
 
+// Imprime uma Linha
+void imprimeLinha(Linha linha, CabecalhoLinha cabecalho) {
+    printf("%s: ", cabecalho.descreveCodigo);
+    imprimeCampoInteiro(linha.codLinha);
+
+    printf("%s: ", cabecalho.descreveNome);
+    imprimeCampoString(linha.nomeLinha, linha.tamanhoNome);
+
+    printf("%s: ", cabecalho.descreveLinha);
+    imprimeCampoString(linha.corLinha, linha.tamanhoCor);
+
+    printf("%s: ", cabecalho.descreveCartao);
+    _imprimeAceitaCartao(linha.aceitaCartao);
+}
+
 // Verifica se uma Linha corresponde ao campo e valor pesquisados
 bool comparaLinha(Linha *linha, const char *campo, const char *valor) {
     if (comparaCampoInteiro(campo, "codLinha", stringParaInteiro(valor), linha->codLinha))
@@ -173,17 +190,34 @@ bool comparaLinha(Linha *linha, const char *campo, const char *valor) {
         return false;
 }
 
-// Imprime uma Linha
-void imprimeLinha(CabecalhoLinha *cabecalhoLinha, Linha *linha) {
-    printf("%s: ", cabecalhoLinha->descreveCodigo);
-    imprimeCampoInteiro(linha->codLinha);
 
-    printf("%s: ", cabecalhoLinha->descreveNome);
-    imprimeCampoString(linha->nomeLinha, linha->tamanhoNome);
+/**
+ *
+ * Auxiliares 
+ * 
+ */
 
-    printf("%s: ", cabecalhoLinha->descreveLinha);
-    imprimeCampoString(linha->corLinha, linha->tamanhoCor);
+static const char *MENSAGEM_CAMPO_NULO = "campo com valor nulo";
 
-    printf("%s: ", cabecalhoLinha->descreveCartao);
-    imprimeAceitaCartao(linha->aceitaCartao);
+
+// Imprime o aceite de cartão por extenso (trata casos nulos)
+static void _imprimeAceitaCartao(const char *aceitaCartao) {
+    if (aceitaCartao[0] == '\0') {
+        printf("%s\n", MENSAGEM_CAMPO_NULO);
+        return;
+    }
+
+    switch (aceitaCartao[0]) {
+        case 'S':
+            printf("PAGAMENTO SOMENTE COM CARTAO SEM PRESENCA DE COBRADOR\n");
+            break;
+
+        case 'N':
+            printf("PAGAMENTO EM CARTAO E DINHEIRO\n");
+            break;
+
+        case 'F':
+            printf("PAGAMENTO EM CARTAO SOMENTE NO FINAL DE SEMANA\n");
+            break;
+    }
 }

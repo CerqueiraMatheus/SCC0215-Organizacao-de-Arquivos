@@ -46,8 +46,6 @@ bool comparaCampoInteiro(const char *campo, const char *campoRegistro, int valor
 
 /** Impressão de resultados **/
 void imprimeCampoString(const char *campo, int tamanho);
-void imprimeData(const char *data);
-void imprimeAceitaCartao(const char *aceitaCartao);
 void imprimeCampoInteiro(int campo);
 
 /** Funções fornecidas **/

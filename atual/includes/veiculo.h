@@ -51,7 +51,7 @@ Veiculo leVeiculoBinario(FILE *binario);
 Veiculo leVeiculoEntrada();
 void escreveVeiculoBinario(Veiculo veiculo, FILE *binario);
 bool comparaVeiculo(Veiculo *veiculo, const char *campo, const char *valor);
-void imprimeVeiculo(CabecalhoVeiculo *cabecalhoVeiculo, Veiculo *veiculo);
+void imprimeVeiculo(Veiculo veiculo, CabecalhoVeiculo cabecalho);
 
 /** Vetores **/
 void leVeiculosValidosBinario(Veiculo *veiculos, int total, FILE *binario);
