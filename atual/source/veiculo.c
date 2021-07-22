@@ -7,17 +7,18 @@
  * 
  */
 
-#include "veiculo.h"
-
 #include <stdbool.h>
-#include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
 
+#include "veiculo.h"
 #include "util.h"
+
 
 static void _imprimeData(const char *data);
 static int _comparaVeiculos(const void *primeiro, const void *segundo);
+
 
 /**
  *
@@ -26,18 +27,22 @@ static int _comparaVeiculos(const void *primeiro, const void *segundo);
  */
 
 // Lê o cabeçalho de um Veículo a partir de um CSV
-void leCabecalhoVeiculoCsv(CabecalhoVeiculo *cabecalhoVeiculo, FILE *csv) {
-    cabecalhoVeiculo->status = '0';
-    cabecalhoVeiculo->byteProxReg = 0;
-    cabecalhoVeiculo->nroRegistros = 0;
-    cabecalhoVeiculo->nroRegRemovidos = 0;
+CabecalhoVeiculo leCabecalhoVeiculoCsv(FILE *csv) {
+    CabecalhoVeiculo cabecalho;
 
-    leStringCsv(cabecalhoVeiculo->descrevePrefixo, csv);
-    leStringCsv(cabecalhoVeiculo->descreveData, csv);
-    leStringCsv(cabecalhoVeiculo->descreveLugares, csv);
-    leStringCsv(cabecalhoVeiculo->descreveLinha, csv);
-    leStringCsv(cabecalhoVeiculo->descreveModelo, csv);
-    leStringCsv(cabecalhoVeiculo->descreveCategoria, csv);
+    cabecalho.status = '0';
+    cabecalho.byteProxReg = 0;
+    cabecalho.nroRegistros = 0;
+    cabecalho.nroRegRemovidos = 0;
+
+    leStringCsv(cabecalho.descrevePrefixo, csv);
+    leStringCsv(cabecalho.descreveData, csv);
+    leStringCsv(cabecalho.descreveLugares, csv);
+    leStringCsv(cabecalho.descreveLinha, csv);
+    leStringCsv(cabecalho.descreveModelo, csv);
+    leStringCsv(cabecalho.descreveCategoria, csv);
+
+    return cabecalho;
 }
 
 // Lê o cabeçalho de um Veículo a partir de um binário
@@ -58,7 +63,6 @@ CabecalhoVeiculo leCabecalhoVeiculoBinario(FILE *binario) {
 
     return cabecalho;
 }
-
 
 CabecalhoVeiculo criaCabecalhoVeiculoNovo(CabecalhoVeiculo original) {
     CabecalhoVeiculo novo;
@@ -94,41 +98,47 @@ void escreveCabecalhoVeiculoBinario(CabecalhoVeiculo cabecalhoVeiculo, FILE *bin
     fwrite(cabecalhoVeiculo.descreveCategoria, sizeof(char), 20, binario);
 }
 
+
 /**
  *
- * Corpo do Veículo 
+ * Veículo 
  * 
  */
 
 // Lê um Veículo a partir de um CSV
-int leVeiculoCsv(Veiculo *veiculo, FILE *csv) {
+Veiculo leVeiculoCsv(FILE *csv, bool *ehEOF) {
+    Veiculo veiculo;
+
     // Checa pelo fim do CSV
     char verificador = fgetc(csv);
-    if (verificador == EOF)
-        return EOF;
+    if (verificador == EOF) {
+        *ehEOF = true;
+        return veiculo;
+    }
 
     // Checa por registro removido
     if (verificador == '*') {
-        veiculo->removido = '0';
-    } else {
-        veiculo->removido = '1';
+        veiculo.removido = '0';
+    }
+    else {
+        veiculo.removido = '1';
         fseek(csv, -1, SEEK_CUR);
     }
 
-    leStringCsv(veiculo->prefixo, csv);
-    leStringCsv(veiculo->data, csv);
+    leStringCsv(veiculo.prefixo, csv);
+    leStringCsv(veiculo.data, csv);
 
-    veiculo->quantidadeLugares = leInteiroCsv(csv);
-    veiculo->codLinha = leInteiroCsv(csv);
+    veiculo.quantidadeLugares = leInteiroCsv(csv);
+    veiculo.codLinha = leInteiroCsv(csv);
 
-    leStringCsv(veiculo->modelo, csv);
-    leStringCsv(veiculo->categoria, csv);
+    leStringCsv(veiculo.modelo, csv);
+    leStringCsv(veiculo.categoria, csv);
 
-    veiculo->tamanhoModelo = strlen(veiculo->modelo);
-    veiculo->tamanhoCategoria = strlen(veiculo->categoria);
-    veiculo->tamanhoRegistro = 31 + veiculo->tamanhoModelo + veiculo->tamanhoCategoria;
+    veiculo.tamanhoModelo = strlen(veiculo.modelo);
+    veiculo.tamanhoCategoria = strlen(veiculo.categoria);
+    veiculo.tamanhoRegistro = 31 + veiculo.tamanhoModelo + veiculo.tamanhoCategoria;
 
-    return 0;
+    return veiculo;
 }
 
 // Lê um Veículo a partir de um binário e retorna se ele foi removido
@@ -204,22 +214,6 @@ void escreveVeiculoBinario(Veiculo veiculo, FILE *binario) {
     fwrite(veiculo.categoria, sizeof(char), veiculo.tamanhoCategoria, binario);
 }
 
-// Verifica se um Veículo corresponde ao campo e valor pesquisados
-bool comparaVeiculo(Veiculo *veiculo, const char *campo, const char *valor) {
-    if (comparaCampoString(campo, "prefixo", valor, veiculo->prefixo))
-        return true;
-    else if (comparaCampoString(campo, "data", valor, veiculo->data))
-        return true;
-    else if (comparaCampoInteiro(campo, "quantidadeLugares", stringParaInteiro(valor), veiculo->quantidadeLugares))
-        return true;
-    else if (comparaCampoString(campo, "modelo", valor, veiculo->modelo))
-        return true;
-    else if (comparaCampoString(campo, "categoria", valor, veiculo->categoria))
-        return true;
-    else
-        return false;
-}
-
 // Imprime um Veículo
 void imprimeVeiculo(Veiculo veiculo, CabecalhoVeiculo cabecalho) {
     printf("%s: ", cabecalho.descrevePrefixo);
@@ -238,10 +232,26 @@ void imprimeVeiculo(Veiculo veiculo, CabecalhoVeiculo cabecalho) {
     imprimeCampoInteiro(veiculo.quantidadeLugares);
 }
 
+// Verifica se um Veículo corresponde ao campo e valor pesquisados
+bool comparaVeiculo(Veiculo *veiculo, const char *campo, const char *valor) {
+    if (comparaCampoString(campo, "prefixo", valor, veiculo->prefixo))
+        return true;
+    else if (comparaCampoString(campo, "data", valor, veiculo->data))
+        return true;
+    else if (comparaCampoInteiro(campo, "quantidadeLugares", stringParaInteiro(valor), veiculo->quantidadeLugares))
+        return true;
+    else if (comparaCampoString(campo, "modelo", valor, veiculo->modelo))
+        return true;
+    else if (comparaCampoString(campo, "categoria", valor, veiculo->categoria))
+        return true;
+    else
+        return false;
+}
+
 
 /**
  *
- * Vetores
+ * Veículos
  * 
  */
 

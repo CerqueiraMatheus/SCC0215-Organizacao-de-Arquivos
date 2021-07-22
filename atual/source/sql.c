@@ -7,21 +7,21 @@
  * 
  */
 
-#include "sql.h"
-
 #include <stdbool.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
+#include "veiculo.h"
 #include "arvoreb.h"
 #include "linha.h"
 #include "util.h"
-#include "veiculo.h"
+#include "sql.h"
 
-// Mensagens de erro
+
 const char *MENSAGEM_FALHA_PROCESSAMENTO = "Falha no processamento do arquivo.";
 const char *MENSAGEM_REGISTRO_INEXISTENTE = "Registro inexistente.";
+
 
 /**
  * 
@@ -44,19 +44,25 @@ void createTableVeiculo() {
     FILE *binario = abreArquivo(nomeBinario, "wb", 1, csv);
 
     // Inicializa o cabeçalho
-    CabecalhoVeiculo cabecalhoVeiculo;
-    leCabecalhoVeiculoCsv(&cabecalhoVeiculo, csv);
+    CabecalhoVeiculo cabecalhoVeiculo = leCabecalhoVeiculoCsv(csv);
     escreveCabecalhoVeiculoBinario(cabecalhoVeiculo, binario);
 
     // Percorre o CSV escrevendo os registros
-    Veiculo veiculo;
-    while (leVeiculoCsv(&veiculo, csv) != EOF) {
-        escreveVeiculoBinario(veiculo, binario);
+    while (true) {
+        bool ehEOF = false;
+        Veiculo veiculo = leVeiculoCsv(csv, &ehEOF);
 
-        if (registroFoiRemovido(veiculo.removido))
+        if (ehEOF) {
+            break;
+        }
+
+        escreveVeiculoBinario(veiculo, binario);
+        if (registroFoiRemovido(veiculo.removido)) {
             cabecalhoVeiculo.nroRegRemovidos++;
-        else
+        }
+        else {
             cabecalhoVeiculo.nroRegistros++;
+        }
     }
 
     // Atualiza o cabeçalho
@@ -85,19 +91,25 @@ void createTableLinha() {
     FILE *binario = abreArquivo(nomeBinario, "wb", 1, csv);
 
     // Inicializa o cabeçalho
-    CabecalhoLinha cabecalhoLinha;
-    leCabecalhoLinhaCsv(&cabecalhoLinha, csv);
+    CabecalhoLinha cabecalhoLinha = leCabecalhoLinhaCsv(csv);
     escreveCabecalhoLinhaBinario(cabecalhoLinha, binario);
 
     // Percorre o CSV escrevendo os registros
-    Linha linha;
-    while (leLinhaCsv(&linha, csv) != EOF) {
-        escreveLinhaBinario(linha, binario);
+    while (true) {
+        bool ehEOF = false;
+        Linha linha = leLinhaCsv(csv, &ehEOF);
+        
+        if (ehEOF) {
+            break;
+        }
 
-        if (registroFoiRemovido(linha.removido))
+        escreveLinhaBinario(linha, binario);
+        if (registroFoiRemovido(linha.removido)) {
             cabecalhoLinha.nroRegRemovidos++;
-        else
+        }
+        else {
             cabecalhoLinha.nroRegistros++;
+        }
     }
 
     // Atualiza o cabeçalho
@@ -111,6 +123,7 @@ void createTableLinha() {
 
     binarioNaTela(nomeBinario);
 }
+
 
 /**
  * 
@@ -195,6 +208,7 @@ void selectFromLinha() {
     atualizaStatusBinario('1', binario);
     fclose(binario);
 }
+
 
 /**
  * 
@@ -310,6 +324,7 @@ void selectFromWhereLinha() {
     fclose(binario);
 }
 
+
 /**
  * 
  * Insert Into
@@ -389,6 +404,7 @@ void insertIntoLinha() {
     fclose(binario);
     binarioNaTela(nomeBinario);
 }
+
 
 /**
  *
@@ -513,6 +529,7 @@ void createIndexLinha() {
 
     binarioNaTela(nomeArvoreB);
 }
+
 
 /**
  *
@@ -642,6 +659,7 @@ void selectFromWhereIndexLinha() {
     fclose(arvoreB);
 }
 
+
 /**
  *
  * Insert Into Index
@@ -770,6 +788,7 @@ void insertIntoIndexLinha() {
     binarioNaTela(nomeArvoreB);
 }
 
+
 /**
  * 
  * Order By
@@ -820,7 +839,9 @@ void orderByVeiculo() {
 }
 
 void orderByLinha() {
+
 }
+
 
 /**
  * 
@@ -1006,4 +1027,5 @@ void selectFromJoinOnIndex() {
 }
 
 void selectFromJoinOnMerge() {
+    
 }

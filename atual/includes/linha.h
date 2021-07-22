@@ -10,8 +10,10 @@
 #ifndef LINHA_H
 #define LINHA_H
 
+
 #include <stdbool.h>
 #include <stdio.h>
+
 
 typedef struct {
     char status;
@@ -36,18 +38,18 @@ typedef struct {
 } Linha;
 
 
-
 /** Cabeçalho da Linha **/
-void leCabecalhoLinhaCsv(CabecalhoLinha *cabecalhoLinha, FILE *csv);
+CabecalhoLinha leCabecalhoLinhaCsv(FILE *csv);
 CabecalhoLinha leCabecalhoLinhaBinario(FILE *binario);
 void escreveCabecalhoLinhaBinario(CabecalhoLinha cabecalhoLinha, FILE *binario);
 
 /** Corpo da Linha **/
-int leLinhaCsv(Linha *linha, FILE *csv);
+Linha leLinhaCsv(FILE *csv, bool *ehEOF);
 Linha leLinhaBinario(FILE *binario);
 Linha leLinhaEntrada();
 void escreveLinhaBinario(Linha linha, FILE *binario);
 void imprimeLinha(Linha linha, CabecalhoLinha cabecalho);
 bool comparaLinha(Linha *linha, const char *campo, const char *valor);
+
 
 #endif  // LINHA_H

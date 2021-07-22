@@ -7,15 +7,16 @@
  * 
  */
 
-#include "linha.h"
-
 #include <stdbool.h>
-#include <stdio.h>
 #include <string.h>
+#include <stdio.h>
 
+#include "linha.h"
 #include "util.h"
 
+
 static void _imprimeAceitaCartao(const char *aceitaCartao);
+
 
 /**
  *
@@ -24,16 +25,20 @@ static void _imprimeAceitaCartao(const char *aceitaCartao);
  */
 
 // Lê o cabeçalho de uma Linha a partir de um CSV
-void leCabecalhoLinhaCsv(CabecalhoLinha *cabecalhoLinha, FILE *csv) {
-    cabecalhoLinha->status = '0';
-    cabecalhoLinha->byteProxReg = 0;
-    cabecalhoLinha->nroRegistros = 0;
-    cabecalhoLinha->nroRegRemovidos = 0;
+CabecalhoLinha leCabecalhoLinhaCsv(FILE *csv) {
+    CabecalhoLinha cabecalho;
 
-    leStringCsv(cabecalhoLinha->descreveCodigo, csv);
-    leStringCsv(cabecalhoLinha->descreveCartao, csv);
-    leStringCsv(cabecalhoLinha->descreveNome, csv);
-    leStringCsv(cabecalhoLinha->descreveLinha, csv);
+    cabecalho.status = '0';
+    cabecalho.byteProxReg = 0;
+    cabecalho.nroRegistros = 0;
+    cabecalho.nroRegRemovidos = 0;
+
+    leStringCsv(cabecalho.descreveCodigo, csv);
+    leStringCsv(cabecalho.descreveCartao, csv);
+    leStringCsv(cabecalho.descreveNome, csv);
+    leStringCsv(cabecalho.descreveLinha, csv);
+
+    return cabecalho;
 }
 
 // Lê o cabeçalho de uma Linha a partir de um binário
@@ -66,39 +71,44 @@ void escreveCabecalhoLinhaBinario(CabecalhoLinha cabecalhoLinha, FILE *binario) 
     fwrite(cabecalhoLinha.descreveLinha, sizeof(char), 24, binario);
 }
 
+
 /**
  *
  * Corpo da Linha 
  * 
  */
 
-
 // Lê uma Linha a partir de um CSV
-int leLinhaCsv(Linha *linha, FILE *csv) {
+Linha leLinhaCsv(FILE *csv, bool *ehEOF) {
+    Linha linha;
+
     // Checa pelo fim do arquivo
     char verificador = fgetc(csv);
-    if (verificador == EOF)
-        return EOF;
+    if (verificador == EOF) {
+        *ehEOF = true;
+        return linha;
+    }
 
     // Checa por registro removido
     if (verificador == '*') {
-        linha->removido = '0';
-    } else {
-        linha->removido = '1';
+        linha.removido = '0';
+    }
+    else {
+        linha.removido = '1';
         fseek(csv, -1, SEEK_CUR);
     }
 
-    linha->codLinha = leInteiroCsv(csv);
+    linha.codLinha = leInteiroCsv(csv);
 
-    leStringCsv(linha->aceitaCartao, csv);
-    leStringCsv(linha->nomeLinha, csv);
-    leStringCsv(linha->corLinha, csv);
+    leStringCsv(linha.aceitaCartao, csv);
+    leStringCsv(linha.nomeLinha, csv);
+    leStringCsv(linha.corLinha, csv);
 
-    linha->tamanhoNome = strlen(linha->nomeLinha);
-    linha->tamanhoCor = strlen(linha->corLinha);
-    linha->tamanhoRegistro = 13 + linha->tamanhoNome + linha->tamanhoCor;
+    linha.tamanhoNome = strlen(linha.nomeLinha);
+    linha.tamanhoCor = strlen(linha.corLinha);
+    linha.tamanhoRegistro = 13 + linha.tamanhoNome + linha.tamanhoCor;
 
-    return 0;
+    return linha;
 }
 
 // Lê uma Linha a partir de um binário e retorna se ela foi removida

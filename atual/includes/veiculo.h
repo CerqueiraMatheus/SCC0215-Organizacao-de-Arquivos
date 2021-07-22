@@ -10,8 +10,10 @@
 #ifndef VEICULO_H
 #define VEICULO_H
 
+
 #include <stdbool.h>
 #include <stdio.h>
+
 
 typedef struct {
     char status;
@@ -39,23 +41,25 @@ typedef struct {
     char categoria[100];
 } Veiculo;
 
+
 /** Cabeçalho do Veículo **/
-void leCabecalhoVeiculoCsv(CabecalhoVeiculo *cabecalhoVeiculo, FILE *csv);
+CabecalhoVeiculo leCabecalhoVeiculoCsv(FILE *csv);
 CabecalhoVeiculo leCabecalhoVeiculoBinario(FILE *binario);
 CabecalhoVeiculo criaCabecalhoVeiculoNovo(CabecalhoVeiculo original);
 void escreveCabecalhoVeiculoBinario(CabecalhoVeiculo cabecalhoVeiculo, FILE *binario);
 
-/** Corpo do Veículo **/
-int leVeiculoCsv(Veiculo *veiculo, FILE *csv);
+/** Veículo **/
+Veiculo leVeiculoCsv(FILE *csv, bool *ehEOF);
 Veiculo leVeiculoBinario(FILE *binario);
 Veiculo leVeiculoEntrada();
 void escreveVeiculoBinario(Veiculo veiculo, FILE *binario);
-bool comparaVeiculo(Veiculo *veiculo, const char *campo, const char *valor);
 void imprimeVeiculo(Veiculo veiculo, CabecalhoVeiculo cabecalho);
+bool comparaVeiculo(Veiculo *veiculo, const char *campo, const char *valor);
 
-/** Vetores **/
+/** Veículos **/
 void leVeiculosValidosBinario(Veiculo *veiculos, int total, FILE *binario);
 void escreveVeiculosBinario(Veiculo *veiculos, int numero, FILE *binario);
 void ordenaVeiculos(Veiculo *veiculos, int numero);
+
 
 #endif  // VEICULO_H
