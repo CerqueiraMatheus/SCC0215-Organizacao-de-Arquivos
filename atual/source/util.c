@@ -14,7 +14,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdarg.h>
 
+static const char *MENSAGEM_FALHA_PROCESSAMENTO = "Falha no processamento do arquivo.";
 const char *MENSAGEM_CAMPO_NULO = "campo com valor nulo";
 const char *MESES[12] = {
     "janeiro",
@@ -29,6 +31,34 @@ const char *MESES[12] = {
     "outubro",
     "novembro",
     "dezembro"};
+
+
+/**
+ * 
+ * Arquivos
+ * 
+ */
+
+FILE *abreArquivo(const char *nome, const char *modo, int nroFechamentos, ...) {
+    FILE *arquivo = fopen(nome, modo);
+
+    if (arquivo == NULL) {
+        va_list fechamentos;
+        va_start(fechamentos, nroFechamentos);
+
+        for (int i = 0; i < nroFechamentos; i++) {
+            FILE *fechamento = va_arg(fechamentos, FILE *);
+            fclose(fechamento);
+        }
+
+        va_end(fechamentos);
+
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        exit(0);
+    }
+
+    return arquivo;
+}
 
 /**
  * 

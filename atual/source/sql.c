@@ -39,20 +39,9 @@ void createTableVeiculo() {
         exit(0);
     }
 
-    // Abre o CSV
-    FILE *csv = fopen(nomeCsv, "r");
-    if (csv == NULL) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
-        exit(0);
-    }
-
-    // Abre o binário
-    FILE *binario = fopen(nomeBinario, "wb");
-    if (binario == NULL) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
-        fclose(csv);
-        exit(0);
-    }
+    // Abre os arquivos
+    FILE *csv = abreArquivo(nomeCsv, "r", 0);
+    FILE *binario = abreArquivo(nomeBinario, "wb", 1, csv);
 
     // Inicializa o cabeçalho
     CabecalhoVeiculo cabecalhoVeiculo;
@@ -91,20 +80,9 @@ void createTableLinha() {
         exit(0);
     }
 
-    // Abre o CSV
-    FILE *csv = fopen(nomeCsv, "r");
-    if (csv == NULL) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
-        exit(0);
-    }
-
-    // Abre o binário
-    FILE *binario = fopen(nomeBinario, "wb");
-    if (binario == NULL) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
-        fclose(csv);
-        exit(0);
-    }
+    // Abre os arquivos
+    FILE *csv = abreArquivo(nomeCsv, "r", 0);
+    FILE *binario = abreArquivo(nomeBinario, "wb", 1, csv);
 
     // Inicializa o cabeçalho
     CabecalhoLinha cabecalhoLinha;
@@ -130,6 +108,7 @@ void createTableLinha() {
 
     fclose(csv);
     fclose(binario);
+
     binarioNaTela(nomeBinario);
 }
 
@@ -149,11 +128,7 @@ void selectFromVeiculo() {
     }
 
     // Abre o binário
-    FILE *binario = fopen(nomeBinario, "rb+");
-    if (binario == NULL) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
-        exit(0);
-    }
+    FILE *binario = abreArquivo(nomeBinario, "rb+", 0);
 
     // Lê o Cabeçalho do Veículo
     CabecalhoVeiculo cabecalhoVeiculo;
@@ -203,11 +178,7 @@ void selectFromLinha() {
     }
 
     // Abre o binário
-    FILE *binario = fopen(nomeBinario, "rb+");
-    if (binario == NULL) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
-        exit(0);
-    }
+    FILE *binario = abreArquivo(nomeBinario, "rb+", 0);
 
     // Lê o Cabeçalho da Linha
     CabecalhoLinha cabecalhoLinha;
@@ -268,11 +239,7 @@ void selectFromWhereVeiculo() {
     scan_quote_string(valor);
 
     // Abre o binário
-    FILE *binario = fopen(nomeBinario, "rb+");
-    if (binario == NULL) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
-        exit(0);
-    }
+    FILE *binario = abreArquivo(nomeBinario, "rb+", 0);
 
     // Lê o Cabeçalho do Veículo
     CabecalhoVeiculo cabecalhoVeiculo;
@@ -338,11 +305,7 @@ void selectFromWhereLinha() {
     scan_quote_string(valor);
 
     // Abre o binário
-    FILE *binario = fopen(nomeBinario, "rb+");
-    if (binario == NULL) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
-        exit(0);
-    }
+    FILE *binario = abreArquivo(nomeBinario, "rb+", 0);
 
     // Lê o Cabeçalho da Linha
     CabecalhoLinha cabecalhoLinha;
@@ -409,11 +372,7 @@ void insertIntoVeiculo() {
     }
 
     // Abre o binário
-    FILE *binario = fopen(nomeBinario, "rb+");
-    if (binario == NULL) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
-        exit(0);
-    }
+    FILE *binario = abreArquivo(nomeBinario, "rb+", 0);
 
     // Lê o Cabeçalho do Veículo
     CabecalhoVeiculo cabecalhoVeiculo;
@@ -460,11 +419,7 @@ void insertIntoLinha() {
     }
 
     // Abre o binário
-    FILE *binario = fopen(nomeBinario, "rb+");
-    if (binario == NULL) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
-        exit(0);
-    }
+    FILE *binario = abreArquivo(nomeBinario, "rb+", 0);
 
     // Lê o Cabeçalho da Linha
     CabecalhoLinha cabecalhoLinha;
@@ -518,11 +473,7 @@ void createIndexVeiculo() {
     }
 
     // Abre o binário veículo
-    FILE *veiculosBinario = fopen(nomeVeiculosBinario, "rb");
-    if (veiculosBinario == NULL) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
-        exit(0);
-    }
+    FILE *veiculosBinario = abreArquivo(nomeVeiculosBinario, "rb", 0);
 
     // Lê o cabeçalho do veículo
     CabecalhoVeiculo cabecalhoVeiculo;
@@ -543,12 +494,7 @@ void createIndexVeiculo() {
     }
 
     // Abre a árvore-B
-    FILE *arvoreB = fopen(nomeArvoreB, "wb+");
-    if (arvoreB == NULL) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
-        fclose(veiculosBinario);
-        exit(0);
-    }
+    FILE *arvoreB = abreArquivo(nomeArvoreB, "wb+", 1, veiculosBinario);
 
     // Cria e inicializa o cabeçalho da árvore-B
     CabecalhoArvoreB cabecalhoArvoreB;
@@ -601,11 +547,7 @@ void createIndexLinha() {
     }
 
     // Abre o binário linha
-    FILE *linhasBinario = fopen(nomeLinhasBinario, "rb");
-    if (linhasBinario == NULL) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
-        exit(0);
-    }
+    FILE *linhasBinario = abreArquivo(nomeLinhasBinario, "rb", 0);
 
     // Lê o cabeçalho da linha
     CabecalhoLinha cabecalhoLinha;
@@ -626,12 +568,7 @@ void createIndexLinha() {
     }
 
     // Abre a árvore-B
-    FILE *arvoreB = fopen(nomeArvoreB, "wb+");
-    if (arvoreB == NULL) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
-        fclose(linhasBinario);
-        exit(0);
-    }
+    FILE *arvoreB = abreArquivo(nomeArvoreB, "wb+", 1, linhasBinario);
 
     // Cria e inicializa o cabeçalho da árvore-B
     CabecalhoArvoreB cabecalhoArvoreB;
@@ -701,11 +638,7 @@ void selectFromWhereIndexVeiculo() {
     scan_quote_string(prefixo);
 
     // Abre o binário veículo
-    FILE *veiculosBinario = fopen(nomeVeiculosBinario, "rb");
-    if (veiculosBinario == NULL) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
-        exit(0);
-    }
+    FILE *veiculosBinario = abreArquivo(nomeVeiculosBinario, "rb", 0);
 
     // Lê o cabeçalho do veículo
     CabecalhoVeiculo cabecalhoVeiculo;
@@ -719,12 +652,7 @@ void selectFromWhereIndexVeiculo() {
     }
 
     // Abre a árvore-B
-    FILE *arvoreB = fopen(nomeArvoreB, "rb");
-    if (arvoreB == NULL) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
-        fclose(veiculosBinario);
-        exit(0);
-    }
+    FILE *arvoreB = abreArquivo(nomeArvoreB, "rb", 1, veiculosBinario);
 
     // Lê o cabeçalho da árvore-B
     CabecalhoArvoreB cabecalhoArvoreB;
@@ -791,11 +719,7 @@ void selectFromWhereIndexLinha() {
     scanf("%d", &codLinha);
 
     // Abre o binário linha
-    FILE *linhasBinario = fopen(nomeLinhasBinario, "rb");
-    if (linhasBinario == NULL) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
-        exit(0);
-    }
+    FILE *linhasBinario = abreArquivo(nomeLinhasBinario, "rb", 0);
 
     // Lê o cabeçalho da linha
     CabecalhoLinha cabecalhoLinha;
@@ -809,12 +733,7 @@ void selectFromWhereIndexLinha() {
     }
 
     // Abre a árvore-B
-    FILE *arvoreB = fopen(nomeArvoreB, "rb");
-    if (arvoreB == NULL) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
-        fclose(linhasBinario);
-        exit(0);
-    }
+    FILE *arvoreB = abreArquivo(nomeArvoreB, "rb", 1, linhasBinario);
 
     // Lê o cabeçalho da árvore-B
     CabecalhoArvoreB cabecalhoArvoreB;
@@ -876,11 +795,7 @@ void insertIntoIndexVeiculo() {
     }
 
     // Abre o binário veículo
-    FILE *veiculosBinario = fopen(nomeVeiculosBinario, "rb+");
-    if (veiculosBinario == NULL) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
-        exit(0);
-    }
+    FILE *veiculosBinario = abreArquivo(nomeVeiculosBinario, "rb+", 0);
 
     // Lê o cabeçalho do veículo
     CabecalhoVeiculo cabecalhoVeiculo;
@@ -895,12 +810,7 @@ void insertIntoIndexVeiculo() {
     atualizaStatusBinario('0', veiculosBinario);
 
     // Abre a árvore-B
-    FILE *arvoreB = fopen(nomeArvoreB, "rb+");
-    if (arvoreB == NULL) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
-        fclose(veiculosBinario);
-        exit(0);
-    }
+    FILE *arvoreB = abreArquivo(nomeArvoreB, "rb+", 1, veiculosBinario);
 
     // Lê o cabeçalho da árvore-B
     CabecalhoArvoreB cabecalhoArvoreB;
@@ -966,11 +876,7 @@ void insertIntoIndexLinha() {
     }
 
     // Abre o binário linha
-    FILE *linhasBinario = fopen(nomeLinhasBinario, "rb+");
-    if (linhasBinario == NULL) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
-        exit(0);
-    }
+    FILE *linhasBinario = abreArquivo(nomeLinhasBinario, "rb+", 0);
 
     // Lê o cabeçalho da linha
     CabecalhoLinha cabecalhoLinha;
@@ -985,12 +891,7 @@ void insertIntoIndexLinha() {
     atualizaStatusBinario('0', linhasBinario);
 
     // Abre a árvore-B
-    FILE *arvoreB = fopen(nomeArvoreB, "rb+");
-    if (arvoreB == NULL) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
-        fclose(linhasBinario);
-        exit(0);
-    }
+    FILE *arvoreB = abreArquivo(nomeArvoreB, "rb+", 1, linhasBinario);
 
     // Lê o cabeçalho da árvore-B
     CabecalhoArvoreB cabecalhoArvoreB;
@@ -1066,11 +967,7 @@ void orderByVeiculo() {
         exit(0);
     }
 
-    FILE *arquivoOriginal = fopen(nomeArquivoOriginal, "rb");
-    if (arquivoOriginal == NULL) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
-        exit(0);
-    }
+    FILE *arquivoOriginal = abreArquivo(nomeArquivoOriginal, "rb", 0);
 
     CabecalhoVeiculo cabecalhoOriginal;
     leCabecalhoVeiculoBinario(&cabecalhoOriginal, arquivoOriginal);
@@ -1081,12 +978,7 @@ void orderByVeiculo() {
         exit(0);
     }
 
-    FILE *arquivoOrdenado = fopen(nomeArquivoOrdenado, "wb");
-    if (arquivoOrdenado == NULL) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
-        fclose(arquivoOriginal);
-        exit(0);
-    }
+    FILE *arquivoOrdenado = abreArquivo(nomeArquivoOrdenado, "wb", 1, arquivoOriginal);
 
     CabecalhoVeiculo cabecalhoOrdenado;
     criaCabecalhoVeiculoNovo(&cabecalhoOrdenado, cabecalhoOriginal);
@@ -1133,20 +1025,8 @@ void selectFromJoinOnLoop() {
         exit(0);
     }
 
-    // Abertura do arquivo de veículos
-    FILE *binarioVeiculo = fopen(nomeArquivoVeiculo, "rb");
-    if (binarioVeiculo == NULL) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
-        exit(0);
-    }
-
-    // Abertura do arquivo de linhas
-    FILE *binarioLinha = fopen(nomeArquivoLinha, "rb");
-    if (binarioLinha == NULL) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
-        fclose(binarioVeiculo);
-        exit(0);
-    }
+    FILE *binarioVeiculo = abreArquivo(nomeArquivoVeiculo, "rb", 0);
+    FILE *binarioLinha = abreArquivo(nomeArquivoLinha, "rb", 1, binarioVeiculo);
 
     // Leitura do cabeçalho do veículo
     CabecalhoVeiculo cabecalhoVeiculo;
@@ -1254,29 +1134,9 @@ void selectFromJoinOnIndex() {
         exit(0);
     }
 
-    // Abertura do arquivo de veículos
-    FILE *binarioVeiculo = fopen(nomeArquivoVeiculo, "rb");
-    if (binarioVeiculo == NULL) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
-        exit(0);
-    }
-
-    // Abertura do arquivo de linhas
-    FILE *binarioLinha = fopen(nomeArquivoLinha, "rb");
-    if (binarioLinha == NULL) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
-        fclose(binarioVeiculo);
-        exit(0);
-    }
-
-    // Abertura do arquivo de índices de linhas
-    FILE *binarioIndiceLinha = fopen(nomeIndiceLinha, "rb");
-    if (binarioIndiceLinha == NULL) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
-        fclose(binarioVeiculo);
-        fclose(binarioLinha);
-        exit(0);
-    }
+    FILE *binarioVeiculo = abreArquivo(nomeArquivoVeiculo, "rb", 0);
+    FILE *binarioLinha = abreArquivo(nomeArquivoLinha, "rb", 1, binarioVeiculo);
+    FILE *binarioIndiceLinha = abreArquivo(nomeIndiceLinha, "rb", 2, binarioVeiculo, binarioLinha);
 
     // Leitura do cabeçalho do veículo
     CabecalhoVeiculo cabecalhoVeiculo;

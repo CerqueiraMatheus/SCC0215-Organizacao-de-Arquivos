@@ -13,6 +13,9 @@
 #include <stdbool.h>
 #include <stdio.h>
 
+/* Arquivos */
+FILE *abreArquivo(const char *nome, const char *modo, int nroFechamentos, ...);
+
 /**  Manipulação de CSV **/
 void leStringCsv(char *string, FILE *csv);
 int leInteiroCsv(FILE *csv);
