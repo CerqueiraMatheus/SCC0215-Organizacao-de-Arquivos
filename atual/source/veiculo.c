@@ -58,20 +58,6 @@ CabecalhoVeiculo leCabecalhoVeiculoBinario(FILE *binario) {
     return cabecalho;
 }
 
-// Escreve o cabeçalho de um Veículo num binário
-void escreveCabecalhoVeiculoBinario(CabecalhoVeiculo *cabecalhoVeiculo, FILE *binario) {
-    fwrite(&cabecalhoVeiculo->status, sizeof(char), 1, binario);
-    fwrite(&cabecalhoVeiculo->byteProxReg, sizeof(long long int), 1, binario);
-    fwrite(&cabecalhoVeiculo->nroRegistros, sizeof(int), 1, binario);
-    fwrite(&cabecalhoVeiculo->nroRegRemovidos, sizeof(int), 1, binario);
-
-    fwrite(cabecalhoVeiculo->descrevePrefixo, sizeof(char), 18, binario);
-    fwrite(cabecalhoVeiculo->descreveData, sizeof(char), 35, binario);
-    fwrite(cabecalhoVeiculo->descreveLugares, sizeof(char), 42, binario);
-    fwrite(cabecalhoVeiculo->descreveLinha, sizeof(char), 26, binario);
-    fwrite(cabecalhoVeiculo->descreveModelo, sizeof(char), 17, binario);
-    fwrite(cabecalhoVeiculo->descreveCategoria, sizeof(char), 20, binario);
-}
 
 CabecalhoVeiculo criaCabecalhoVeiculoNovo(CabecalhoVeiculo original) {
     CabecalhoVeiculo novo;
@@ -92,6 +78,20 @@ CabecalhoVeiculo criaCabecalhoVeiculoNovo(CabecalhoVeiculo original) {
     return novo;
 }
 
+// Escreve o cabeçalho de um Veículo num binário
+void escreveCabecalhoVeiculoBinario(CabecalhoVeiculo cabecalhoVeiculo, FILE *binario) {
+    fwrite(&cabecalhoVeiculo.status, sizeof(char), 1, binario);
+    fwrite(&cabecalhoVeiculo.byteProxReg, sizeof(long long int), 1, binario);
+    fwrite(&cabecalhoVeiculo.nroRegistros, sizeof(int), 1, binario);
+    fwrite(&cabecalhoVeiculo.nroRegRemovidos, sizeof(int), 1, binario);
+
+    fwrite(cabecalhoVeiculo.descrevePrefixo, sizeof(char), 18, binario);
+    fwrite(cabecalhoVeiculo.descreveData, sizeof(char), 35, binario);
+    fwrite(cabecalhoVeiculo.descreveLugares, sizeof(char), 42, binario);
+    fwrite(cabecalhoVeiculo.descreveLinha, sizeof(char), 26, binario);
+    fwrite(cabecalhoVeiculo.descreveModelo, sizeof(char), 17, binario);
+    fwrite(cabecalhoVeiculo.descreveCategoria, sizeof(char), 20, binario);
+}
 
 /**
  *
@@ -181,26 +181,26 @@ Veiculo leVeiculoEntrada() {
 }
 
 // Escreve um Veículo num binário
-void escreveVeiculoBinario(Veiculo *veiculo, FILE *binario) {
-    fwrite(&veiculo->removido, sizeof(char), 1, binario);
-    fwrite(&veiculo->tamanhoRegistro, sizeof(int), 1, binario);
+void escreveVeiculoBinario(Veiculo veiculo, FILE *binario) {
+    fwrite(&veiculo.removido, sizeof(char), 1, binario);
+    fwrite(&veiculo.tamanhoRegistro, sizeof(int), 1, binario);
 
-    fwrite(veiculo->prefixo, sizeof(char), 5, binario);
+    fwrite(veiculo.prefixo, sizeof(char), 5, binario);
 
     // Escreve o campo data possivelmente nulo
-    if (strlen(veiculo->data) == 0)
+    if (strlen(veiculo.data) == 0)
         escreveStringNuloBinario(10, binario);
     else
-        fwrite(veiculo->data, sizeof(char), 10, binario);
+        fwrite(veiculo.data, sizeof(char), 10, binario);
 
-    fwrite(&veiculo->quantidadeLugares, sizeof(int), 1, binario);
-    fwrite(&veiculo->codLinha, sizeof(int), 1, binario);
+    fwrite(&veiculo.quantidadeLugares, sizeof(int), 1, binario);
+    fwrite(&veiculo.codLinha, sizeof(int), 1, binario);
 
-    fwrite(&veiculo->tamanhoModelo, sizeof(int), 1, binario);
-    fwrite(veiculo->modelo, sizeof(char), veiculo->tamanhoModelo, binario);
+    fwrite(&veiculo.tamanhoModelo, sizeof(int), 1, binario);
+    fwrite(veiculo.modelo, sizeof(char), veiculo.tamanhoModelo, binario);
 
-    fwrite(&veiculo->tamanhoCategoria, sizeof(int), 1, binario);
-    fwrite(veiculo->categoria, sizeof(char), veiculo->tamanhoCategoria, binario);
+    fwrite(&veiculo.tamanhoCategoria, sizeof(int), 1, binario);
+    fwrite(veiculo.categoria, sizeof(char), veiculo.tamanhoCategoria, binario);
 }
 
 // Verifica se um Veículo corresponde ao campo e valor pesquisados
@@ -247,6 +247,7 @@ void imprimeVeiculo(CabecalhoVeiculo *cabecalhoVeiculo, Veiculo *veiculo) {
 void leVeiculosValidosBinario(Veiculo *veiculos, int total, FILE *binario) {
     for (int i = 0, j = 0; i < total; i++) {
         Veiculo temporario = leVeiculoBinario(binario);
+        
         if (!registroFoiRemovido(temporario.removido)) {
             veiculos[j++] = temporario;
         }
@@ -255,7 +256,7 @@ void leVeiculosValidosBinario(Veiculo *veiculos, int total, FILE *binario) {
 
 void escreveVeiculosBinario(Veiculo *veiculos, int numero, FILE *binario) {
     for (int i = 0; i < numero; i++) {
-        escreveVeiculoBinario(&veiculos[i], binario);
+        escreveVeiculoBinario(veiculos[i], binario);
     }
 }
 

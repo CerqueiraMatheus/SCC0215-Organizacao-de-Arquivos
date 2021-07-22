@@ -46,12 +46,12 @@ void createTableVeiculo() {
     // Inicializa o cabeçalho
     CabecalhoVeiculo cabecalhoVeiculo;
     leCabecalhoVeiculoCsv(&cabecalhoVeiculo, csv);
-    escreveCabecalhoVeiculoBinario(&cabecalhoVeiculo, binario);
+    escreveCabecalhoVeiculoBinario(cabecalhoVeiculo, binario);
 
     // Percorre o CSV escrevendo os registros
     Veiculo veiculo;
     while (leVeiculoCsv(&veiculo, csv) != EOF) {
-        escreveVeiculoBinario(&veiculo, binario);
+        escreveVeiculoBinario(veiculo, binario);
 
         if (registroFoiRemovido(veiculo.removido))
             cabecalhoVeiculo.nroRegRemovidos++;
@@ -63,7 +63,7 @@ void createTableVeiculo() {
     cabecalhoVeiculo.byteProxReg = ftell(binario);
     cabecalhoVeiculo.status = '1';
     fseek(binario, 0, SEEK_SET);
-    escreveCabecalhoVeiculoBinario(&cabecalhoVeiculo, binario);
+    escreveCabecalhoVeiculoBinario(cabecalhoVeiculo, binario);
 
     fclose(csv);
     fclose(binario);
@@ -87,12 +87,12 @@ void createTableLinha() {
     // Inicializa o cabeçalho
     CabecalhoLinha cabecalhoLinha;
     leCabecalhoLinhaCsv(&cabecalhoLinha, csv);
-    escreveCabecalhoLinhaBinario(&cabecalhoLinha, binario);
+    escreveCabecalhoLinhaBinario(cabecalhoLinha, binario);
 
     // Percorre o CSV escrevendo os registros
     Linha linha;
     while (leLinhaCsv(&linha, csv) != EOF) {
-        escreveLinhaBinario(&linha, binario);
+        escreveLinhaBinario(linha, binario);
 
         if (registroFoiRemovido(linha.removido))
             cabecalhoLinha.nroRegRemovidos++;
@@ -104,7 +104,7 @@ void createTableLinha() {
     cabecalhoLinha.byteProxReg = ftell(binario);
     cabecalhoLinha.status = '1';
     fseek(binario, 0, SEEK_SET);
-    escreveCabecalhoLinhaBinario(&cabecalhoLinha, binario);
+    escreveCabecalhoLinhaBinario(cabecalhoLinha, binario);
 
     fclose(csv);
     fclose(binario);
@@ -339,7 +339,7 @@ void insertIntoVeiculo() {
     // Percorre a entrada escrevendo os registros
     for (int i = 0; i < insercoes; i++) {
         Veiculo veiculo = leVeiculoEntrada();
-        escreveVeiculoBinario(&veiculo, binario);
+        escreveVeiculoBinario(veiculo, binario);
         cabecalhoVeiculo.nroRegistros++;
     }
 
@@ -347,7 +347,7 @@ void insertIntoVeiculo() {
     cabecalhoVeiculo.byteProxReg = ftell(binario);
     cabecalhoVeiculo.status = '1';
     fseek(binario, 0, SEEK_SET);
-    escreveCabecalhoVeiculoBinario(&cabecalhoVeiculo, binario);
+    escreveCabecalhoVeiculoBinario(cabecalhoVeiculo, binario);
 
     fclose(binario);
     binarioNaTela(nomeBinario);
@@ -376,7 +376,7 @@ void insertIntoLinha() {
     // Percorre a entrada escrevendo os registros
     for (int i = 0; i < insercoes; i++) {
         Linha linha = leLinhaEntrada();
-        escreveLinhaBinario(&linha, binario);
+        escreveLinhaBinario(linha, binario);
         cabecalhoLinha.nroRegistros++;
     }
 
@@ -384,7 +384,7 @@ void insertIntoLinha() {
     cabecalhoLinha.byteProxReg = ftell(binario);
     cabecalhoLinha.status = '1';
     fseek(binario, 0, SEEK_SET);
-    escreveCabecalhoLinhaBinario(&cabecalhoLinha, binario);
+    escreveCabecalhoLinhaBinario(cabecalhoLinha, binario);
 
     fclose(binario);
     binarioNaTela(nomeBinario);
@@ -685,7 +685,7 @@ void insertIntoIndexVeiculo() {
         chave.PR = ftell(veiculosBinario);
 
         // Escreve o veículo no binário veículo
-        escreveVeiculoBinario(&veiculo, veiculosBinario);
+        escreveVeiculoBinario(veiculo, veiculosBinario);
         cabecalhoVeiculo.nroRegistros++;
 
         // Insere a chave na árvore-B
@@ -696,7 +696,7 @@ void insertIntoIndexVeiculo() {
     cabecalhoVeiculo.status = '1';
     cabecalhoVeiculo.byteProxReg = ftell(veiculosBinario);
     fseek(veiculosBinario, 0, SEEK_SET);
-    escreveCabecalhoVeiculoBinario(&cabecalhoVeiculo, veiculosBinario);
+    escreveCabecalhoVeiculoBinario(cabecalhoVeiculo, veiculosBinario);
 
     // Atualiza o cabeçalho da árvore-B
     cabecalhoArvoreB.status = '1';
@@ -746,7 +746,7 @@ void insertIntoIndexLinha() {
         chave.PR = ftell(linhasBinario);
 
         // Escreve a linha no binário linha
-        escreveLinhaBinario(&linha, linhasBinario);
+        escreveLinhaBinario(linha, linhasBinario);
         cabecalhoLinha.nroRegistros++;
 
         // Insere a chave na árvore-B
@@ -757,7 +757,7 @@ void insertIntoIndexLinha() {
     cabecalhoLinha.status = '1';
     cabecalhoLinha.byteProxReg = ftell(linhasBinario);
     fseek(linhasBinario, 0, SEEK_SET);
-    escreveCabecalhoLinhaBinario(&cabecalhoLinha, linhasBinario);
+    escreveCabecalhoLinhaBinario(cabecalhoLinha, linhasBinario);
 
     // Atualiza o cabeçalho da árvore-B
     cabecalhoArvoreB.status = '1';
@@ -798,7 +798,7 @@ void orderByVeiculo() {
     FILE *arquivoOrdenado = abreArquivo(nomeArquivoOrdenado, "wb", 1, arquivoOriginal);
 
     CabecalhoVeiculo cabecalhoOrdenado = criaCabecalhoVeiculoNovo(cabecalhoOriginal);
-    escreveCabecalhoVeiculoBinario(&cabecalhoOrdenado, arquivoOrdenado);
+    escreveCabecalhoVeiculoBinario(cabecalhoOrdenado, arquivoOrdenado);
 
     int nroTotalRegistros = cabecalhoOriginal.nroRegistros + cabecalhoOriginal.nroRegRemovidos;
 
@@ -811,7 +811,7 @@ void orderByVeiculo() {
     cabecalhoOrdenado.status = '1';
     cabecalhoOrdenado.byteProxReg = ftell(arquivoOrdenado);
     fseek(arquivoOrdenado, 0, SEEK_SET);
-    escreveCabecalhoVeiculoBinario(&cabecalhoOrdenado, arquivoOrdenado);
+    escreveCabecalhoVeiculoBinario(cabecalhoOrdenado, arquivoOrdenado);
 
     fclose(arquivoOriginal);
     fclose(arquivoOrdenado);

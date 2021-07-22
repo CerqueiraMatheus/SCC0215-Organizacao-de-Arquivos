@@ -52,16 +52,16 @@ CabecalhoLinha leCabecalhoLinhaBinario(FILE *binario) {
 }
 
 // Escreve o cabeçalho de uma Linha num binário
-void escreveCabecalhoLinhaBinario(CabecalhoLinha *cabecalhoLinha, FILE *binario) {
-    fwrite(&cabecalhoLinha->status, sizeof(char), 1, binario);
-    fwrite(&cabecalhoLinha->byteProxReg, sizeof(long long int), 1, binario);
-    fwrite(&cabecalhoLinha->nroRegistros, sizeof(int), 1, binario);
-    fwrite(&cabecalhoLinha->nroRegRemovidos, sizeof(int), 1, binario);
+void escreveCabecalhoLinhaBinario(CabecalhoLinha cabecalhoLinha, FILE *binario) {
+    fwrite(&cabecalhoLinha.status, sizeof(char), 1, binario);
+    fwrite(&cabecalhoLinha.byteProxReg, sizeof(long long int), 1, binario);
+    fwrite(&cabecalhoLinha.nroRegistros, sizeof(int), 1, binario);
+    fwrite(&cabecalhoLinha.nroRegRemovidos, sizeof(int), 1, binario);
 
-    fwrite(cabecalhoLinha->descreveCodigo, sizeof(char), 15, binario);
-    fwrite(cabecalhoLinha->descreveCartao, sizeof(char), 13, binario);
-    fwrite(cabecalhoLinha->descreveNome, sizeof(char), 13, binario);
-    fwrite(cabecalhoLinha->descreveLinha, sizeof(char), 24, binario);
+    fwrite(cabecalhoLinha.descreveCodigo, sizeof(char), 15, binario);
+    fwrite(cabecalhoLinha.descreveCartao, sizeof(char), 13, binario);
+    fwrite(cabecalhoLinha.descreveNome, sizeof(char), 13, binario);
+    fwrite(cabecalhoLinha.descreveLinha, sizeof(char), 24, binario);
 }
 
 /**
@@ -145,18 +145,18 @@ Linha leLinhaEntrada() {
 }
 
 // Escreve uma Linha num binário
-void escreveLinhaBinario(Linha *linha, FILE *binario) {
-    fwrite(&linha->removido, sizeof(char), 1, binario);
-    fwrite(&linha->tamanhoRegistro, sizeof(int), 1, binario);
+void escreveLinhaBinario(Linha linha, FILE *binario) {
+    fwrite(&linha.removido, sizeof(char), 1, binario);
+    fwrite(&linha.tamanhoRegistro, sizeof(int), 1, binario);
 
-    fwrite(&linha->codLinha, sizeof(int), 1, binario);
-    fwrite(linha->aceitaCartao, sizeof(char), 1, binario);
+    fwrite(&linha.codLinha, sizeof(int), 1, binario);
+    fwrite(linha.aceitaCartao, sizeof(char), 1, binario);
 
-    fwrite(&linha->tamanhoNome, sizeof(int), 1, binario);
-    fwrite(linha->nomeLinha, sizeof(char), linha->tamanhoNome, binario);
+    fwrite(&linha.tamanhoNome, sizeof(int), 1, binario);
+    fwrite(linha.nomeLinha, sizeof(char), linha.tamanhoNome, binario);
 
-    fwrite(&linha->tamanhoCor, sizeof(int), 1, binario);
-    fwrite(linha->corLinha, sizeof(char), linha->tamanhoCor, binario);
+    fwrite(&linha.tamanhoCor, sizeof(int), 1, binario);
+    fwrite(linha.corLinha, sizeof(char), linha.tamanhoCor, binario);
 }
 
 // Verifica se uma Linha corresponde ao campo e valor pesquisados

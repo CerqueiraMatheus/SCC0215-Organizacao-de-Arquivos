@@ -40,13 +40,13 @@ typedef struct {
 /** Cabeçalho da Linha **/
 void leCabecalhoLinhaCsv(CabecalhoLinha *cabecalhoLinha, FILE *csv);
 CabecalhoLinha leCabecalhoLinhaBinario(FILE *binario);
-void escreveCabecalhoLinhaBinario(CabecalhoLinha *cabecalhoLinha, FILE *binario);
+void escreveCabecalhoLinhaBinario(CabecalhoLinha cabecalhoLinha, FILE *binario);
 
 /** Corpo da Linha **/
 int leLinhaCsv(Linha *linha, FILE *csv);
 Linha leLinhaBinario(FILE *binario);
 Linha leLinhaEntrada();
-void escreveLinhaBinario(Linha *linha, FILE *binario);
+void escreveLinhaBinario(Linha linha, FILE *binario);
 bool comparaLinha(Linha *linha, const char *campo, const char *valor);
 void imprimeLinha(CabecalhoLinha *cabecalhoLinha, Linha *linha);
 
