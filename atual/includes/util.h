@@ -15,6 +15,7 @@
 
 /* Arquivos */
 FILE *abreArquivo(const char *nome, const char *modo, int nroFechamentos, ...);
+void validaArquivo(char status, int nroFechamentos, ...);
 
 /**  Manipulação de CSV **/
 void leStringCsv(char *string, FILE *csv);

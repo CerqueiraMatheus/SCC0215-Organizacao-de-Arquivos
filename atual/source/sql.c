@@ -136,11 +136,7 @@ void selectFromVeiculo() {
     atualizaStatusBinario('0', binario);
 
     // Checa a integridade do arquivo
-    if (arquivoFoiCorrompido(cabecalhoVeiculo.status)) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
-        fclose(binario);
-        exit(0);
-    }
+    validaArquivo(cabecalhoVeiculo.status, 1, binario);
 
     // Checa a existência de registros não removidos
     if (cabecalhoVeiculo.nroRegistros == 0) {
@@ -186,11 +182,7 @@ void selectFromLinha() {
     atualizaStatusBinario('0', binario);
 
     // Checa a integridade do arquivo
-    if (arquivoFoiCorrompido(cabecalhoLinha.status)) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
-        fclose(binario);
-        exit(0);
-    }
+    validaArquivo(cabecalhoLinha.status, 1, binario);
 
     // Checa a existência de registros não removidos
     if (cabecalhoLinha.nroRegistros == 0) {
@@ -247,11 +239,7 @@ void selectFromWhereVeiculo() {
     atualizaStatusBinario('0', binario);
 
     // Checa a integridade do arquivo
-    if (arquivoFoiCorrompido(cabecalhoVeiculo.status)) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
-        fclose(binario);
-        exit(0);
-    }
+    validaArquivo(cabecalhoVeiculo.status, 1, binario);
 
     // Checa a existência de registros não removidos
     if (cabecalhoVeiculo.nroRegistros == 0) {
@@ -313,11 +301,7 @@ void selectFromWhereLinha() {
     atualizaStatusBinario('0', binario);
 
     // Checa a integridade do arquivo
-    if (arquivoFoiCorrompido(cabecalhoLinha.status)) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
-        fclose(binario);
-        exit(0);
-    }
+    validaArquivo(cabecalhoLinha.status, 1, binario);
 
     // Checa a existência de registros não removidos
     if (cabecalhoLinha.nroRegistros == 0) {
@@ -380,11 +364,7 @@ void insertIntoVeiculo() {
     atualizaStatusBinario('0', binario);
 
     // Checa a integridade do arquivo
-    if (arquivoFoiCorrompido(cabecalhoVeiculo.status)) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
-        fclose(binario);
-        exit(0);
-    }
+    validaArquivo(cabecalhoVeiculo.status, 1, binario);
 
     // Recebe o número de inserções e posiciona o arquivo
     int insercoes;
@@ -427,11 +407,7 @@ void insertIntoLinha() {
     atualizaStatusBinario('0', binario);
 
     // Checa a integridade do arquivo
-    if (arquivoFoiCorrompido(cabecalhoLinha.status)) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
-        fclose(binario);
-        exit(0);
-    }
+    validaArquivo(cabecalhoLinha.status, 1, binario);
 
     // Recebe o número de inserções e posiciona o arquivo
     int insercoes;
@@ -480,11 +456,7 @@ void createIndexVeiculo() {
     leCabecalhoVeiculoBinario(&cabecalhoVeiculo, veiculosBinario);
 
     // Checa a integridade do binário veículo
-    if (arquivoFoiCorrompido(cabecalhoVeiculo.status)) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
-        fclose(veiculosBinario);
-        exit(0);
-    }
+    validaArquivo(cabecalhoVeiculo.status, 1, veiculosBinario);
 
     // Checa a existência de registros não removidos
     if (cabecalhoVeiculo.nroRegistros == 0) {
@@ -554,11 +526,7 @@ void createIndexLinha() {
     leCabecalhoLinhaBinario(&cabecalhoLinha, linhasBinario);
 
     // Checa a integridade do binário linha
-    if (arquivoFoiCorrompido(cabecalhoLinha.status)) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
-        fclose(linhasBinario);
-        exit(0);
-    }
+    validaArquivo(cabecalhoLinha.status, 1, linhasBinario);
 
     // Checa a existência de registros não removidos
     if (cabecalhoLinha.nroRegistros == 0) {
@@ -645,11 +613,7 @@ void selectFromWhereIndexVeiculo() {
     leCabecalhoVeiculoBinario(&cabecalhoVeiculo, veiculosBinario);
 
     // Checa a integridade do binário veículo
-    if (arquivoFoiCorrompido(cabecalhoVeiculo.status)) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
-        fclose(veiculosBinario);
-        exit(0);
-    }
+    validaArquivo(cabecalhoVeiculo.status, 1, veiculosBinario);
 
     // Abre a árvore-B
     FILE *arvoreB = abreArquivo(nomeArvoreB, "rb", 1, veiculosBinario);
@@ -659,12 +623,7 @@ void selectFromWhereIndexVeiculo() {
     leCabecalhoArvoreB(&cabecalhoArvoreB, arvoreB);
 
     // Checa a integridade da árvore-B
-    if (arquivoFoiCorrompido(cabecalhoArvoreB.status)) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
-        fclose(veiculosBinario);
-        fclose(arvoreB);
-        exit(0);
-    }
+    validaArquivo(cabecalhoArvoreB.status, 2, veiculosBinario, arvoreB);
 
     // Busca na árvore-B
     long long int offset = buscaArvoreB(convertePrefixo(prefixo), cabecalhoArvoreB.noRaiz, arvoreB);
@@ -726,11 +685,7 @@ void selectFromWhereIndexLinha() {
     leCabecalhoLinhaBinario(&cabecalhoLinha, linhasBinario);
 
     // Checa a integridade do binário linha
-    if (arquivoFoiCorrompido(cabecalhoLinha.status)) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
-        fclose(linhasBinario);
-        exit(0);
-    }
+    validaArquivo(cabecalhoLinha.status, 1, linhasBinario);
 
     // Abre a árvore-B
     FILE *arvoreB = abreArquivo(nomeArvoreB, "rb", 1, linhasBinario);
@@ -740,12 +695,7 @@ void selectFromWhereIndexLinha() {
     leCabecalhoArvoreB(&cabecalhoArvoreB, arvoreB);
 
     // Checa a integridade da árvore-B
-    if (arquivoFoiCorrompido(cabecalhoArvoreB.status)) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
-        fclose(linhasBinario);
-        fclose(arvoreB);
-        exit(0);
-    }
+    validaArquivo(cabecalhoArvoreB.status, 2, linhasBinario, arvoreB);
 
     // Busca na árvore-B
     long long int offset = buscaArvoreB(codLinha, cabecalhoArvoreB.noRaiz, arvoreB);
@@ -802,11 +752,7 @@ void insertIntoIndexVeiculo() {
     leCabecalhoVeiculoBinario(&cabecalhoVeiculo, veiculosBinario);
 
     // Checa a integridade do binário veículo
-    if (arquivoFoiCorrompido(cabecalhoVeiculo.status)) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
-        fclose(veiculosBinario);
-        exit(0);
-    }
+    validaArquivo(cabecalhoVeiculo.status, 1, veiculosBinario);
     atualizaStatusBinario('0', veiculosBinario);
 
     // Abre a árvore-B
@@ -817,12 +763,7 @@ void insertIntoIndexVeiculo() {
     leCabecalhoArvoreB(&cabecalhoArvoreB, arvoreB);
 
     // Checa a integridade da árvore-B
-    if (arquivoFoiCorrompido(cabecalhoArvoreB.status)) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
-        fclose(veiculosBinario);
-        fclose(arvoreB);
-        exit(0);
-    }
+    validaArquivo(cabecalhoArvoreB.status, 2, veiculosBinario, arvoreB);
     atualizaStatusBinario('0', arvoreB);
 
     // Recebe o número de inserções e posiciona o arquivo
@@ -883,11 +824,7 @@ void insertIntoIndexLinha() {
     leCabecalhoLinhaBinario(&cabecalhoLinha, linhasBinario);
 
     // Checa a integridade dos arquivos
-    if (arquivoFoiCorrompido(cabecalhoLinha.status)) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
-        fclose(linhasBinario);
-        exit(0);
-    }
+    validaArquivo(cabecalhoLinha.status, 1, linhasBinario);
     atualizaStatusBinario('0', linhasBinario);
 
     // Abre a árvore-B
@@ -898,12 +835,7 @@ void insertIntoIndexLinha() {
     leCabecalhoArvoreB(&cabecalhoArvoreB, arvoreB);
 
     // Checa a integridade dos arquivos
-    if (arquivoFoiCorrompido(cabecalhoArvoreB.status)) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
-        fclose(linhasBinario);
-        fclose(arvoreB);
-        exit(0);
-    }
+    validaArquivo(cabecalhoArvoreB.status, 2, linhasBinario, arvoreB);
     atualizaStatusBinario('0', arvoreB);
 
     // Recebe o número de inserções e posiciona o arquivo
@@ -972,11 +904,7 @@ void orderByVeiculo() {
     CabecalhoVeiculo cabecalhoOriginal;
     leCabecalhoVeiculoBinario(&cabecalhoOriginal, arquivoOriginal);
 
-    if (arquivoFoiCorrompido(cabecalhoOriginal.status)) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
-        fclose(arquivoOriginal);
-        exit(0);
-    }
+    validaArquivo(cabecalhoOriginal.status, 1, arquivoOriginal);
 
     FILE *arquivoOrdenado = abreArquivo(nomeArquivoOrdenado, "wb", 1, arquivoOriginal);
 
@@ -1037,13 +965,8 @@ void selectFromJoinOnLoop() {
     leCabecalhoLinhaBinario(&cabecalhoLinha, binarioLinha);
 
     // Checa se os arquivos foram corrompidos
-    if (arquivoFoiCorrompido(cabecalhoVeiculo.status) ||
-        arquivoFoiCorrompido(cabecalhoLinha.status)) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
-        fclose(binarioVeiculo);
-        fclose(binarioLinha);
-        exit(0);
-    }
+    validaArquivo(cabecalhoVeiculo.status, 2, binarioVeiculo, binarioLinha);
+    validaArquivo(cabecalhoLinha.status, 2, binarioVeiculo, binarioLinha);
 
     // Checa se os campos são válidos
     if (strcmp(nomeCampoLinha, "codLinha") != 0 ||
@@ -1151,15 +1074,9 @@ void selectFromJoinOnIndex() {
     leCabecalhoArvoreB(&cabecalhoIndiceLinha, binarioIndiceLinha);
 
     // Checa se os arquivos foram corrompidos
-    if (arquivoFoiCorrompido(cabecalhoVeiculo.status) ||
-        arquivoFoiCorrompido(cabecalhoLinha.status) ||
-        arquivoFoiCorrompido(cabecalhoIndiceLinha.status)) {
-        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
-        fclose(binarioVeiculo);
-        fclose(binarioLinha);
-        fclose(binarioIndiceLinha);
-        exit(0);
-    }
+    validaArquivo(cabecalhoVeiculo.status, 3, binarioVeiculo, binarioLinha, binarioIndiceLinha);
+    validaArquivo(cabecalhoLinha.status, 3, binarioVeiculo, binarioLinha, binarioIndiceLinha);
+    validaArquivo(cabecalhoIndiceLinha.status, 3, binarioVeiculo, binarioLinha, binarioIndiceLinha);
 
     // Checa se os campos são válidos
     if (strcmp(nomeCampoLinha, "codLinha") != 0 ||

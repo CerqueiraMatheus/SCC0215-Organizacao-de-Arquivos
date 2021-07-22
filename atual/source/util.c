@@ -60,6 +60,23 @@ FILE *abreArquivo(const char *nome, const char *modo, int nroFechamentos, ...) {
     return arquivo;
 }
 
+void validaArquivo(char status, int nroFechamentos, ...) {
+    if (arquivoFoiCorrompido(status)) {
+        va_list fechamentos;
+        va_start(fechamentos, nroFechamentos);
+
+        for (int i = 0; i < nroFechamentos; i++) {
+            FILE *fechamento = va_arg(fechamentos, FILE *);
+            fclose(fechamento);
+        }
+
+        va_end(fechamentos);
+
+        printf("%s\n", MENSAGEM_FALHA_PROCESSAMENTO);
+        exit(0);
+    }
+}
+
 /**
  * 
  * Manipulação de CSV
