@@ -39,7 +39,7 @@ typedef struct {
 
 /** Cabeçalho da Linha **/
 void leCabecalhoLinhaCsv(CabecalhoLinha *cabecalhoLinha, FILE *csv);
-void leCabecalhoLinhaBinario(CabecalhoLinha *cabecalhoLinha, FILE *binario);
+CabecalhoLinha leCabecalhoLinhaBinario(FILE *binario);
 void escreveCabecalhoLinhaBinario(CabecalhoLinha *cabecalhoLinha, FILE *binario);
 
 /** Corpo da Linha **/

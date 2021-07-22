@@ -35,16 +35,20 @@ void leCabecalhoLinhaCsv(CabecalhoLinha *cabecalhoLinha, FILE *csv) {
 }
 
 // Lê o cabeçalho de uma Linha a partir de um binário
-void leCabecalhoLinhaBinario(CabecalhoLinha *cabecalhoLinha, FILE *binario) {
-    fread(&cabecalhoLinha->status, sizeof(char), 1, binario);
-    fread(&cabecalhoLinha->byteProxReg, sizeof(long long int), 1, binario);
-    fread(&cabecalhoLinha->nroRegistros, sizeof(int), 1, binario);
-    fread(&cabecalhoLinha->nroRegRemovidos, sizeof(int), 1, binario);
+CabecalhoLinha leCabecalhoLinhaBinario(FILE *binario) {
+    CabecalhoLinha cabecalho;
 
-    leStringBinario(cabecalhoLinha->descreveCodigo, 15, binario);
-    leStringBinario(cabecalhoLinha->descreveCartao, 13, binario);
-    leStringBinario(cabecalhoLinha->descreveNome, 13, binario);
-    leStringBinario(cabecalhoLinha->descreveLinha, 24, binario);
+    fread(&cabecalho.status, sizeof(char), 1, binario);
+    fread(&cabecalho.byteProxReg, sizeof(long long int), 1, binario);
+    fread(&cabecalho.nroRegistros, sizeof(int), 1, binario);
+    fread(&cabecalho.nroRegRemovidos, sizeof(int), 1, binario);
+
+    leStringBinario(cabecalho.descreveCodigo, 15, binario);
+    leStringBinario(cabecalho.descreveCartao, 13, binario);
+    leStringBinario(cabecalho.descreveNome, 13, binario);
+    leStringBinario(cabecalho.descreveLinha, 24, binario);
+
+    return cabecalho;
 }
 
 // Escreve o cabeçalho de uma Linha num binário

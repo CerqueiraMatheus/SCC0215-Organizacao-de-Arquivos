@@ -129,8 +129,7 @@ void selectFromVeiculo() {
 
     // Abre o binário
     FILE *binario = abreArquivo(nomeBinario, "rb+", 0);
-    CabecalhoVeiculo cabecalhoVeiculo;
-    leCabecalhoVeiculoBinario(&cabecalhoVeiculo, binario);
+    CabecalhoVeiculo cabecalhoVeiculo = leCabecalhoVeiculoBinario(binario);
     validaArquivo(cabecalhoVeiculo.status, 1, binario);
     atualizaStatusBinario('0', binario);
 
@@ -171,8 +170,7 @@ void selectFromLinha() {
 
     // Abre o binário
     FILE *binario = abreArquivo(nomeBinario, "rb+", 0);
-    CabecalhoLinha cabecalhoLinha;
-    leCabecalhoLinhaBinario(&cabecalhoLinha, binario);
+    CabecalhoLinha cabecalhoLinha = leCabecalhoLinhaBinario(binario);
     validaArquivo(cabecalhoLinha.status, 1, binario);
     atualizaStatusBinario('0', binario);
 
@@ -224,8 +222,7 @@ void selectFromWhereVeiculo() {
 
     // Abre o binário
     FILE *binario = abreArquivo(nomeBinario, "rb+", 0);
-    CabecalhoVeiculo cabecalhoVeiculo;
-    leCabecalhoVeiculoBinario(&cabecalhoVeiculo, binario);
+    CabecalhoVeiculo cabecalhoVeiculo = leCabecalhoVeiculoBinario(binario);
     validaArquivo(cabecalhoVeiculo.status, 1, binario);
     atualizaStatusBinario('0', binario);
 
@@ -282,8 +279,7 @@ void selectFromWhereLinha() {
 
     // Abre o binário
     FILE *binario = abreArquivo(nomeBinario, "rb+", 0);
-    CabecalhoLinha cabecalhoLinha;
-    leCabecalhoLinhaBinario(&cabecalhoLinha, binario);
+    CabecalhoLinha cabecalhoLinha = leCabecalhoLinhaBinario(binario);
     validaArquivo(cabecalhoLinha.status, 1, binario);
     atualizaStatusBinario('0', binario);
 
@@ -341,8 +337,7 @@ void insertIntoVeiculo() {
 
     // Abre o binário
     FILE *binario = abreArquivo(nomeBinario, "rb+", 0);
-    CabecalhoVeiculo cabecalhoVeiculo;
-    leCabecalhoVeiculoBinario(&cabecalhoVeiculo, binario);
+    CabecalhoVeiculo cabecalhoVeiculo = leCabecalhoVeiculoBinario(binario);
     validaArquivo(cabecalhoVeiculo.status, 1, binario);
     atualizaStatusBinario('0', binario);
 
@@ -380,8 +375,7 @@ void insertIntoLinha() {
 
     // Abre o binário
     FILE *binario = abreArquivo(nomeBinario, "rb+", 0);
-    CabecalhoLinha cabecalhoLinha;
-    leCabecalhoLinhaBinario(&cabecalhoLinha, binario);
+    CabecalhoLinha cabecalhoLinha = leCabecalhoLinhaBinario(binario);
     validaArquivo(cabecalhoLinha.status, 1, binario);
     atualizaStatusBinario('0', binario);
 
@@ -426,8 +420,7 @@ void createIndexVeiculo() {
 
     // Abre o binário veículo
     FILE *veiculosBinario = abreArquivo(nomeVeiculosBinario, "rb", 0);
-    CabecalhoVeiculo cabecalhoVeiculo;
-    leCabecalhoVeiculoBinario(&cabecalhoVeiculo, veiculosBinario);
+    CabecalhoVeiculo cabecalhoVeiculo = leCabecalhoVeiculoBinario(veiculosBinario);
     validaArquivo(cabecalhoVeiculo.status, 1, veiculosBinario);
 
     // Checa a existência de registros não removidos
@@ -441,8 +434,7 @@ void createIndexVeiculo() {
     FILE *arvoreB = abreArquivo(nomeArvoreB, "wb+", 1, veiculosBinario);
 
     // Cria e inicializa o cabeçalho da árvore-B
-    CabecalhoArvoreB cabecalhoArvoreB;
-    criaCabecalhoArvoreB(&cabecalhoArvoreB);
+    CabecalhoArvoreB cabecalhoArvoreB = criaCabecalhoArvoreB();
     escreveCabecalhoArvoreB(cabecalhoArvoreB, arvoreB);
 
     int nroTotalRegistros = cabecalhoVeiculo.nroRegistros + cabecalhoVeiculo.nroRegRemovidos;
@@ -492,8 +484,7 @@ void createIndexLinha() {
 
     // Abre o binário linha
     FILE *linhasBinario = abreArquivo(nomeLinhasBinario, "rb", 0);
-    CabecalhoLinha cabecalhoLinha;
-    leCabecalhoLinhaBinario(&cabecalhoLinha, linhasBinario);
+    CabecalhoLinha cabecalhoLinha = leCabecalhoLinhaBinario(linhasBinario);
     validaArquivo(cabecalhoLinha.status, 1, linhasBinario);
 
     // Checa a existência de registros não removidos
@@ -507,8 +498,7 @@ void createIndexLinha() {
     FILE *arvoreB = abreArquivo(nomeArvoreB, "wb+", 1, linhasBinario);
 
     // Cria e inicializa o cabeçalho da árvore-B
-    CabecalhoArvoreB cabecalhoArvoreB;
-    criaCabecalhoArvoreB(&cabecalhoArvoreB);
+    CabecalhoArvoreB cabecalhoArvoreB = criaCabecalhoArvoreB();
     escreveCabecalhoArvoreB(cabecalhoArvoreB, arvoreB);
 
     int nroTotalRegistros = cabecalhoLinha.nroRegistros + cabecalhoLinha.nroRegRemovidos;
@@ -575,14 +565,12 @@ void selectFromWhereIndexVeiculo() {
 
     // Abre o binário veículo
     FILE *veiculosBinario = abreArquivo(nomeVeiculosBinario, "rb", 0);
-    CabecalhoVeiculo cabecalhoVeiculo;
-    leCabecalhoVeiculoBinario(&cabecalhoVeiculo, veiculosBinario);
+    CabecalhoVeiculo cabecalhoVeiculo = leCabecalhoVeiculoBinario(veiculosBinario);
     validaArquivo(cabecalhoVeiculo.status, 1, veiculosBinario);
 
     // Abre a árvore-B
     FILE *arvoreB = abreArquivo(nomeArvoreB, "rb", 1, veiculosBinario);
-    CabecalhoArvoreB cabecalhoArvoreB;
-    leCabecalhoArvoreB(&cabecalhoArvoreB, arvoreB);
+    CabecalhoArvoreB cabecalhoArvoreB = leCabecalhoArvoreB(arvoreB);
     validaArquivo(cabecalhoArvoreB.status, 2, veiculosBinario, arvoreB);
 
     // Busca na árvore-B
@@ -639,14 +627,12 @@ void selectFromWhereIndexLinha() {
 
     // Abre o binário linha
     FILE *linhasBinario = abreArquivo(nomeLinhasBinario, "rb", 0);
-    CabecalhoLinha cabecalhoLinha;
-    leCabecalhoLinhaBinario(&cabecalhoLinha, linhasBinario);
+    CabecalhoLinha cabecalhoLinha = leCabecalhoLinhaBinario(linhasBinario);
     validaArquivo(cabecalhoLinha.status, 1, linhasBinario);
 
     // Abre a árvore-B
     FILE *arvoreB = abreArquivo(nomeArvoreB, "rb", 1, linhasBinario);
-    CabecalhoArvoreB cabecalhoArvoreB;
-    leCabecalhoArvoreB(&cabecalhoArvoreB, arvoreB);
+    CabecalhoArvoreB cabecalhoArvoreB = leCabecalhoArvoreB(arvoreB);
     validaArquivo(cabecalhoArvoreB.status, 2, linhasBinario, arvoreB);
 
     // Busca na árvore-B
@@ -698,15 +684,13 @@ void insertIntoIndexVeiculo() {
 
     // Abre o binário veículo
     FILE *veiculosBinario = abreArquivo(nomeVeiculosBinario, "rb+", 0);
-    CabecalhoVeiculo cabecalhoVeiculo;
-    leCabecalhoVeiculoBinario(&cabecalhoVeiculo, veiculosBinario);
+    CabecalhoVeiculo cabecalhoVeiculo = leCabecalhoVeiculoBinario(veiculosBinario);
     validaArquivo(cabecalhoVeiculo.status, 1, veiculosBinario);
     atualizaStatusBinario('0', veiculosBinario);
 
     // Abre a árvore-B
     FILE *arvoreB = abreArquivo(nomeArvoreB, "rb+", 1, veiculosBinario);
-    CabecalhoArvoreB cabecalhoArvoreB;
-    leCabecalhoArvoreB(&cabecalhoArvoreB, arvoreB);
+    CabecalhoArvoreB cabecalhoArvoreB = leCabecalhoArvoreB(arvoreB);
     validaArquivo(cabecalhoArvoreB.status, 2, veiculosBinario, arvoreB);
     atualizaStatusBinario('0', arvoreB);
 
@@ -762,15 +746,13 @@ void insertIntoIndexLinha() {
 
     // Abre o binário linha
     FILE *linhasBinario = abreArquivo(nomeLinhasBinario, "rb+", 0);
-    CabecalhoLinha cabecalhoLinha;
-    leCabecalhoLinhaBinario(&cabecalhoLinha, linhasBinario);
+    CabecalhoLinha cabecalhoLinha = leCabecalhoLinhaBinario(linhasBinario);
     validaArquivo(cabecalhoLinha.status, 1, linhasBinario);
     atualizaStatusBinario('0', linhasBinario);
 
     // Abre a árvore-B
     FILE *arvoreB = abreArquivo(nomeArvoreB, "rb+", 1, linhasBinario);
-    CabecalhoArvoreB cabecalhoArvoreB;
-    leCabecalhoArvoreB(&cabecalhoArvoreB, arvoreB);
+    CabecalhoArvoreB cabecalhoArvoreB = leCabecalhoArvoreB(arvoreB);
     validaArquivo(cabecalhoArvoreB.status, 2, linhasBinario, arvoreB);
     atualizaStatusBinario('0', arvoreB);
 
@@ -836,14 +818,12 @@ void orderByVeiculo() {
     }
 
     FILE *arquivoOriginal = abreArquivo(nomeArquivoOriginal, "rb", 0);
-    CabecalhoVeiculo cabecalhoOriginal;
-    leCabecalhoVeiculoBinario(&cabecalhoOriginal, arquivoOriginal);
+    CabecalhoVeiculo cabecalhoOriginal = leCabecalhoVeiculoBinario(arquivoOriginal);
     validaArquivo(cabecalhoOriginal.status, 1, arquivoOriginal);
 
     FILE *arquivoOrdenado = abreArquivo(nomeArquivoOrdenado, "wb", 1, arquivoOriginal);
 
-    CabecalhoVeiculo cabecalhoOrdenado;
-    criaCabecalhoVeiculoNovo(&cabecalhoOrdenado, cabecalhoOriginal);
+    CabecalhoVeiculo cabecalhoOrdenado = criaCabecalhoVeiculoNovo(cabecalhoOriginal);
     escreveCabecalhoVeiculoBinario(&cabecalhoOrdenado, arquivoOrdenado);
 
     int nroTotalRegistros = cabecalhoOriginal.nroRegistros + cabecalhoOriginal.nroRegRemovidos;
@@ -889,14 +869,12 @@ void selectFromJoinOnLoop() {
 
     // Leitura do arquivo de veículos
     FILE *binarioVeiculo = abreArquivo(nomeArquivoVeiculo, "rb", 0);
-    CabecalhoVeiculo cabecalhoVeiculo;
-    leCabecalhoVeiculoBinario(&cabecalhoVeiculo, binarioVeiculo);
+    CabecalhoVeiculo cabecalhoVeiculo = leCabecalhoVeiculoBinario(binarioVeiculo);
     validaArquivo(cabecalhoVeiculo.status, 1, binarioVeiculo);
 
     // Leitura do arquivo de linhas
     FILE *binarioLinha = abreArquivo(nomeArquivoLinha, "rb", 1, binarioVeiculo);
-    CabecalhoLinha cabecalhoLinha;
-    leCabecalhoLinhaBinario(&cabecalhoLinha, binarioLinha);
+    CabecalhoLinha cabecalhoLinha = leCabecalhoLinhaBinario(binarioLinha);
     validaArquivo(cabecalhoLinha.status, 2, binarioVeiculo, binarioLinha);
 
     // Checa se os campos são válidos
@@ -990,20 +968,17 @@ void selectFromJoinOnIndex() {
 
     // Leitura do arquivo de veículos
     FILE *binarioVeiculo = abreArquivo(nomeArquivoVeiculo, "rb", 0);
-    CabecalhoVeiculo cabecalhoVeiculo;
-    leCabecalhoVeiculoBinario(&cabecalhoVeiculo, binarioVeiculo);
+    CabecalhoVeiculo cabecalhoVeiculo = leCabecalhoVeiculoBinario(binarioVeiculo);
     validaArquivo(cabecalhoVeiculo.status, 1, binarioVeiculo);
 
     // Leitura do arquivo de linhas
     FILE *binarioLinha = abreArquivo(nomeArquivoLinha, "rb", 1, binarioVeiculo);
-    CabecalhoLinha cabecalhoLinha;
-    leCabecalhoLinhaBinario(&cabecalhoLinha, binarioLinha);
+    CabecalhoLinha cabecalhoLinha = leCabecalhoLinhaBinario(binarioLinha);
     validaArquivo(cabecalhoLinha.status, 2, binarioVeiculo, binarioLinha);
 
     // Leitura do arquivo de índice de linhas
     FILE *binarioIndiceLinha = abreArquivo(nomeIndiceLinha, "rb", 2, binarioVeiculo, binarioLinha);
-    CabecalhoArvoreB cabecalhoIndiceLinha;
-    leCabecalhoArvoreB(&cabecalhoIndiceLinha, binarioIndiceLinha);
+    CabecalhoArvoreB cabecalhoIndiceLinha = leCabecalhoArvoreB(binarioIndiceLinha);
     validaArquivo(cabecalhoIndiceLinha.status, 3, binarioVeiculo, binarioLinha, binarioIndiceLinha);
 
     // Checa se os campos são válidos

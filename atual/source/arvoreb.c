@@ -22,19 +22,27 @@ const int NULO = -1;
  * 
  */
 
-void criaCabecalhoArvoreB(CabecalhoArvoreB *cabecalho) {
-    cabecalho->status = '0';
-    cabecalho->noRaiz = NULO;
-    cabecalho->RRNproxNo = 0;
+CabecalhoArvoreB criaCabecalhoArvoreB() {
+    CabecalhoArvoreB cabecalho;
+
+    cabecalho.status = '0';
+    cabecalho.noRaiz = NULO;
+    cabecalho.RRNproxNo = 0;
+
+    return cabecalho;
 }
 
-void leCabecalhoArvoreB(CabecalhoArvoreB *cabecalho, FILE *arvoreB) {
+CabecalhoArvoreB leCabecalhoArvoreB(FILE *arvoreB) {
     // Posiciona o ponteiro no cabeçalho
     fseek(arvoreB, 0, SEEK_SET);
 
-    fread(&cabecalho->status, sizeof(char), 1, arvoreB);
-    fread(&cabecalho->noRaiz, sizeof(int), 1, arvoreB);
-    fread(&cabecalho->RRNproxNo, sizeof(int), 1, arvoreB);
+    CabecalhoArvoreB cabecalho;
+
+    fread(&cabecalho.status, sizeof(char), 1, arvoreB);
+    fread(&cabecalho.noRaiz, sizeof(int), 1, arvoreB);
+    fread(&cabecalho.RRNproxNo, sizeof(int), 1, arvoreB);
+
+    return cabecalho;
 }
 
 void escreveCabecalhoArvoreB(CabecalhoArvoreB cabecalho, FILE *arvoreB) {

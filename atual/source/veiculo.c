@@ -40,18 +40,22 @@ void leCabecalhoVeiculoCsv(CabecalhoVeiculo *cabecalhoVeiculo, FILE *csv) {
 }
 
 // Lê o cabeçalho de um Veículo a partir de um binário
-void leCabecalhoVeiculoBinario(CabecalhoVeiculo *cabecalhoVeiculo, FILE *binario) {
-    fread(&cabecalhoVeiculo->status, sizeof(char), 1, binario);
-    fread(&cabecalhoVeiculo->byteProxReg, sizeof(long long int), 1, binario);
-    fread(&cabecalhoVeiculo->nroRegistros, sizeof(int), 1, binario);
-    fread(&cabecalhoVeiculo->nroRegRemovidos, sizeof(int), 1, binario);
+CabecalhoVeiculo leCabecalhoVeiculoBinario(FILE *binario) {
+    CabecalhoVeiculo cabecalho;
 
-    leStringBinario(cabecalhoVeiculo->descrevePrefixo, 18, binario);
-    leStringBinario(cabecalhoVeiculo->descreveData, 35, binario);
-    leStringBinario(cabecalhoVeiculo->descreveLugares, 42, binario);
-    leStringBinario(cabecalhoVeiculo->descreveLinha, 26, binario);
-    leStringBinario(cabecalhoVeiculo->descreveModelo, 17, binario);
-    leStringBinario(cabecalhoVeiculo->descreveCategoria, 20, binario);
+    fread(&cabecalho.status, sizeof(char), 1, binario);
+    fread(&cabecalho.byteProxReg, sizeof(long long int), 1, binario);
+    fread(&cabecalho.nroRegistros, sizeof(int), 1, binario);
+    fread(&cabecalho.nroRegRemovidos, sizeof(int), 1, binario);
+
+    leStringBinario(cabecalho.descrevePrefixo, 18, binario);
+    leStringBinario(cabecalho.descreveData, 35, binario);
+    leStringBinario(cabecalho.descreveLugares, 42, binario);
+    leStringBinario(cabecalho.descreveLinha, 26, binario);
+    leStringBinario(cabecalho.descreveModelo, 17, binario);
+    leStringBinario(cabecalho.descreveCategoria, 20, binario);
+
+    return cabecalho;
 }
 
 // Escreve o cabeçalho de um Veículo num binário
@@ -69,19 +73,23 @@ void escreveCabecalhoVeiculoBinario(CabecalhoVeiculo *cabecalhoVeiculo, FILE *bi
     fwrite(cabecalhoVeiculo->descreveCategoria, sizeof(char), 20, binario);
 }
 
-void criaCabecalhoVeiculoNovo(CabecalhoVeiculo *novo, CabecalhoVeiculo original) {
-    novo->status = '0';
-    novo->byteProxReg = 0;
+CabecalhoVeiculo criaCabecalhoVeiculoNovo(CabecalhoVeiculo original) {
+    CabecalhoVeiculo novo;
 
-    strcpy(novo->descrevePrefixo, original.descrevePrefixo);
-    strcpy(novo->descreveData, original.descreveData);
-    strcpy(novo->descreveLugares, original.descreveLugares);
-    strcpy(novo->descreveLinha, original.descreveLinha);
-    strcpy(novo->descreveModelo, original.descreveModelo);
-    strcpy(novo->descreveCategoria, original.descreveCategoria);
+    novo.status = '0';
+    novo.byteProxReg = 0;
 
-    novo->nroRegistros = original.nroRegistros;
-    novo->nroRegRemovidos = 0;
+    strcpy(novo.descrevePrefixo, original.descrevePrefixo);
+    strcpy(novo.descreveData, original.descreveData);
+    strcpy(novo.descreveLugares, original.descreveLugares);
+    strcpy(novo.descreveLinha, original.descreveLinha);
+    strcpy(novo.descreveModelo, original.descreveModelo);
+    strcpy(novo.descreveCategoria, original.descreveCategoria);
+
+    novo.nroRegistros = original.nroRegistros;
+    novo.nroRegRemovidos = 0;
+
+    return novo;
 }
 
 

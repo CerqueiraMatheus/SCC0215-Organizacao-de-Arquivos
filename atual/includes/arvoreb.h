@@ -42,8 +42,8 @@ typedef struct {
 
 
 // Cabeçalho da Árvore-B
-void criaCabecalhoArvoreB(CabecalhoArvoreB *cabecalho);
-void leCabecalhoArvoreB(CabecalhoArvoreB *cabecalho, FILE *arvoreB);
+CabecalhoArvoreB criaCabecalhoArvoreB();
+CabecalhoArvoreB leCabecalhoArvoreB(FILE *arvoreB);
 void escreveCabecalhoArvoreB(CabecalhoArvoreB cabecalho, FILE *arvoreB);
 
 // Árvore-B
