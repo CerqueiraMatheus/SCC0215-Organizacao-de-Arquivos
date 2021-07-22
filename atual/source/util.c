@@ -62,9 +62,10 @@ void validaArquivo(char status, int nroFechamentos, ...) {
     }
 }
 
+
 /**
  * 
- * Manipulação de CSV
+ * CSV
  * 
  */
 
@@ -72,8 +73,9 @@ void validaArquivo(char status, int nroFechamentos, ...) {
 void leStringCsv(char *string, FILE *csv) {
     fscanf(csv, "%[^,\n]%*c", string);
 
-    if (strcmp(string, "NULO") == 0)
+    if (strcmp(string, "NULO") == 0) {
         strcpy(string, "");
+    }
 }
 
 // Retorna um inteiro partir de um CSV
@@ -84,9 +86,10 @@ int leInteiroCsv(FILE *csv) {
     return strcmp(inteiro, "NULO") == 0 ? -1 : atoi(inteiro);
 }
 
+
 /**
  * 
- * Manipulação de binário
+ * Binário
  * 
  */
 
@@ -98,8 +101,9 @@ void leStringBinario(char *string, int tamanho, FILE *binario) {
 
 // Adiciona lixo a um binário
 void escreveLixoBinario(int numero, FILE *binario) {
-    for (int i = 0; i < numero; i++)
+    for (int i = 0; i < numero; i++) {
         fwrite("@", sizeof(char), 1, binario);
+    }
 }
 
 // Adiciona uma string nula a um binário
@@ -118,9 +122,10 @@ void atualizaStatusBinario(char status, FILE *binario) {
     fseek(binario, posicao, SEEK_SET);
 }
 
+
 /**
  * 
- * Leitura de entradas
+ * Entrada
  * 
  */
 
@@ -132,9 +137,10 @@ int leInteiroEntrada() {
     return strcmp(inteiro, "NULO") == 0 ? -1 : atoi(inteiro);
 }
 
+
 /**
  * 
- * Conversões
+ * Conversão
  * 
  */
 
@@ -142,6 +148,7 @@ int leInteiroEntrada() {
 int stringParaInteiro(const char *string) {
     return strcmp(string, "") == 0 ? -1 : atoi(string);
 }
+
 
 /**
  * 
@@ -159,6 +166,7 @@ bool registroFoiRemovido(char removido) {
     return removido == '0';
 }
 
+
 /**
  * 
  * Checagem de campos
@@ -169,9 +177,37 @@ bool ehCampoOrdenavel(const char *campo) {
     return strcmp(campo, "codLinha") == 0;
 }
 
+
 /**
  * 
- * Comparação de valores
+ * Impressão
+ * 
+ */
+
+// Imprime um campo string (trata casos nulos)
+void imprimeCampoString(const char *campo, int tamanho) {
+    if (tamanho == 0) {
+        printf("%s\n", CAMPO_NULO);
+    }
+    else {
+        printf("%s\n", campo);
+    }
+}
+
+// Imprime um campo inteiro (trata casos iguais a -1)
+void imprimeCampoInteiro(int campo) {
+    if (campo == -1) {
+        printf("%s\n", CAMPO_NULO);
+    }
+    else {
+        printf("%d\n", campo);
+    }
+}
+
+
+/**
+ * 
+ * Comparação
  * 
  */
 
@@ -185,27 +221,6 @@ bool comparaCampoInteiro(const char *campo, const char *campoRegistro, int valor
     return strcmp(campo, campoRegistro) == 0 && valor == valorRegistro;
 }
 
-/**
- * 
- * Impressão de resultados
- * 
- */
-
-// Imprime um campo string (trata casos nulos)
-void imprimeCampoString(const char *campo, int tamanho) {
-    if (tamanho == 0)
-        printf("%s\n", CAMPO_NULO);
-    else
-        printf("%s\n", campo);
-}
-
-// Imprime um campo inteiro (trata casos iguais a -1)
-void imprimeCampoInteiro(int campo) {
-    if (campo == -1)
-        printf("%s\n", CAMPO_NULO);
-    else
-        printf("%d\n", campo);
-}
 
 /**
  * 

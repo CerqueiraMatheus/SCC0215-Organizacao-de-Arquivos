@@ -17,6 +17,9 @@
 #include "util.h"
 
 
+static const int TAMANHO_BASE_VEICULO = 31;
+
+
 static void _imprimeData(const char *data);
 static int _comparaVeiculos(const void *primeiro, const void *segundo);
 
@@ -137,7 +140,7 @@ Veiculo leVeiculoCsv(FILE *csv, bool *ehEOF) {
 
     veiculo.tamanhoModelo = strlen(veiculo.modelo);
     veiculo.tamanhoCategoria = strlen(veiculo.categoria);
-    veiculo.tamanhoRegistro = 31 + veiculo.tamanhoModelo + veiculo.tamanhoCategoria;
+    veiculo.tamanhoRegistro = TAMANHO_BASE_VEICULO + veiculo.tamanhoModelo + veiculo.tamanhoCategoria;
 
     return veiculo;
 }
@@ -187,7 +190,7 @@ Veiculo leVeiculoEntrada() {
 
     veiculo.tamanhoModelo = strlen(veiculo.modelo);
     veiculo.tamanhoCategoria = strlen(veiculo.categoria);
-    veiculo.tamanhoRegistro = 31 + veiculo.tamanhoModelo + veiculo.tamanhoCategoria;
+    veiculo.tamanhoRegistro = TAMANHO_BASE_VEICULO + veiculo.tamanhoModelo + veiculo.tamanhoCategoria;
 
     return veiculo;
 }
@@ -200,10 +203,12 @@ void escreveVeiculoBinario(Veiculo veiculo, FILE *binario) {
     fwrite(veiculo.prefixo, sizeof(char), 5, binario);
 
     // Escreve o campo data possivelmente nulo
-    if (strlen(veiculo.data) == 0)
+    if (strlen(veiculo.data) == 0) {
         escreveStringNuloBinario(10, binario);
-    else
+    }
+    else {
         fwrite(veiculo.data, sizeof(char), 10, binario);
+    }
 
     fwrite(&veiculo.quantidadeLugares, sizeof(int), 1, binario);
     fwrite(&veiculo.codLinha, sizeof(int), 1, binario);
@@ -235,18 +240,17 @@ void imprimeVeiculo(Veiculo veiculo, CabecalhoVeiculo cabecalho) {
 
 // Verifica se um Veículo corresponde ao campo e valor pesquisados
 bool comparaVeiculo(Veiculo *veiculo, const char *campo, const char *valor) {
-    if (comparaCampoString(campo, "prefixo", valor, veiculo->prefixo))
+    if (
+        comparaCampoString(campo, "prefixo", valor, veiculo->prefixo) ||
+        comparaCampoString(campo, "data", valor, veiculo->data) ||
+        comparaCampoInteiro(campo, "quantidadeLugares", stringParaInteiro(valor), veiculo->quantidadeLugares) ||
+        comparaCampoString(campo, "modelo", valor, veiculo->modelo) ||
+        comparaCampoString(campo, "categoria", valor, veiculo->categoria)
+    ) {
         return true;
-    else if (comparaCampoString(campo, "data", valor, veiculo->data))
-        return true;
-    else if (comparaCampoInteiro(campo, "quantidadeLugares", stringParaInteiro(valor), veiculo->quantidadeLugares))
-        return true;
-    else if (comparaCampoString(campo, "modelo", valor, veiculo->modelo))
-        return true;
-    else if (comparaCampoString(campo, "categoria", valor, veiculo->categoria))
-        return true;
-    else
-        return false;
+    }
+
+    return false;
 }
 
 

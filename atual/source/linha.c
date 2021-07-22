@@ -16,6 +16,9 @@
 #include "util.h"
 
 
+static const int TAMANHO_BASE_LINHA = 13;
+
+
 static void _imprimeAceitaCartao(const char *aceitaCartao);
 
 
@@ -75,7 +78,7 @@ void escreveCabecalhoLinhaBinario(CabecalhoLinha cabecalhoLinha, FILE *binario) 
 
 /**
  *
- * Corpo da Linha 
+ * Linha 
  * 
  */
 
@@ -107,7 +110,7 @@ Linha leLinhaCsv(FILE *csv, bool *ehEOF) {
 
     linha.tamanhoNome = strlen(linha.nomeLinha);
     linha.tamanhoCor = strlen(linha.corLinha);
-    linha.tamanhoRegistro = 13 + linha.tamanhoNome + linha.tamanhoCor;
+    linha.tamanhoRegistro = TAMANHO_BASE_LINHA + linha.tamanhoNome + linha.tamanhoCor;
 
     return linha;
 }
@@ -152,7 +155,7 @@ Linha leLinhaEntrada() {
 
     linha.tamanhoNome = strlen(linha.nomeLinha);
     linha.tamanhoCor = strlen(linha.corLinha);
-    linha.tamanhoRegistro = 13 + linha.tamanhoNome + linha.tamanhoCor;
+    linha.tamanhoRegistro = TAMANHO_BASE_LINHA + linha.tamanhoNome + linha.tamanhoCor;
 
     return linha;
 }
@@ -189,16 +192,16 @@ void imprimeLinha(Linha linha, CabecalhoLinha cabecalho) {
 
 // Verifica se uma Linha corresponde ao campo e valor pesquisados
 bool comparaLinha(Linha *linha, const char *campo, const char *valor) {
-    if (comparaCampoInteiro(campo, "codLinha", stringParaInteiro(valor), linha->codLinha))
+    if (
+        comparaCampoInteiro(campo, "codLinha", stringParaInteiro(valor), linha->codLinha) ||
+        comparaCampoString(campo, "aceitaCartao", valor, linha->aceitaCartao) ||
+        comparaCampoString(campo, "nomeLinha", valor, linha->nomeLinha) ||
+        comparaCampoString(campo, "corLinha", valor, linha->corLinha)
+    ) {
         return true;
-    else if (comparaCampoString(campo, "aceitaCartao", valor, linha->aceitaCartao))
-        return true;
-    else if (comparaCampoString(campo, "nomeLinha", valor, linha->nomeLinha))
-        return true;
-    else if (comparaCampoString(campo, "corLinha", valor, linha->corLinha))
-        return true;
-    else
-        return false;
+    }
+
+    return false;
 }
 
 
@@ -216,16 +219,16 @@ static void _imprimeAceitaCartao(const char *aceitaCartao) {
     }
 
     switch (aceitaCartao[0]) {
-        case 'S':
-            printf("PAGAMENTO SOMENTE COM CARTAO SEM PRESENCA DE COBRADOR\n");
-            break;
+    case 'S':
+        printf("PAGAMENTO SOMENTE COM CARTAO SEM PRESENCA DE COBRADOR\n");
+        break;
 
-        case 'N':
-            printf("PAGAMENTO EM CARTAO E DINHEIRO\n");
-            break;
+    case 'N':
+        printf("PAGAMENTO EM CARTAO E DINHEIRO\n");
+        break;
 
-        case 'F':
-            printf("PAGAMENTO EM CARTAO SOMENTE NO FINAL DE SEMANA\n");
-            break;
+    case 'F':
+        printf("PAGAMENTO EM CARTAO SOMENTE NO FINAL DE SEMANA\n");
+        break;
     }
 }

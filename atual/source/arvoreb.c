@@ -7,14 +7,15 @@
  * 
  */
 
-#include "arvoreb.h"
-
 #include <stdbool.h>
 #include <stdio.h>
 
+#include "arvoreb.h"
 #include "util.h"
 
-const int NULO = -1;
+
+static const int NULO = -1;
+
 
 /**
  *
@@ -56,6 +57,7 @@ void escreveCabecalhoArvoreB(CabecalhoArvoreB cabecalho, FILE *arvoreB) {
     escreveLixoBinario(68, arvoreB);
 }
 
+
 /**
  *
  * Árvore-B
@@ -68,7 +70,7 @@ typedef enum {
     ERRO
 } _RetornoInsercao;
 
-// Funções auxiliares
+
 static NoArvoreB _criaNoArvoreB(CabecalhoArvoreB *cabecalho);
 static NoArvoreB _leNoArvoreB(int RRN, FILE *arvoreB);
 static void _escreveNoArvoreB(NoArvoreB no, FILE *arvoreB);
@@ -77,15 +79,18 @@ static void _insereNoArvoreB(ChaveArvoreB chave, int filho, NoArvoreB *no);
 static _RetornoInsercao _insereArvoreB(ChaveArvoreB chave, int RRN, ChaveArvoreB *chave_promovida,
                                        int *filho_promovido, CabecalhoArvoreB *cabecalho, FILE *arvoreB);
 
+
 long long int buscaArvoreB(int chave, int RRN, FILE *arvoreB) {
-    if (RRN == NULO)
+    if (RRN == NULO) {
         return NAO_ENCONTRADO;
+    }
 
     NoArvoreB no = _leNoArvoreB(RRN, arvoreB);
 
     int posicao;
-    if (_buscaNoArvoreB(chave, &posicao, no) == true)
+    if (_buscaNoArvoreB(chave, &posicao, no) == true) {
         return no.chaves[posicao].PR;
+    }
 
     return buscaArvoreB(chave, no.P[posicao], arvoreB);
 }
@@ -98,8 +103,9 @@ bool insereArvoreB(ChaveArvoreB chave, CabecalhoArvoreB *cabecalho, FILE *arvore
     _RetornoInsercao retorno = _insereArvoreB(chave, cabecalho->noRaiz, &chave_promovida,
                                               &filho_promovido, cabecalho, arvoreB);
 
-    if (retorno == ERRO)
+    if (retorno == ERRO) {
         return false;
+    }
 
     if (retorno == PROMOCAO) {
         // Cria uma nova raiz
@@ -116,6 +122,7 @@ bool insereArvoreB(ChaveArvoreB chave, CabecalhoArvoreB *cabecalho, FILE *arvore
     return true;
 }
 
+
 /**
  *
  * RRN
@@ -125,6 +132,7 @@ bool insereArvoreB(ChaveArvoreB chave, CabecalhoArvoreB *cabecalho, FILE *arvore
 static void _posicionaArvoreBRRN(FILE *arvoreB, int RRN) {
     fseek(arvoreB, (RRN + 1) * TAMANHO_PAGINA, SEEK_SET);
 }
+
 
 /**
  *
@@ -187,6 +195,7 @@ static void _escreveNoArvoreB(NoArvoreB no, FILE *arvoreB) {
     fwrite(&no.P[MAX_NUMERO_CHAVES], sizeof(int), 1, arvoreB);
 }
 
+
 /**
  *
  * Busca
@@ -195,15 +204,17 @@ static void _escreveNoArvoreB(NoArvoreB no, FILE *arvoreB) {
 
 static bool _buscaNoArvoreB(int chave, int *posicao, NoArvoreB no) {
     for (*posicao = 0; *posicao < no.nroChavesIndexadas; (*posicao)++) {
-        if (chave < no.chaves[*posicao].C)
+        if (chave < no.chaves[*posicao].C) {
             return false;
-
-        else if (chave == no.chaves[*posicao].C)
+        }
+        else if (chave == no.chaves[*posicao].C) {
             return true;
+        }
     }
 
     return false;
 }
+
 
 /**
  *
@@ -245,8 +256,9 @@ static void _copiaNoTemporario(NoArvoreB *no, int inicio, _NoTemporario temporar
     no->P[0] = temporario.filhos[inicio];
     no->folha = no->P[0] == NULO ? '1' : '0';
 
-    for (int i = 0; i < MAX_NUMERO_CHAVES / 2; i++)
+    for (int i = 0; i < MAX_NUMERO_CHAVES / 2; i++) {
         _insereNoArvoreB(temporario.chaves[inicio + i], temporario.filhos[inicio + 1 + i], no);
+    }
 }
 
 static void _particionaNoArvoreB(ChaveArvoreB chave, int filho, NoArvoreB *no, ChaveArvoreB *chave_promovida,
@@ -263,6 +275,7 @@ static void _particionaNoArvoreB(ChaveArvoreB chave, int filho, NoArvoreB *no, C
     _copiaNoTemporario(no, 0, temporario);
     _copiaNoTemporario(novoNo, MAX_NUMERO_CHAVES / 2 + 1, temporario);
 }
+
 
 /**
  *
@@ -304,8 +317,9 @@ static _RetornoInsercao _insereArvoreB(ChaveArvoreB chave, int RRN, ChaveArvoreB
 
     // Busca pela chave
     int posicao;
-    if (_buscaNoArvoreB(chave.C, &posicao, no) == true)
+    if (_buscaNoArvoreB(chave.C, &posicao, no) == true) {
         return ERRO;
+    }
 
     // Recursão até inserir
     _RetornoInsercao retorno = _insereArvoreB(chave, no.P[posicao], chave_promovida, filho_promovido,
@@ -314,14 +328,12 @@ static _RetornoInsercao _insereArvoreB(ChaveArvoreB chave, int RRN, ChaveArvoreB
     if (retorno == SEM_PROMOCAO || retorno == ERRO) {
         return retorno;
     }
-
     // Insere promoção sem particionamento
     else if (no.nroChavesIndexadas < MAX_NUMERO_CHAVES) {
         _insereNoArvoreB(*chave_promovida, *filho_promovido, &no);
         _escreveNoArvoreB(no, arvoreB);
         return SEM_PROMOCAO;
     }
-
     // Insere promoção com particionamento
     else {
         NoArvoreB novoNo;

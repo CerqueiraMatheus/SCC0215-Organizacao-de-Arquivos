@@ -10,27 +10,29 @@
 #ifndef UTIL_H
 #define UTIL_H
 
+
 #include <stdbool.h>
 #include <stdio.h>
 
-/* Arquivos */
+
+/** Arquivos **/
 FILE *abreArquivo(const char *nome, const char *modo, int nroFechamentos, ...);
 void validaArquivo(char status, int nroFechamentos, ...);
 
-/**  Manipulação de CSV **/
+/**  CSV **/
 void leStringCsv(char *string, FILE *csv);
 int leInteiroCsv(FILE *csv);
 
-/** Manipulação de binário **/
+/** Binário **/
 void leStringBinario(char *string, int tamanho, FILE *binario);
 void escreveLixoBinario(int numero, FILE *binario);
 void escreveStringNuloBinario(int tamanho, FILE *binario);
 void atualizaStatusBinario(char status, FILE *binario);
 
-/** Leitura de entradas **/
+/** Entrada **/
 int leInteiroEntrada();
 
-/** Conversões **/
+/** Conversão **/
 int stringParaInteiro(const char *string);
 
 /** Checagem de estados **/
@@ -40,17 +42,18 @@ bool registroFoiRemovido(char removido);
 /** Checagem de campos **/
 bool ehCampoOrdenavel(const char *campo);
 
-/** Comparação de valores **/
-bool comparaCampoString(const char *campo, const char *campoRegistro, const char *valor, const char *valorRegistro);
-bool comparaCampoInteiro(const char *campo, const char *campoRegistro, int valor, int valorRegistro);
-
-/** Impressão de resultados **/
+/** Impressão **/
 void imprimeCampoString(const char *campo, int tamanho);
 void imprimeCampoInteiro(int campo);
+
+/** Comparação **/
+bool comparaCampoString(const char *campo, const char *campoRegistro, const char *valor, const char *valorRegistro);
+bool comparaCampoInteiro(const char *campo, const char *campoRegistro, int valor, int valorRegistro);
 
 /** Funções fornecidas **/
 void binarioNaTela(char *nomeArquivoBinario);
 void scan_quote_string(char *str);
 int convertePrefixo(char *str);
+
 
 #endif  // UTIL_H

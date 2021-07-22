@@ -260,8 +260,9 @@ void selectFromWhereVeiculo() {
         }
     }
 
-    if (!houveCorrespondencia)
+    if (!houveCorrespondencia) {
         printf("%s\n", REGISTRO_INEXISTENTE);
+    }
 
     atualizaStatusBinario('1', binario);
     fclose(binario);
@@ -314,8 +315,9 @@ void selectFromWhereLinha() {
         }
     }
 
-    if (!houveCorrespondencia)
+    if (!houveCorrespondencia) {
         printf("%s\n", REGISTRO_INEXISTENTE);
+    }
 
     atualizaStatusBinario('1', binario);
     fclose(binario);
@@ -578,13 +580,11 @@ void selectFromWhereIndexVeiculo() {
         if (!registroFoiRemovido(veiculo.removido)) {
             imprimeVeiculo(veiculo, cabecalhoVeiculo);
         }
-
         // Caso removido
         else {
             printf("%s\n", REGISTRO_INEXISTENTE);
         }
     }
-
     // Caso não encontrado
     else {
         printf("%s\n", REGISTRO_INEXISTENTE);
@@ -639,13 +639,11 @@ void selectFromWhereIndexLinha() {
         if (!registroFoiRemovido(linha.removido)) {
             imprimeLinha(linha, cabecalhoLinha);
         }
-
         // Caso removido
         else {
             printf("%s\n", REGISTRO_INEXISTENTE);
         }
     }
-
     // Caso não encontrado
     else {
         printf("%s\n", REGISTRO_INEXISTENTE);
@@ -924,7 +922,9 @@ void selectFromJoinOnLoop() {
     }
 
     // Caso não tenha ocorrido match
-    if (!encontrado) printf("%s\n", REGISTRO_INEXISTENTE);
+    if (!encontrado) {
+        printf("%s\n", REGISTRO_INEXISTENTE);
+    }
 
     // Fecha os arquivos
     fclose(binarioVeiculo);
@@ -1015,7 +1015,9 @@ void selectFromJoinOnIndex() {
     }
 
     // Caso não tenha ocorrido match
-    if (!encontrado) printf("%s\n", REGISTRO_INEXISTENTE);
+    if (!encontrado) {
+        printf("%s\n", REGISTRO_INEXISTENTE);
+    }
 
     // Fecha os arquivos
     fclose(binarioVeiculo);

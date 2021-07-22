@@ -43,7 +43,7 @@ CabecalhoLinha leCabecalhoLinhaCsv(FILE *csv);
 CabecalhoLinha leCabecalhoLinhaBinario(FILE *binario);
 void escreveCabecalhoLinhaBinario(CabecalhoLinha cabecalhoLinha, FILE *binario);
 
-/** Corpo da Linha **/
+/** Linha **/
 Linha leLinhaCsv(FILE *csv, bool *ehEOF);
 Linha leLinhaBinario(FILE *binario);
 Linha leLinhaEntrada();
