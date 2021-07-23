@@ -758,18 +758,19 @@ void orderByVeiculo() {
     CabecalhoVeiculo cabecalhoOrdenado = criaCabecalhoVeiculoOrdenado(cabecalhoOriginal);
     escreveCabecalhoVeiculoBinario(cabecalhoOrdenado, ordenado);
 
-    if (cabecalhoOrdenado.nroRegistros > 0) {
+    if (cabecalhoOriginal.nroRegistros > 0) {
         int nroTotalRegistros = cabecalhoOriginal.nroRegistros + cabecalhoOriginal.nroRegRemovidos;
 
-        Veiculo veiculos[cabecalhoOrdenado.nroRegistros];
+        Veiculo veiculos[cabecalhoOriginal.nroRegistros];
         leVeiculosBinario(veiculos, nroTotalRegistros, original);
 
-        ordenaVeiculos(veiculos, cabecalhoOrdenado.nroRegistros);
-        escreveVeiculosBinario(veiculos, cabecalhoOrdenado.nroRegistros, ordenado);
+        ordenaVeiculos(veiculos, cabecalhoOriginal.nroRegistros);
+        escreveVeiculosBinario(veiculos, cabecalhoOriginal.nroRegistros, ordenado);
     }
 
     cabecalhoOrdenado.status = '1';
     cabecalhoOrdenado.byteProxReg = ftell(ordenado);
+    cabecalhoOrdenado.nroRegistros = cabecalhoOriginal.nroRegistros;
     escreveCabecalhoVeiculoBinario(cabecalhoOrdenado, ordenado);
 
     fclose(original);

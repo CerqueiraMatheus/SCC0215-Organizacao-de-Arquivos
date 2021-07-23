@@ -17,6 +17,7 @@
 #include "util.h"
 
 
+static const int TAMANHO_CABECALHO_VEICULO = 175;
 static const int TAMANHO_BASE_VEICULO = 31;
 
 
@@ -47,7 +48,7 @@ CabecalhoVeiculo leCabecalhoVeiculoCsv(FILE *csv) {
     CabecalhoVeiculo cabecalho;
 
     cabecalho.status = '0';
-    cabecalho.byteProxReg = 0;
+    cabecalho.byteProxReg = TAMANHO_CABECALHO_VEICULO;
     cabecalho.nroRegistros = 0;
     cabecalho.nroRegRemovidos = 0;
 
@@ -86,7 +87,9 @@ CabecalhoVeiculo criaCabecalhoVeiculoOrdenado(CabecalhoVeiculo original) {
     CabecalhoVeiculo ordenado;
 
     ordenado.status = '0';
-    ordenado.byteProxReg = 0;
+    ordenado.byteProxReg = TAMANHO_CABECALHO_VEICULO;
+    ordenado.nroRegistros = 0;
+    ordenado.nroRegRemovidos = 0;
 
     strcpy(ordenado.descrevePrefixo, original.descrevePrefixo);
     strcpy(ordenado.descreveData, original.descreveData);
@@ -94,9 +97,6 @@ CabecalhoVeiculo criaCabecalhoVeiculoOrdenado(CabecalhoVeiculo original) {
     strcpy(ordenado.descreveLinha, original.descreveLinha);
     strcpy(ordenado.descreveModelo, original.descreveModelo);
     strcpy(ordenado.descreveCategoria, original.descreveCategoria);
-
-    ordenado.nroRegistros = original.nroRegistros;
-    ordenado.nroRegRemovidos = 0;
 
     return ordenado;
 }
