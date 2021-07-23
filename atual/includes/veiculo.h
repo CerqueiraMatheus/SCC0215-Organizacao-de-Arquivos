@@ -42,11 +42,14 @@ typedef struct {
 } Veiculo;
 
 
+/** Binário **/
+void posicionaBinarioProximoRegistroVeiculo(FILE *binario, CabecalhoVeiculo cabecalho);
+
 /** Cabeçalho do Veículo **/
 CabecalhoVeiculo leCabecalhoVeiculoCsv(FILE *csv);
 CabecalhoVeiculo leCabecalhoVeiculoBinario(FILE *binario);
 CabecalhoVeiculo criaCabecalhoVeiculoNovo(CabecalhoVeiculo original);
-void escreveCabecalhoVeiculoBinario(CabecalhoVeiculo cabecalhoVeiculo, FILE *binario);
+void escreveCabecalhoVeiculoBinario(CabecalhoVeiculo cabecalho, FILE *binario);
 
 /** Veículo **/
 Veiculo leVeiculoCsv(FILE *csv, bool *ehEOF);
@@ -57,7 +60,7 @@ void imprimeVeiculo(Veiculo veiculo, CabecalhoVeiculo cabecalho);
 bool comparaVeiculo(Veiculo *veiculo, const char *campo, const char *valor);
 
 /** Veículos **/
-void leVeiculosValidosBinario(Veiculo *veiculos, int total, FILE *binario);
+void leVeiculosBinario(Veiculo *veiculos, int numero, FILE *binario);
 void escreveVeiculosBinario(Veiculo *veiculos, int numero, FILE *binario);
 void ordenaVeiculos(Veiculo *veiculos, int numero);
 

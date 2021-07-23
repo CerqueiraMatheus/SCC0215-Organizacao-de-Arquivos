@@ -16,10 +16,27 @@
 #include "util.h"
 
 
+static const int TAMANHO_CABECALHO_LINHA = 82;
 static const int TAMANHO_BASE_LINHA = 13;
 
 
+static void _posicionaBinarioCabecalhoLinha(FILE *binario);
 static void _imprimeAceitaCartao(const char *aceitaCartao);
+
+
+/**
+ *
+ * Binário
+ * 
+ */
+
+void posicionaBinarioPrimeiroRegistroLinha(FILE *binario) {
+    fseek(binario, TAMANHO_CABECALHO_LINHA, SEEK_SET);
+}
+
+void posicionaBinarioProximoRegistroLinha(FILE *binario, CabecalhoLinha cabecalho) {
+    fseek(binario, cabecalho.byteProxReg, SEEK_SET);
+}
 
 
 /**
@@ -47,6 +64,8 @@ CabecalhoLinha leCabecalhoLinhaCsv(FILE *csv) {
 
 // Lê o cabeçalho de uma Linha a partir de um binário
 CabecalhoLinha leCabecalhoLinhaBinario(FILE *binario) {
+    _posicionaBinarioCabecalhoLinha(binario);
+
     CabecalhoLinha cabecalho;
 
     fread(&cabecalho.status, sizeof(char), 1, binario);
@@ -63,16 +82,18 @@ CabecalhoLinha leCabecalhoLinhaBinario(FILE *binario) {
 }
 
 // Escreve o cabeçalho de uma Linha num binário
-void escreveCabecalhoLinhaBinario(CabecalhoLinha cabecalhoLinha, FILE *binario) {
-    fwrite(&cabecalhoLinha.status, sizeof(char), 1, binario);
-    fwrite(&cabecalhoLinha.byteProxReg, sizeof(long long int), 1, binario);
-    fwrite(&cabecalhoLinha.nroRegistros, sizeof(int), 1, binario);
-    fwrite(&cabecalhoLinha.nroRegRemovidos, sizeof(int), 1, binario);
+void escreveCabecalhoLinhaBinario(CabecalhoLinha cabecalho, FILE *binario) {
+    _posicionaBinarioCabecalhoLinha(binario);
 
-    fwrite(cabecalhoLinha.descreveCodigo, sizeof(char), 15, binario);
-    fwrite(cabecalhoLinha.descreveCartao, sizeof(char), 13, binario);
-    fwrite(cabecalhoLinha.descreveNome, sizeof(char), 13, binario);
-    fwrite(cabecalhoLinha.descreveLinha, sizeof(char), 24, binario);
+    fwrite(&cabecalho.status, sizeof(char), 1, binario);
+    fwrite(&cabecalho.byteProxReg, sizeof(long long int), 1, binario);
+    fwrite(&cabecalho.nroRegistros, sizeof(int), 1, binario);
+    fwrite(&cabecalho.nroRegRemovidos, sizeof(int), 1, binario);
+
+    fwrite(cabecalho.descreveCodigo, sizeof(char), 15, binario);
+    fwrite(cabecalho.descreveCartao, sizeof(char), 13, binario);
+    fwrite(cabecalho.descreveNome, sizeof(char), 13, binario);
+    fwrite(cabecalho.descreveLinha, sizeof(char), 24, binario);
 }
 
 
@@ -210,6 +231,10 @@ bool comparaLinha(Linha *linha, const char *campo, const char *valor) {
  * Auxiliares 
  * 
  */
+
+static void _posicionaBinarioCabecalhoLinha(FILE *binario) {
+    fseek(binario, 0, SEEK_SET);
+}
 
 // Imprime o aceite de cartão por extenso (trata casos nulos)
 static void _imprimeAceitaCartao(const char *aceitaCartao) {

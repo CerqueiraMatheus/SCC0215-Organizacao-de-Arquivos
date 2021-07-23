@@ -65,7 +65,6 @@ void createTableVeiculo() {
     // Atualiza o cabeçalho
     cabecalhoVeiculo.byteProxReg = ftell(binario);
     cabecalhoVeiculo.status = '1';
-    fseek(binario, 0, SEEK_SET);
     escreveCabecalhoVeiculoBinario(cabecalhoVeiculo, binario);
 
     fclose(csv);
@@ -112,7 +111,6 @@ void createTableLinha() {
     // Atualiza o cabeçalho
     cabecalhoLinha.byteProxReg = ftell(binario);
     cabecalhoLinha.status = '1';
-    fseek(binario, 0, SEEK_SET);
     escreveCabecalhoLinhaBinario(cabecalhoLinha, binario);
 
     fclose(csv);
@@ -348,7 +346,7 @@ void insertIntoVeiculo() {
     // Recebe o número de inserções e posiciona o arquivo
     int insercoes;
     scanf("%d", &insercoes);
-    fseek(binario, cabecalhoVeiculo.byteProxReg, SEEK_SET);
+    posicionaBinarioProximoRegistroVeiculo(binario, cabecalhoVeiculo);
 
     // Percorre a entrada escrevendo os registros
     for (int i = 0; i < insercoes; i++) {
@@ -360,7 +358,6 @@ void insertIntoVeiculo() {
     // Atualiza o cabeçalho
     cabecalhoVeiculo.byteProxReg = ftell(binario);
     cabecalhoVeiculo.status = '1';
-    fseek(binario, 0, SEEK_SET);
     escreveCabecalhoVeiculoBinario(cabecalhoVeiculo, binario);
 
     fclose(binario);
@@ -385,7 +382,7 @@ void insertIntoLinha() {
     // Recebe o número de inserções e posiciona o arquivo
     int insercoes;
     scanf("%d", &insercoes);
-    fseek(binario, cabecalhoLinha.byteProxReg, SEEK_SET);
+    posicionaBinarioProximoRegistroLinha(binario, cabecalhoLinha);
 
     // Percorre a entrada escrevendo os registros
     for (int i = 0; i < insercoes; i++) {
@@ -397,7 +394,6 @@ void insertIntoLinha() {
     // Atualiza o cabeçalho
     cabecalhoLinha.byteProxReg = ftell(binario);
     cabecalhoLinha.status = '1';
-    fseek(binario, 0, SEEK_SET);
     escreveCabecalhoLinhaBinario(cabecalhoLinha, binario);
 
     fclose(binario);
@@ -686,7 +682,7 @@ void insertIntoIndexVeiculo() {
     // Recebe o número de inserções e posiciona o arquivo
     int insercoes;
     scanf("%d", &insercoes);
-    fseek(veiculosBinario, cabecalhoVeiculo.byteProxReg, SEEK_SET);
+    posicionaBinarioProximoRegistroVeiculo(veiculosBinario, cabecalhoVeiculo);
 
     // Percorre a entrada escrevendo os registros
     for (int i = 0; i < insercoes; i++) {
@@ -708,7 +704,6 @@ void insertIntoIndexVeiculo() {
     // Atualiza o cabeçalho do veículo
     cabecalhoVeiculo.status = '1';
     cabecalhoVeiculo.byteProxReg = ftell(veiculosBinario);
-    fseek(veiculosBinario, 0, SEEK_SET);
     escreveCabecalhoVeiculoBinario(cabecalhoVeiculo, veiculosBinario);
 
     // Atualiza o cabeçalho da árvore-B
@@ -747,7 +742,7 @@ void insertIntoIndexLinha() {
     // Recebe o número de inserções e posiciona o arquivo
     int insercoes;
     scanf("%d", &insercoes);
-    fseek(linhasBinario, cabecalhoLinha.byteProxReg, SEEK_SET);
+    posicionaBinarioProximoRegistroLinha(linhasBinario, cabecalhoLinha);
 
     // Percorre a entrada escrevendo os registros
     for (int i = 0; i < insercoes; i++) {
@@ -769,7 +764,6 @@ void insertIntoIndexLinha() {
     // Atualiza o cabeçalho da linha
     cabecalhoLinha.status = '1';
     cabecalhoLinha.byteProxReg = ftell(linhasBinario);
-    fseek(linhasBinario, 0, SEEK_SET);
     escreveCabecalhoLinhaBinario(cabecalhoLinha, linhasBinario);
 
     // Atualiza o cabeçalho da árvore-B
@@ -817,14 +811,13 @@ void orderByVeiculo() {
     int nroTotalRegistros = cabecalhoOriginal.nroRegistros + cabecalhoOriginal.nroRegRemovidos;
 
     Veiculo veiculos[cabecalhoOrdenado.nroRegistros];
-    leVeiculosValidosBinario(veiculos, nroTotalRegistros, arquivoOriginal);
+    leVeiculosBinario(veiculos, nroTotalRegistros, arquivoOriginal);
     ordenaVeiculos(veiculos, cabecalhoOrdenado.nroRegistros);
 
     escreveVeiculosBinario(veiculos, cabecalhoOrdenado.nroRegistros, arquivoOrdenado);
 
     cabecalhoOrdenado.status = '1';
     cabecalhoOrdenado.byteProxReg = ftell(arquivoOrdenado);
-    fseek(arquivoOrdenado, 0, SEEK_SET);
     escreveCabecalhoVeiculoBinario(cabecalhoOrdenado, arquivoOrdenado);
 
     fclose(arquivoOriginal);
@@ -884,9 +877,6 @@ void selectFromJoinOnLoop() {
         exit(0);
     }
 
-    // Armazena o início dos registros de linha
-    long long int cur_offset = ftell(binarioLinha);
-
     // Contabiliza o total de registros
     int registrosVeiculo = cabecalhoVeiculo.nroRegistros + cabecalhoVeiculo.nroRegRemovidos;
     int registrosLinha = cabecalhoLinha.nroRegistros + cabecalhoLinha.nroRegRemovidos;
@@ -917,7 +907,7 @@ void selectFromJoinOnLoop() {
             }
 
             // Reinicia o arquivo da linha
-            fseek(binarioLinha, cur_offset, SEEK_SET);
+            posicionaBinarioPrimeiroRegistroLinha(binarioLinha);
         }
     }
 

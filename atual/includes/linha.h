@@ -38,10 +38,14 @@ typedef struct {
 } Linha;
 
 
+/** Binário **/
+void posicionaBinarioProximoRegistroLinha(FILE *binario, CabecalhoLinha cabecalho);
+void posicionaBinarioPrimeiroRegistroLinha(FILE *binario);
+
 /** Cabeçalho da Linha **/
 CabecalhoLinha leCabecalhoLinhaCsv(FILE *csv);
 CabecalhoLinha leCabecalhoLinhaBinario(FILE *binario);
-void escreveCabecalhoLinhaBinario(CabecalhoLinha cabecalhoLinha, FILE *binario);
+void escreveCabecalhoLinhaBinario(CabecalhoLinha cabecalho, FILE *binario);
 
 /** Linha **/
 Linha leLinhaCsv(FILE *csv, bool *ehEOF);

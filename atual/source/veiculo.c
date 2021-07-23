@@ -20,8 +20,20 @@
 static const int TAMANHO_BASE_VEICULO = 31;
 
 
+static void _posicionaBinarioCabecalhoVeiculo(FILE *binario);
 static void _imprimeData(const char *data);
 static int _comparaVeiculos(const void *primeiro, const void *segundo);
+
+
+/**
+ *
+ * Binário
+ * 
+ */
+
+void posicionaBinarioProximoRegistroVeiculo(FILE *binario, CabecalhoVeiculo cabecalho) {
+    fseek(binario, cabecalho.byteProxReg, SEEK_SET);
+}
 
 
 /**
@@ -51,6 +63,8 @@ CabecalhoVeiculo leCabecalhoVeiculoCsv(FILE *csv) {
 
 // Lê o cabeçalho de um Veículo a partir de um binário
 CabecalhoVeiculo leCabecalhoVeiculoBinario(FILE *binario) {
+    _posicionaBinarioCabecalhoVeiculo(binario);
+
     CabecalhoVeiculo cabecalho;
 
     fread(&cabecalho.status, sizeof(char), 1, binario);
@@ -88,18 +102,20 @@ CabecalhoVeiculo criaCabecalhoVeiculoNovo(CabecalhoVeiculo original) {
 }
 
 // Escreve o cabeçalho de um Veículo num binário
-void escreveCabecalhoVeiculoBinario(CabecalhoVeiculo cabecalhoVeiculo, FILE *binario) {
-    fwrite(&cabecalhoVeiculo.status, sizeof(char), 1, binario);
-    fwrite(&cabecalhoVeiculo.byteProxReg, sizeof(long long int), 1, binario);
-    fwrite(&cabecalhoVeiculo.nroRegistros, sizeof(int), 1, binario);
-    fwrite(&cabecalhoVeiculo.nroRegRemovidos, sizeof(int), 1, binario);
+void escreveCabecalhoVeiculoBinario(CabecalhoVeiculo cabecalho, FILE *binario) {
+    _posicionaBinarioCabecalhoVeiculo(binario);
 
-    fwrite(cabecalhoVeiculo.descrevePrefixo, sizeof(char), 18, binario);
-    fwrite(cabecalhoVeiculo.descreveData, sizeof(char), 35, binario);
-    fwrite(cabecalhoVeiculo.descreveLugares, sizeof(char), 42, binario);
-    fwrite(cabecalhoVeiculo.descreveLinha, sizeof(char), 26, binario);
-    fwrite(cabecalhoVeiculo.descreveModelo, sizeof(char), 17, binario);
-    fwrite(cabecalhoVeiculo.descreveCategoria, sizeof(char), 20, binario);
+    fwrite(&cabecalho.status, sizeof(char), 1, binario);
+    fwrite(&cabecalho.byteProxReg, sizeof(long long int), 1, binario);
+    fwrite(&cabecalho.nroRegistros, sizeof(int), 1, binario);
+    fwrite(&cabecalho.nroRegRemovidos, sizeof(int), 1, binario);
+
+    fwrite(cabecalho.descrevePrefixo, sizeof(char), 18, binario);
+    fwrite(cabecalho.descreveData, sizeof(char), 35, binario);
+    fwrite(cabecalho.descreveLugares, sizeof(char), 42, binario);
+    fwrite(cabecalho.descreveLinha, sizeof(char), 26, binario);
+    fwrite(cabecalho.descreveModelo, sizeof(char), 17, binario);
+    fwrite(cabecalho.descreveCategoria, sizeof(char), 20, binario);
 }
 
 
@@ -260,8 +276,8 @@ bool comparaVeiculo(Veiculo *veiculo, const char *campo, const char *valor) {
  * 
  */
 
-void leVeiculosValidosBinario(Veiculo *veiculos, int total, FILE *binario) {
-    for (int i = 0, j = 0; i < total; i++) {
+void leVeiculosBinario(Veiculo *veiculos, int numero, FILE *binario) {
+    for (int i = 0, j = 0; i < numero; i++) {
         Veiculo temporario = leVeiculoBinario(binario);
         
         if (!registroFoiRemovido(temporario.removido)) {
@@ -286,6 +302,10 @@ void ordenaVeiculos(Veiculo *veiculos, int numero) {
  * Auxiliares
  * 
  */
+
+static void _posicionaBinarioCabecalhoVeiculo(FILE *binario) {
+    fseek(binario, 0, SEEK_SET);
+}
 
 // Imprime uma data por extenso (trata casos nulos)
 static void _imprimeData(const char *data) {
