@@ -941,7 +941,89 @@ void selectFromJoinOnIndex() {
 }
 
 void selectFromJoinOnMerge() {
+    char nomeBinarioVeiculo[255];
+    char nomeBinarioLinha[255];
+    char campoVeiculo[20];
+    char campoLinha[20];
 
+    // Leitura dos campos
+    leStringsEntrada(4, nomeBinarioVeiculo, nomeBinarioLinha, campoVeiculo, campoLinha);
+
+    // Checa se os campos são válidos
+    if (!ehCampoJuntavel(campoVeiculo) || !ehCampoJuntavel(campoLinha)) {
+        printf("%s\n", FALHA_PROCESSAMENTO);
+        exit(0);
+    }
+
+    // Criação dos arquivos ordenados
+    _criaBinarioVeiculoOrdenado(nomeBinarioVeiculo, "veiculoOrdenadoMerge.bin", campoVeiculo);
+    _criaBinarioLinhaOrdenado(nomeBinarioLinha, "linhaOrdenadoMerge.bin", campoLinha);
+
+    // Leitura do arquivo de veículos ordenado
+    FILE *binarioVeiculo = abreArquivo("veiculoOrdenadoMerge.bin", "rb", 0);
+    CabecalhoVeiculo cabecalhoVeiculo = leCabecalhoVeiculoBinario(binarioVeiculo);
+    validaArquivo(cabecalhoVeiculo.status, 1, binarioVeiculo);
+
+    // Leitura do arquivo de linhas ordenado
+    FILE *binarioLinha = abreArquivo("linhaOrdenadoMerge.bin", "rb", 1, binarioVeiculo);
+    CabecalhoLinha cabecalhoLinha = leCabecalhoLinhaBinario(binarioLinha);
+    validaArquivo(cabecalhoLinha.status, 2, binarioVeiculo, binarioLinha);
+
+    // Caso não haja veículo ou linha
+    if (cabecalhoVeiculo.nroRegistros == 0 || cabecalhoLinha.nroRegistros == 0) {
+        printf("%s\n", REGISTRO_INEXISTENTE);
+        fclose(binarioVeiculo);
+        fclose(binarioLinha);
+        exit(0);
+    }
+
+    bool encontrado = false;
+
+    // Leitura do primeiro veículo
+    Veiculo veiculo = leVeiculoBinario(binarioVeiculo);
+    int indiceVeiculo = 0;
+
+    // Leitura da primeira linha
+    Linha linha = leLinhaBinario(binarioLinha);
+    int indiceLinha = 0;
+
+    // Executa o merge dos arquivos
+    while (indiceVeiculo < cabecalhoVeiculo.nroRegistros && indiceLinha < cabecalhoLinha.nroRegistros) {
+        // Caso haja o "match"
+        if (veiculo.codLinha == linha.codLinha) {
+            // Imprime o resultado
+            encontrado = true;
+            imprimeVeiculo(veiculo, cabecalhoVeiculo);
+            imprimeLinha(linha, cabecalhoLinha);
+            printf("\n");
+
+            // Avança para o próximo veículo
+            if (++indiceVeiculo < cabecalhoVeiculo.nroRegistros) {
+                veiculo = leVeiculoBinario(binarioVeiculo);
+            }
+        }
+        else if (veiculo.codLinha < linha.codLinha) {
+            // Avança para o próximo veículo
+            if (++indiceVeiculo < cabecalhoVeiculo.nroRegistros) {
+                veiculo = leVeiculoBinario(binarioVeiculo);
+            }
+        }
+        else {
+            // Avança para a próxima linha
+            if (++indiceLinha < cabecalhoLinha.nroRegistros) {
+                linha = leLinhaBinario(binarioLinha);
+            }
+        }
+    }
+
+    // Caso não tenha ocorrido match
+    if (!encontrado) {
+        printf("%s\n", REGISTRO_INEXISTENTE);
+    }
+
+    // Fecha os arquivos
+    fclose(binarioVeiculo);
+    fclose(binarioLinha);
 }
 
 
