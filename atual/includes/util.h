@@ -31,6 +31,7 @@ void atualizaStatusBinario(char status, FILE *binario);
 
 /** Entrada **/
 int leInteiroEntrada();
+void leStringsEntrada(int nroStrings, ...);
 
 /** Conversão **/
 int stringParaInteiro(const char *string);

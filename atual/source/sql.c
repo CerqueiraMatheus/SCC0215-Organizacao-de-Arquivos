@@ -31,10 +31,7 @@ void createTableVeiculo() {
     char nomeBinario[255];
 
     // Recebe os nomes dos arquivos
-    if (scanf("%s %s", nomeCsv, nomeBinario) != 2) {
-        printf("%s\n", FALHA_PROCESSAMENTO);
-        exit(0);
-    }
+    leStringsEntrada(2, nomeCsv, nomeBinario);
 
     // Abre os arquivos
     FILE *csv = abreArquivo(nomeCsv, "r", 0);
@@ -77,10 +74,7 @@ void createTableLinha() {
     char nomeBinario[255];
 
     // Recebe os nomes dos arquivos
-    if (scanf("%s %s", nomeCsv, nomeBinario) != 2) {
-        printf("%s\n", FALHA_PROCESSAMENTO);
-        exit(0);
-    }
+    leStringsEntrada(2, nomeCsv, nomeBinario);
 
     // Abre os arquivos
     FILE *csv = abreArquivo(nomeCsv, "r", 0);
@@ -130,10 +124,7 @@ void selectFromVeiculo() {
     char nomeBinario[255];
 
     // Recebe o nome do arquivo
-    if (scanf("%s", nomeBinario) != 1) {
-        printf("%s\n", FALHA_PROCESSAMENTO);
-        exit(0);
-    }
+    leStringsEntrada(1, nomeBinario);
 
     // Abre o binário
     FILE *binario = abreArquivo(nomeBinario, "rb+", 0);
@@ -169,10 +160,7 @@ void selectFromLinha() {
     char nomeBinario[255];
 
     // Recebe o nome do arquivo
-    if (scanf("%s", nomeBinario) != 1) {
-        printf("%s\n", FALHA_PROCESSAMENTO);
-        exit(0);
-    }
+    leStringsEntrada(1, nomeBinario);
 
     // Abre o binário
     FILE *binario = abreArquivo(nomeBinario, "rb+", 0);
@@ -216,10 +204,7 @@ void selectFromWhereVeiculo() {
     char campo[20];
 
     // Recebe os nomes do arquivo e do campo
-    if (scanf("%s %s", nomeBinario, campo) != 2) {
-        printf("%s\n", FALHA_PROCESSAMENTO);
-        exit(0);
-    }
+    leStringsEntrada(2, nomeBinario, campo);
 
     // Recebe o valor
     char valor[100];
@@ -271,10 +256,7 @@ void selectFromWhereLinha() {
     char campo[20];
 
     // Recebe os nomes do arquivo e do campo
-    if (scanf("%s %s", nomeBinario, campo) != 2) {
-        printf("%s\n", FALHA_PROCESSAMENTO);
-        exit(0);
-    }
+    leStringsEntrada(2, nomeBinario, campo);
 
     // Recebe o valor
     char valor[100];
@@ -332,10 +314,7 @@ void insertIntoVeiculo() {
     char nomeBinario[255];
 
     // Recebe o nome do arquivo
-    if (scanf("%s", nomeBinario) != 1) {
-        printf("%s\n", FALHA_PROCESSAMENTO);
-        exit(0);
-    }
+    leStringsEntrada(1, nomeBinario);
 
     // Abre o binário
     FILE *binario = abreArquivo(nomeBinario, "rb+", 0);
@@ -368,10 +347,7 @@ void insertIntoLinha() {
     char nomeBinario[255];
 
     // Recebe o nome do arquivo
-    if (scanf("%s", nomeBinario) != 1) {
-        printf("%s\n", FALHA_PROCESSAMENTO);
-        exit(0);
-    }
+    leStringsEntrada(1, nomeBinario);
 
     // Abre o binário
     FILE *binario = abreArquivo(nomeBinario, "rb+", 0);
@@ -412,10 +388,7 @@ void createIndexVeiculo() {
     char nomeArvoreB[255];
 
     // Recebe o nome dos arquivos
-    if (scanf("%s %s", nomeVeiculosBinario, nomeArvoreB) != 2) {
-        printf("%s\n", FALHA_PROCESSAMENTO);
-        exit(0);
-    }
+    leStringsEntrada(2, nomeVeiculosBinario, nomeArvoreB);
 
     // Abre o binário veículo
     FILE *veiculosBinario = abreArquivo(nomeVeiculosBinario, "rb", 0);
@@ -471,10 +444,7 @@ void createIndexLinha() {
     char nomeArvoreB[255];
 
     // Recebe o nome dos arquivos
-    if (scanf("%s %s", nomeLinhasBinario, nomeArvoreB) != 2) {
-        printf("%s\n", FALHA_PROCESSAMENTO);
-        exit(0);
-    }
+    leStringsEntrada(2, nomeLinhasBinario, nomeArvoreB);
 
     // Abre o binário linha
     FILE *linhasBinario = abreArquivo(nomeLinhasBinario, "rb", 0);
@@ -538,10 +508,7 @@ void selectFromWhereIndexVeiculo() {
     char campo[20];
 
     // Recebe os nomes dos arquivos e do campo
-    if (scanf("%s %s %s", nomeVeiculosBinario, nomeArvoreB, campo) != 3) {
-        printf("%s\n", FALHA_PROCESSAMENTO);
-        exit(0);
-    }
+    leStringsEntrada(3, nomeVeiculosBinario, nomeArvoreB, campo);
 
     // Checa se o campo é chave primária
     if (strcmp(campo, "prefixo") != 0) {
@@ -597,10 +564,7 @@ void selectFromWhereIndexLinha() {
     char campo[20];
 
     // Recebe os nomes dos arquivos e do campo
-    if (scanf("%s %s %s", nomeLinhasBinario, nomeArvoreB, campo) != 3) {
-        printf("%s\n", FALHA_PROCESSAMENTO);
-        exit(0);
-    }
+    leStringsEntrada(3, nomeLinhasBinario, nomeArvoreB, campo);
 
     // Checa se o campo é chave primária
     if (strcmp(campo, "codLinha") != 0) {
@@ -662,10 +626,7 @@ void insertIntoIndexVeiculo() {
     char nomeArvoreB[255];
 
     // Recebe os nomes dos arquivos
-    if (scanf("%s %s", nomeVeiculosBinario, nomeArvoreB) != 2) {
-        printf("%s\n", FALHA_PROCESSAMENTO);
-        exit(0);
-    }
+    leStringsEntrada(2, nomeVeiculosBinario, nomeArvoreB);
 
     // Abre o binário veículo
     FILE *veiculosBinario = abreArquivo(nomeVeiculosBinario, "rb+", 0);
@@ -722,10 +683,7 @@ void insertIntoIndexLinha() {
     char nomeArvoreB[255];
 
     // Recebe os nome do arquivos
-    if (scanf("%s %s", nomeLinhasBinario, nomeArvoreB) != 2) {
-        printf("%s\n", FALHA_PROCESSAMENTO);
-        exit(0);
-    }
+    leStringsEntrada(2, nomeLinhasBinario, nomeArvoreB);
 
     // Abre o binário linha
     FILE *linhasBinario = abreArquivo(nomeLinhasBinario, "rb+", 0);
@@ -789,10 +747,7 @@ void orderByVeiculo() {
     char nomeArquivoOrdenado[255];
     char campo[20];
 
-    if (scanf("%s %s %s", nomeArquivoOriginal, nomeArquivoOrdenado, campo) != 3) {
-        printf("%s\n", FALHA_PROCESSAMENTO);
-        exit(0);
-    }
+    leStringsEntrada(3, nomeArquivoOriginal, nomeArquivoOrdenado, campo);
 
     if (!ehCampoOrdenavel(campo)) {
         printf("%s\n", FALHA_PROCESSAMENTO);
@@ -804,7 +759,6 @@ void orderByVeiculo() {
     validaArquivo(cabecalhoOriginal.status, 1, arquivoOriginal);
 
     FILE *arquivoOrdenado = abreArquivo(nomeArquivoOrdenado, "wb", 1, arquivoOriginal);
-
     CabecalhoVeiculo cabecalhoOrdenado = criaCabecalhoVeiculoNovo(cabecalhoOriginal);
     escreveCabecalhoVeiculoBinario(cabecalhoOrdenado, arquivoOrdenado);
 
@@ -844,11 +798,7 @@ void selectFromJoinOnLoop() {
     char nomeCampoLinha[20];
 
     // Leitura dos campos
-    if (scanf("%s %s %s %s",
-              nomeArquivoVeiculo, nomeArquivoLinha, nomeCampoVeiculo, nomeCampoLinha) != 4) {
-        printf("%s\n", FALHA_PROCESSAMENTO);
-        exit(0);
-    }
+    leStringsEntrada(4, nomeArquivoVeiculo, nomeArquivoLinha, nomeCampoVeiculo, nomeCampoLinha);
 
     // Leitura do arquivo de veículos
     FILE *binarioVeiculo = abreArquivo(nomeArquivoVeiculo, "rb", 0);
@@ -929,12 +879,7 @@ void selectFromJoinOnIndex() {
     char nomeIndiceLinha[255];
 
     // Leitura dos campos
-    if (scanf("%s %s %s %s %s",
-              nomeArquivoVeiculo, nomeArquivoLinha, nomeCampoVeiculo,
-              nomeCampoLinha, nomeIndiceLinha) != 5) {
-        printf("%s\n", FALHA_PROCESSAMENTO);
-        exit(0);
-    }
+    leStringsEntrada(5, nomeArquivoVeiculo, nomeArquivoLinha, nomeCampoVeiculo, nomeCampoLinha, nomeIndiceLinha);
 
     // Leitura do arquivo de veículos
     FILE *binarioVeiculo = abreArquivo(nomeArquivoVeiculo, "rb", 0);

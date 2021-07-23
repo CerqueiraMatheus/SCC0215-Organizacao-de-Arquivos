@@ -137,6 +137,24 @@ int leInteiroEntrada() {
     return strcmp(inteiro, "NULO") == 0 ? -1 : atoi(inteiro);
 }
 
+void leStringsEntrada(int nroStrings, ...) {
+    va_list strings;
+    va_start(strings, nroStrings);
+
+    char formato[3 * nroStrings + 1];
+    formato[0] = '\0';
+    for (int i = 0; i < nroStrings; i++) {
+        strcat(formato, "%s ");
+    }
+
+    if (vscanf(formato, strings) != nroStrings) {
+        printf("%s\n", FALHA_PROCESSAMENTO);
+        exit(0);
+    }
+
+    va_end(strings);
+}
+
 
 /**
  * 
