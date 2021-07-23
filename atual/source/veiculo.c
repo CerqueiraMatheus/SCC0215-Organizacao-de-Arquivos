@@ -32,6 +32,7 @@ static int _comparaVeiculos(const void *primeiro, const void *segundo);
  * 
  */
 
+// Posiciona o ponteiro do binário onde o próximo registro de veículo deve ser inserido
 void posicionaBinarioProximoRegistroVeiculo(FILE *binario, CabecalhoVeiculo cabecalho) {
     fseek(binario, cabecalho.byteProxReg, SEEK_SET);
 }
@@ -83,6 +84,7 @@ CabecalhoVeiculo leCabecalhoVeiculoBinario(FILE *binario) {
     return cabecalho;
 }
 
+// Cria um cabeçalho de veículo novo para ordenação baseado no original
 CabecalhoVeiculo criaCabecalhoVeiculoOrdenado(CabecalhoVeiculo original) {
     CabecalhoVeiculo ordenado;
 
@@ -276,22 +278,26 @@ bool comparaCampoVeiculo(Veiculo *veiculo, const char *campo, const char *valor)
  * 
  */
 
+// Lê um vetor de veículos válidos a partir de um binário
 void leVeiculosBinario(Veiculo *veiculos, int numero, FILE *binario) {
     for (int i = 0, j = 0; i < numero; i++) {
         Veiculo temporario = leVeiculoBinario(binario);
         
+        // Adiciona ao vetor se não removido
         if (!registroFoiRemovido(temporario.removido)) {
             veiculos[j++] = temporario;
         }
     }
 }
 
+// Escreve um vetor de veículos em um binário
 void escreveVeiculosBinario(Veiculo *veiculos, int numero, FILE *binario) {
     for (int i = 0; i < numero; i++) {
         escreveVeiculoBinario(veiculos[i], binario);
     }
 }
 
+// Ordena um vetor de veículos por codLinha
 void ordenaVeiculos(Veiculo *veiculos, int numero) {
     qsort(veiculos, numero, sizeof(Veiculo), _comparaVeiculos);
 }
@@ -307,7 +313,6 @@ static void _posicionaBinarioCabecalhoVeiculo(FILE *binario) {
     fseek(binario, 0, SEEK_SET);
 }
 
-// Imprime uma data por extenso (trata casos nulos)
 static void _imprimeData(const char *data) {
     if (data[0] == '\0') {
         printf("%s\n", CAMPO_NULO);

@@ -24,13 +24,16 @@
  * 
  */
 
+// Abre um arquivo no modo especificado e trata falha
 FILE *abreArquivo(const char *nome, const char *modo, int nroFechamentos, ...) {
     FILE *arquivo = fopen(nome, modo);
 
+    // Caso a abertura falhe
     if (arquivo == NULL) {
         va_list fechamentos;
         va_start(fechamentos, nroFechamentos);
 
+        // Fecha os arquivos passados
         for (int i = 0; i < nroFechamentos; i++) {
             FILE *fechamento = va_arg(fechamentos, FILE *);
             fclose(fechamento);
@@ -45,11 +48,13 @@ FILE *abreArquivo(const char *nome, const char *modo, int nroFechamentos, ...) {
     return arquivo;
 }
 
+// Checa a integridade do arquivo e trata falha
 void validaArquivo(char status, int nroFechamentos, ...) {
     if (arquivoFoiCorrompido(status)) {
         va_list fechamentos;
         va_start(fechamentos, nroFechamentos);
 
+        // Fecha os arquivos passados
         for (int i = 0; i < nroFechamentos; i++) {
             FILE *fechamento = va_arg(fechamentos, FILE *);
             fclose(fechamento);
@@ -137,16 +142,19 @@ int leInteiroEntrada() {
     return strcmp(inteiro, "NULO") == 0 ? -1 : atoi(inteiro);
 }
 
+// Lê múltiplas strings da entrada e trata falha
 void leStringsEntrada(int nroStrings, ...) {
-    va_list strings;
-    va_start(strings, nroStrings);
-
+    // Define a string de formatação do vscanf()
     char formato[3 * nroStrings + 1];
     formato[0] = '\0';
     for (int i = 0; i < nroStrings; i++) {
         strcat(formato, "%s ");
     }
 
+    va_list strings;
+    va_start(strings, nroStrings);
+
+    // Caso a leitura falhe
     if (vscanf(formato, strings) != nroStrings) {
         printf("%s\n", FALHA_PROCESSAMENTO);
         exit(0);
@@ -191,10 +199,12 @@ bool registroFoiRemovido(char removido) {
  * 
  */
 
+// Checa se o campo é valido para ordenação
 bool ehCampoOrdenavel(const char *campo) {
     return strcmp(campo, "codLinha") == 0;
 }
 
+// Checa se o campo é valido para junção
 bool ehCampoJuntavel(const char *campo) {
     return strcmp(campo, "codLinha") == 0;
 }

@@ -32,10 +32,12 @@ static int _comparaLinhas(const void *primeira, const void *segunda);
  * 
  */
 
+// Posiciona o ponteiro do binário no começo do primeiro registro de linha
 void posicionaBinarioPrimeiroRegistroLinha(FILE *binario) {
     fseek(binario, TAMANHO_CABECALHO_LINHA, SEEK_SET);
 }
 
+// Posiciona o ponteiro do binário onde o próximo registro de linha deve ser inserido
 void posicionaBinarioProximoRegistroLinha(FILE *binario, CabecalhoLinha cabecalho) {
     fseek(binario, cabecalho.byteProxReg, SEEK_SET);
 }
@@ -83,6 +85,7 @@ CabecalhoLinha leCabecalhoLinhaBinario(FILE *binario) {
     return cabecalho;
 }
 
+// Cria um cabeçalho de linha novo para ordenação baseado no original
 CabecalhoLinha criaCabecalhoLinhaOrdenado(CabecalhoLinha original) {
     CabecalhoLinha ordenado;
 
@@ -250,22 +253,26 @@ bool comparaCampoLinha(Linha *linha, const char *campo, const char *valor) {
  * 
  */
 
+// Lê um vetor de linhas válidas a partir de um binário
 void leLinhasBinario(Linha *linhas, int numero, FILE *binario) {
     for (int i = 0, j = 0; i < numero; i++) {
         Linha temporario = leLinhaBinario(binario);
 
+        // Adiciona ao vetor se não removido
         if (!registroFoiRemovido(temporario.removido)) {
             linhas[j++] = temporario;
         }
     }
 }
 
+// Escreve um vetor de linhas em um binário
 void escreveLinhasBinario(Linha *linhas, int numero, FILE *binario) {
     for (int i = 0; i < numero; i++) {
         escreveLinhaBinario(linhas[i], binario);
     }
 }
 
+// Ordena um vetor de linhas por codLinha
 void ordenaLinhas(Linha *linhas, int numero) {
     qsort(linhas, numero, sizeof(Linha), _comparaLinhas);
 }
@@ -281,7 +288,6 @@ static void _posicionaBinarioCabecalhoLinha(FILE *binario) {
     fseek(binario, 0, SEEK_SET);
 }
 
-// Imprime o aceite de cartão por extenso (trata casos nulos)
 static void _imprimeAceitaCartao(const char *aceitaCartao) {
     if (aceitaCartao[0] == '\0') {
         printf("%s\n", CAMPO_NULO);

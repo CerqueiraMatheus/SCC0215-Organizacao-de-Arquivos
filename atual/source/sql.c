@@ -803,7 +803,7 @@ void selectFromJoinOnLoop() {
     validaArquivo(cabecalhoLinha.status, 2, binarioVeiculo, binarioLinha);
 
     // Caso não haja veículo ou linha
-    if (cabecalhoLinha.nroRegistros == 0 || cabecalhoVeiculo.nroRegistros == 0) {
+    if (cabecalhoVeiculo.nroRegistros == 0 || cabecalhoLinha.nroRegistros == 0) {
         printf("%s\n", REGISTRO_INEXISTENTE);
         fclose(binarioVeiculo);
         fclose(binarioLinha);
@@ -886,8 +886,8 @@ void selectFromJoinOnIndex() {
     CabecalhoArvoreB cabecalhoIndiceLinha = leCabecalhoArvoreB(arvoreB);
     validaArquivo(cabecalhoIndiceLinha.status, 3, binarioVeiculo, binarioLinha, arvoreB);
 
-    // Caso não haja veículo
-    if (cabecalhoVeiculo.nroRegistros == 0) {
+    // Caso não haja veículo ou linha
+    if (cabecalhoVeiculo.nroRegistros == 0 || cabecalhoLinha.nroRegistros == 0) {
         printf("%s\n", REGISTRO_INEXISTENTE);
         fclose(binarioVeiculo);
         fclose(binarioLinha);
@@ -1034,15 +1034,18 @@ void selectFromJoinOnMerge() {
  */
 
 void _criaBinarioVeiculoOrdenado(char *nomeOriginal, char *nomeOrdenado, char *campo) {
+    // Valida o campo
     if (!ehCampoOrdenavel(campo)) {
         printf("%s\n", FALHA_PROCESSAMENTO);
         exit(0);
     }
 
+    // Abre o arquivo original para leitura
     FILE *original = abreArquivo(nomeOriginal, "rb", 0);
     CabecalhoVeiculo cabecalhoOriginal = leCabecalhoVeiculoBinario(original);
     validaArquivo(cabecalhoOriginal.status, 1, original);
 
+    // Abre o arquivo novo para escrita
     FILE *ordenado = abreArquivo(nomeOrdenado, "wb", 1, original);
     CabecalhoVeiculo cabecalhoOrdenado = criaCabecalhoVeiculoOrdenado(cabecalhoOriginal);
     escreveCabecalhoVeiculoBinario(cabecalhoOrdenado, ordenado);
@@ -1050,32 +1053,39 @@ void _criaBinarioVeiculoOrdenado(char *nomeOriginal, char *nomeOrdenado, char *c
     if (cabecalhoOriginal.nroRegistros > 0) {
         int nroTotalRegistros = cabecalhoOriginal.nroRegistros + cabecalhoOriginal.nroRegRemovidos;
 
+        // Lê os veículos para a RAM
         Veiculo veiculos[cabecalhoOriginal.nroRegistros];
         leVeiculosBinario(veiculos, nroTotalRegistros, original);
 
+        // Escreve os veículos ordenados
         ordenaVeiculos(veiculos, cabecalhoOriginal.nroRegistros);
         escreveVeiculosBinario(veiculos, cabecalhoOriginal.nroRegistros, ordenado);
     }
 
+    // Atualiza o cabeçalho
     cabecalhoOrdenado.status = '1';
     cabecalhoOrdenado.byteProxReg = ftell(ordenado);
     cabecalhoOrdenado.nroRegistros = cabecalhoOriginal.nroRegistros;
     escreveCabecalhoVeiculoBinario(cabecalhoOrdenado, ordenado);
 
+    // Fecha os arquivos
     fclose(original);
     fclose(ordenado);
 }
 
 void _criaBinarioLinhaOrdenado(char *nomeOriginal, char *nomeOrdenado, char *campo) {
+    // Valida o campo
     if (!ehCampoOrdenavel(campo)) {
         printf("%s\n", FALHA_PROCESSAMENTO);
         exit(0);
     }
 
+    // Abre o arquivo original para leitura
     FILE *original = abreArquivo(nomeOriginal, "rb", 0);
     CabecalhoLinha cabecalhoOriginal = leCabecalhoLinhaBinario(original);
     validaArquivo(cabecalhoOriginal.status, 1, original);
 
+    // Abre o arquivo novo para escrita
     FILE *ordenado = abreArquivo(nomeOrdenado, "wb", 1, original);
     CabecalhoLinha cabecalhoOrdenado = criaCabecalhoLinhaOrdenado(cabecalhoOriginal);
     escreveCabecalhoLinhaBinario(cabecalhoOrdenado, ordenado);
@@ -1083,18 +1093,22 @@ void _criaBinarioLinhaOrdenado(char *nomeOriginal, char *nomeOrdenado, char *cam
     if (cabecalhoOriginal.nroRegistros > 0) {
         int nroTotalRegistros = cabecalhoOriginal.nroRegistros + cabecalhoOriginal.nroRegRemovidos;
 
+        // Lê as linhas para a RAM
         Linha linhas[cabecalhoOriginal.nroRegistros];
         leLinhasBinario(linhas, nroTotalRegistros, original);
 
+        // Escreve as linhas ordenados
         ordenaLinhas(linhas, cabecalhoOriginal.nroRegistros);
         escreveLinhasBinario(linhas, cabecalhoOriginal.nroRegistros, ordenado);
     }
 
+    // Atualiza o cabeçalho
     cabecalhoOrdenado.status = '1';
     cabecalhoOrdenado.byteProxReg = ftell(ordenado);
     cabecalhoOrdenado.nroRegistros = cabecalhoOriginal.nroRegistros;
     escreveCabecalhoLinhaBinario(cabecalhoOrdenado, ordenado);
 
+    // Fecha os arquivos
     fclose(original);
     fclose(ordenado);
 }
