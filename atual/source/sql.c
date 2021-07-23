@@ -847,6 +847,7 @@ void selectFromJoinOnLoop() {
                         imprimeVeiculo(veiculo, cabecalhoVeiculo);
                         imprimeLinha(linha, cabecalhoLinha);
                         printf("\n");
+                        break;
                     }
                 }
             }
