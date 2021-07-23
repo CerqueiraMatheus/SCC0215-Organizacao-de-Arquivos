@@ -1,21 +1,20 @@
 /**
  * @author Matheus Henrique de Cerqueira Pinto (11911104)
  * @author Pedro Lucas de Moliner de Castro (11795784)
- * @date 2021-07-05
+ * @date 2021-07-22
  * 
  * @copyright Copyright (c) 2021
  * 
  */
 
+#include "arvoreb.h"
+
 #include <stdbool.h>
 #include <stdio.h>
 
-#include "arvoreb.h"
 #include "util.h"
 
-
 static const int NULO = -1;
-
 
 /**
  *
@@ -36,17 +35,14 @@ CabecalhoArvoreB leCabecalhoArvoreB(FILE *arvoreB) {
     return cabecalho;
 }
 
-
 /**
  *
  * Árvore-B
  * 
  */
 
-
 static NoArvoreB _leNoArvoreB(int RRN, FILE *arvoreB);
 static bool _buscaNoArvoreB(int chave, int *posicao, NoArvoreB no);
-
 
 long long int buscaArvoreB(int chave, int RRN, FILE *arvoreB) {
     if (RRN == NULO) {
@@ -63,7 +59,6 @@ long long int buscaArvoreB(int chave, int RRN, FILE *arvoreB) {
     return buscaArvoreB(chave, no.P[posicao], arvoreB);
 }
 
-
 /**
  *
  * RRN
@@ -73,7 +68,6 @@ long long int buscaArvoreB(int chave, int RRN, FILE *arvoreB) {
 static void _posicionaArvoreBRRN(FILE *arvoreB, int RRN) {
     fseek(arvoreB, (RRN + 1) * TAMANHO_PAGINA, SEEK_SET);
 }
-
 
 /**
  *
@@ -100,7 +94,6 @@ static NoArvoreB _leNoArvoreB(int RRN, FILE *arvoreB) {
     return no;
 }
 
-
 /**
  *
  * Busca
@@ -111,8 +104,7 @@ static bool _buscaNoArvoreB(int chave, int *posicao, NoArvoreB no) {
     for (*posicao = 0; *posicao < no.nroChavesIndexadas; (*posicao)++) {
         if (chave < no.chaves[*posicao].C) {
             return false;
-        }
-        else if (chave == no.chaves[*posicao].C) {
+        } else if (chave == no.chaves[*posicao].C) {
             return true;
         }
     }

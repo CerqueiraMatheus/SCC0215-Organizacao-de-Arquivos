@@ -1,7 +1,7 @@
 /**
  * @author Matheus Henrique de Cerqueira Pinto (11911104)
  * @author Pedro Lucas de Moliner de Castro (11795784)
- * @date 2021-05-26
+ * @date 2021-07-22
  * 
  * @copyright Copyright (c) 2021
  * 
@@ -10,10 +10,8 @@
 #ifndef LINHA_H
 #define LINHA_H
 
-
 #include <stdbool.h>
 #include <stdio.h>
-
 
 typedef struct {
     char status;
@@ -37,7 +35,6 @@ typedef struct {
     char corLinha[100];
 } Linha;
 
-
 /** Binário **/
 void posicionaBinarioPrimeiroRegistroLinha(FILE *binario);
 
@@ -55,6 +52,5 @@ void imprimeLinha(Linha linha, CabecalhoLinha cabecalho);
 void leLinhasBinario(Linha *linhas, int numero, FILE *binario);
 void escreveLinhasBinario(Linha *linhas, int numero, FILE *binario);
 void ordenaLinhas(Linha *linhas, int numero);
-
 
 #endif  // LINHA_H

@@ -1,7 +1,7 @@
 /**
  * @author Matheus Henrique de Cerqueira Pinto (11911104)
  * @author Pedro Lucas de Moliner de Castro (11795784)
- * @date 2021-05-26
+ * @date 2021-07-22
  * 
  * @copyright Copyright (c) 2021
  * 
@@ -10,10 +10,8 @@
 #ifndef UTIL_H
 #define UTIL_H
 
-
 #include <stdbool.h>
 #include <stdio.h>
-
 
 /** Arquivos **/
 FILE *abreArquivo(const char *nome, const char *modo, int nroFechamentos, ...);
@@ -43,6 +41,5 @@ void imprimeCampoInteiro(int campo);
 void binarioNaTela(char *nomeArquivoBinario);
 void scan_quote_string(char *str);
 int convertePrefixo(char *str);
-
 
 #endif  // UTIL_H

@@ -1,29 +1,27 @@
 /**
  * @author Matheus Henrique de Cerqueira Pinto (11911104)
  * @author Pedro Lucas de Moliner de Castro (11795784)
- * @date 2021-05-26
+ * @date 2021-07-22
  * 
  * @copyright Copyright (c) 2021
  * 
  */
 
+#include "linha.h"
+
 #include <stdbool.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
 
 #include "mensagem.h"
-#include "linha.h"
 #include "util.h"
 
-
 static const int TAMANHO_CABECALHO_LINHA = 82;
-
 
 static void _posicionaBinarioCabecalhoLinha(FILE *binario);
 static void _imprimeAceitaCartao(const char *aceitaCartao);
 static int _comparaLinhas(const void *primeira, const void *segunda);
-
 
 /**
  *
@@ -35,7 +33,6 @@ static int _comparaLinhas(const void *primeira, const void *segunda);
 void posicionaBinarioPrimeiroRegistroLinha(FILE *binario) {
     fseek(binario, TAMANHO_CABECALHO_LINHA, SEEK_SET);
 }
-
 
 /**
  *
@@ -93,7 +90,6 @@ void escreveCabecalhoLinhaBinario(CabecalhoLinha cabecalho, FILE *binario) {
     fwrite(cabecalho.descreveNome, sizeof(char), 13, binario);
     fwrite(cabecalho.descreveLinha, sizeof(char), 24, binario);
 }
-
 
 /**
  *
@@ -157,7 +153,6 @@ void imprimeLinha(Linha linha, CabecalhoLinha cabecalho) {
     _imprimeAceitaCartao(linha.aceitaCartao);
 }
 
-
 /**
  *
  * Linhas
@@ -188,7 +183,6 @@ void ordenaLinhas(Linha *linhas, int numero) {
     qsort(linhas, numero, sizeof(Linha), _comparaLinhas);
 }
 
-
 /**
  *
  * Auxiliares 
@@ -206,17 +200,17 @@ static void _imprimeAceitaCartao(const char *aceitaCartao) {
     }
 
     switch (aceitaCartao[0]) {
-    case 'S':
-        printf("PAGAMENTO SOMENTE COM CARTAO SEM PRESENCA DE COBRADOR\n");
-        break;
+        case 'S':
+            printf("PAGAMENTO SOMENTE COM CARTAO SEM PRESENCA DE COBRADOR\n");
+            break;
 
-    case 'N':
-        printf("PAGAMENTO EM CARTAO E DINHEIRO\n");
-        break;
+        case 'N':
+            printf("PAGAMENTO EM CARTAO E DINHEIRO\n");
+            break;
 
-    case 'F':
-        printf("PAGAMENTO EM CARTAO SOMENTE NO FINAL DE SEMANA\n");
-        break;
+        case 'F':
+            printf("PAGAMENTO EM CARTAO SOMENTE NO FINAL DE SEMANA\n");
+            break;
     }
 }
 

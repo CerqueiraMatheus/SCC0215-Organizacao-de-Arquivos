@@ -1,29 +1,27 @@
 /**
  * @author Matheus Henrique de Cerqueira Pinto (11911104)
  * @author Pedro Lucas de Moliner de Castro (11795784)
- * @date 2021-05-26
+ * @date 2021-07-22
  * 
  * @copyright Copyright (c) 2021
  * 
  */
 
+#include "veiculo.h"
+
 #include <stdbool.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
 
 #include "mensagem.h"
-#include "veiculo.h"
 #include "util.h"
 
-
 static const int TAMANHO_CABECALHO_VEICULO = 175;
-
 
 static void _posicionaBinarioCabecalhoVeiculo(FILE *binario);
 static void _imprimeData(const char *data);
 static int _comparaVeiculos(const void *primeiro, const void *segundo);
-
 
 /**
  *
@@ -88,7 +86,6 @@ void escreveCabecalhoVeiculoBinario(CabecalhoVeiculo cabecalho, FILE *binario) {
     fwrite(cabecalho.descreveCategoria, sizeof(char), 20, binario);
 }
 
-
 /**
  *
  * Veículo 
@@ -133,8 +130,7 @@ void escreveVeiculoBinario(Veiculo veiculo, FILE *binario) {
     // Escreve o campo data possivelmente nulo
     if (strlen(veiculo.data) == 0) {
         escreveStringNuloBinario(10, binario);
-    }
-    else {
+    } else {
         fwrite(veiculo.data, sizeof(char), 10, binario);
     }
 
@@ -166,7 +162,6 @@ void imprimeVeiculo(Veiculo veiculo, CabecalhoVeiculo cabecalho) {
     imprimeCampoInteiro(veiculo.quantidadeLugares);
 }
 
-
 /**
  *
  * Veículos
@@ -177,7 +172,7 @@ void imprimeVeiculo(Veiculo veiculo, CabecalhoVeiculo cabecalho) {
 void leVeiculosBinario(Veiculo *veiculos, int numero, FILE *binario) {
     for (int i = 0, j = 0; i < numero; i++) {
         Veiculo temporario = leVeiculoBinario(binario);
-        
+
         // Adiciona ao vetor se não removido
         if (!registroFoiRemovido(temporario.removido)) {
             veiculos[j++] = temporario;
@@ -196,7 +191,6 @@ void escreveVeiculosBinario(Veiculo *veiculos, int numero, FILE *binario) {
 void ordenaVeiculos(Veiculo *veiculos, int numero) {
     qsort(veiculos, numero, sizeof(Veiculo), _comparaVeiculos);
 }
-
 
 /**
  *

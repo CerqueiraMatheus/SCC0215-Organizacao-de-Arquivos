@@ -1,26 +1,24 @@
 /**
  * @author Matheus Henrique de Cerqueira Pinto (11911104)
  * @author Pedro Lucas de Moliner de Castro (11795784)
- * @date 2021-05-26
+ * @date 2021-07-22
  * 
  * @copyright Copyright (c) 2021
  * 
  */
 
 #include <stdbool.h>
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 
-#include "mensagem.h"
-#include "veiculo.h"
 #include "arvoreb.h"
 #include "linha.h"
+#include "mensagem.h"
 #include "util.h"
-
+#include "veiculo.h"
 
 void _criaBinarioVeiculoOrdenado(char *nomeOriginal, char *nomeOrdenado, char *campo);
 void _criaBinarioLinhaOrdenado(char *nomeOriginal, char *nomeOrdenado, char *campo);
-
 
 /**
  * 
@@ -55,7 +53,6 @@ void orderByLinha() {
 
     binarioNaTela(nomeOrdenado);
 }
-
 
 /**
  * 
@@ -197,7 +194,6 @@ void selectFromJoinOnIndex() {
 
             // Caso a busca retorne um offset válido
             if (offset != NAO_ENCONTRADO) {
-                                           
                 // Executa a leitura da linha
                 fseek(binarioLinha, offset, SEEK_SET);
                 Linha linha = leLinhaBinario(binarioLinha);
@@ -285,14 +281,12 @@ void selectFromJoinOnMerge() {
             if (++indiceVeiculo < cabecalhoVeiculo.nroRegistros) {
                 veiculo = leVeiculoBinario(binarioVeiculo);
             }
-        }
-        else if (veiculo.codLinha < linha.codLinha) {
+        } else if (veiculo.codLinha < linha.codLinha) {
             // Avança para o próximo veículo
             if (++indiceVeiculo < cabecalhoVeiculo.nroRegistros) {
                 veiculo = leVeiculoBinario(binarioVeiculo);
             }
-        }
-        else {
+        } else {
             // Avança para a próxima linha
             if (++indiceLinha < cabecalhoLinha.nroRegistros) {
                 linha = leLinhaBinario(binarioLinha);
@@ -309,7 +303,6 @@ void selectFromJoinOnMerge() {
     fclose(binarioVeiculo);
     fclose(binarioLinha);
 }
-
 
 /**
  * 

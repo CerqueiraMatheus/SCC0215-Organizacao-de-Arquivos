@@ -1,22 +1,22 @@
 /**
  * @author Matheus Henrique de Cerqueira Pinto (11911104)
  * @author Pedro Lucas de Moliner de Castro (11795784)
- * @date 2021-05-26
+ * @date 2021-07-22
  * 
  * @copyright Copyright (c) 2021
  * 
  */
 
-#include <stdbool.h>
-#include <stdlib.h>
-#include <stdarg.h>
-#include <string.h>
-#include <stdio.h>
-#include <ctype.h>
-
-#include "mensagem.h"
 #include "util.h"
 
+#include <ctype.h>
+#include <stdarg.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include "mensagem.h"
 
 /**
  * 
@@ -67,7 +67,6 @@ void validaArquivo(char status, int nroFechamentos, ...) {
     }
 }
 
-
 /**
  * 
  * Binário
@@ -92,7 +91,6 @@ void escreveStringNuloBinario(int tamanho, FILE *binario) {
     fwrite("\0", sizeof(char), 1, binario);
     escreveLixoBinario(tamanho - 1, binario);
 }
-
 
 /**
  * 
@@ -121,7 +119,6 @@ void leStringsEntrada(int nroStrings, ...) {
     va_end(strings);
 }
 
-
 /**
  * 
  * Checagem de estados
@@ -137,7 +134,6 @@ bool arquivoFoiCorrompido(char status) {
 bool registroFoiRemovido(char removido) {
     return removido == '0';
 }
-
 
 /**
  * 
@@ -155,7 +151,6 @@ bool ehCampoJuntavel(const char *campo) {
     return strcmp(campo, "codLinha") == 0;
 }
 
-
 /**
  * 
  * Impressão
@@ -166,8 +161,7 @@ bool ehCampoJuntavel(const char *campo) {
 void imprimeCampoString(const char *campo, int tamanho) {
     if (tamanho == 0) {
         printf("%s\n", CAMPO_NULO);
-    }
-    else {
+    } else {
         printf("%s\n", campo);
     }
 }
@@ -176,12 +170,10 @@ void imprimeCampoString(const char *campo, int tamanho) {
 void imprimeCampoInteiro(int campo) {
     if (campo == -1) {
         printf("%s\n", CAMPO_NULO);
-    }
-    else {
+    } else {
         printf("%d\n", campo);
     }
 }
-
 
 /**
  * 
