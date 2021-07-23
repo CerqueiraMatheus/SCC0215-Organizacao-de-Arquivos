@@ -883,8 +883,8 @@ void selectFromJoinOnIndex() {
 
     // Leitura do arquivo de índice de linhas
     FILE *arvoreB = abreArquivo(nomeArvoreB, "rb", 2, binarioVeiculo, binarioLinha);
-    CabecalhoArvoreB cabecalhoIndiceLinha = leCabecalhoArvoreB(arvoreB);
-    validaArquivo(cabecalhoIndiceLinha.status, 3, binarioVeiculo, binarioLinha, arvoreB);
+    CabecalhoArvoreB cabecalhoArvoreB = leCabecalhoArvoreB(arvoreB);
+    validaArquivo(cabecalhoArvoreB.status, 3, binarioVeiculo, binarioLinha, arvoreB);
 
     // Caso não haja veículo ou linha
     if (cabecalhoVeiculo.nroRegistros == 0 || cabecalhoLinha.nroRegistros == 0) {
@@ -907,12 +907,10 @@ void selectFromJoinOnIndex() {
 
         // Se o veículo não foi excluído
         if (!registroFoiRemovido(veiculo.removido)) {
+            long long int offset = buscaArvoreB(veiculo.codLinha, cabecalhoArvoreB.noRaiz, arvoreB);
 
             // Caso a busca retorne um offset válido
-            long long int offset;
-            if ((offset = buscaArvoreB(veiculo.codLinha,
-                                       cabecalhoIndiceLinha.noRaiz,
-                                       arvoreB)) != NAO_ENCONTRADO) {
+            if (offset != NAO_ENCONTRADO) {
                                            
                 // Executa a leitura da linha
                 fseek(binarioLinha, offset, SEEK_SET);
