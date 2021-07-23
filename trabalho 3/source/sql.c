@@ -158,7 +158,8 @@ void selectFromJoinOnIndex() {
     char nomeArvoreB[255];
 
     // Leitura dos campos
-    leStringsEntrada(5, nomeBinarioVeiculo, nomeBinarioLinha, campoVeiculo, campoLinha, nomeArvoreB);
+    leStringsEntrada(5, nomeBinarioVeiculo, nomeBinarioLinha, campoVeiculo,
+                     campoLinha, nomeArvoreB);
 
     // Checa se os campos são válidos
     if (!ehCampoJuntavel(campoVeiculo) || !ehCampoJuntavel(campoLinha)) {
@@ -191,7 +192,8 @@ void selectFromJoinOnIndex() {
     }
 
     // Contabiliza o total de registros
-    int nroTotalRegistrosVeiculo = cabecalhoVeiculo.nroRegistros + cabecalhoVeiculo.nroRegRemovidos;
+    int nroTotalRegistrosVeiculo =
+        cabecalhoVeiculo.nroRegistros + cabecalhoVeiculo.nroRegRemovidos;
 
     // Operador para encontro
     bool encontrado = false;
@@ -202,7 +204,8 @@ void selectFromJoinOnIndex() {
 
         // Se o veículo não foi excluído
         if (!registroFoiRemovido(veiculo.removido)) {
-            long long int offset = buscaArvoreB(veiculo.codLinha, cabecalhoArvoreB.noRaiz, arvoreB);
+            long long int offset = buscaArvoreB(veiculo.codLinha,
+                                                cabecalhoArvoreB.noRaiz, arvoreB);
 
             // Caso a busca retorne um offset válido
             if (offset != NAO_ENCONTRADO) {
@@ -284,7 +287,8 @@ void selectFromJoinOnMerge() {
     int indiceLinha = 0;
 
     // Executa o merge dos arquivos
-    while (indiceVeiculo < cabecalhoVeiculo.nroRegistros && indiceLinha < cabecalhoLinha.nroRegistros) {
+    while (indiceVeiculo < cabecalhoVeiculo.nroRegistros &&
+           indiceLinha < cabecalhoLinha.nroRegistros) {
         // Caso haja o "match"
         if (veiculo.codLinha == linha.codLinha) {
             // Imprime o resultado
