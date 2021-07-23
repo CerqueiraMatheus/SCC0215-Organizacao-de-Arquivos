@@ -195,6 +195,10 @@ bool ehCampoOrdenavel(const char *campo) {
     return strcmp(campo, "codLinha") == 0;
 }
 
+bool ehCampoJuntavel(const char *campo) {
+    return strcmp(campo, "codLinha") == 0;
+}
+
 
 /**
  * 

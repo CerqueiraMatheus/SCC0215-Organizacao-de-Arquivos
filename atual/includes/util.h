@@ -42,6 +42,7 @@ bool registroFoiRemovido(char removido);
 
 /** Checagem de campos **/
 bool ehCampoOrdenavel(const char *campo);
+bool ehCampoJuntavel(const char *campo);
 
 /** Impressão **/
 void imprimeCampoString(const char *campo, int tamanho);

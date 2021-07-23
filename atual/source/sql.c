@@ -798,6 +798,12 @@ void selectFromJoinOnLoop() {
     // Leitura dos campos
     leStringsEntrada(4, nomeBinarioVeiculo, nomeBinarioLinha, campoVeiculo, campoLinha);
 
+    // Checa se os campos são válidos
+    if (!ehCampoJuntavel(campoVeiculo) || !ehCampoJuntavel(campoLinha)) {
+        printf("%s\n", FALHA_PROCESSAMENTO);
+        exit(0);
+    }
+
     // Leitura do arquivo de veículos
     FILE *binarioVeiculo = abreArquivo(nomeBinarioVeiculo, "rb", 0);
     CabecalhoVeiculo cabecalhoVeiculo = leCabecalhoVeiculoBinario(binarioVeiculo);
@@ -807,15 +813,6 @@ void selectFromJoinOnLoop() {
     FILE *binarioLinha = abreArquivo(nomeBinarioLinha, "rb", 1, binarioVeiculo);
     CabecalhoLinha cabecalhoLinha = leCabecalhoLinhaBinario(binarioLinha);
     validaArquivo(cabecalhoLinha.status, 2, binarioVeiculo, binarioLinha);
-
-    // Checa se os campos são válidos
-    if (strcmp(campoLinha, "codLinha") != 0 ||
-        strcmp(campoLinha, campoVeiculo) != 0) {
-        printf("%s\n", FALHA_PROCESSAMENTO);
-        fclose(binarioVeiculo);
-        fclose(binarioLinha);
-        exit(0);
-    }
 
     // Caso não haja veículo ou linha
     if (cabecalhoLinha.nroRegistros == 0 || cabecalhoVeiculo.nroRegistros == 0) {
@@ -879,6 +876,12 @@ void selectFromJoinOnIndex() {
     // Leitura dos campos
     leStringsEntrada(5, nomeBinarioVeiculo, nomeBinarioLinha, campoVeiculo, campoLinha, nomeArvoreB);
 
+    // Checa se os campos são válidos
+    if (!ehCampoJuntavel(campoVeiculo) || !ehCampoJuntavel(campoLinha)) {
+        printf("%s\n", FALHA_PROCESSAMENTO);
+        exit(0);
+    }
+
     // Leitura do arquivo de veículos
     FILE *binarioVeiculo = abreArquivo(nomeBinarioVeiculo, "rb", 0);
     CabecalhoVeiculo cabecalhoVeiculo = leCabecalhoVeiculoBinario(binarioVeiculo);
@@ -893,16 +896,6 @@ void selectFromJoinOnIndex() {
     FILE *arvoreB = abreArquivo(nomeArvoreB, "rb", 2, binarioVeiculo, binarioLinha);
     CabecalhoArvoreB cabecalhoIndiceLinha = leCabecalhoArvoreB(arvoreB);
     validaArquivo(cabecalhoIndiceLinha.status, 3, binarioVeiculo, binarioLinha, arvoreB);
-
-    // Checa se os campos são válidos
-    if (strcmp(campoLinha, "codLinha") != 0 ||
-        strcmp(campoLinha, campoVeiculo) != 0) {
-        printf("%s\n", FALHA_PROCESSAMENTO);
-        fclose(binarioVeiculo);
-        fclose(binarioLinha);
-        fclose(arvoreB);
-        exit(0);
-    }
 
     // Caso não haja veículo
     if (cabecalhoVeiculo.nroRegistros == 0) {
