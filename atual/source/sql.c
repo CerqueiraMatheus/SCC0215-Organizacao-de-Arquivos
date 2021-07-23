@@ -20,6 +20,10 @@
 #include "sql.h"
 
 
+void _criaBinarioVeiculoOrdenado(char *nomeOriginal, char *nomeOrdenado, char *campo);
+void _criaBinarioLinhaOrdenado(char *nomeOriginal, char *nomeOrdenado, char *campo);
+
+
 /**
  * 
  * Create Table
@@ -743,38 +747,11 @@ void orderByVeiculo() {
     char nomeOrdenado[255];
     char campo[20];
 
+    // Leitura dos campos
     leStringsEntrada(3, nomeOriginal, nomeOrdenado, campo);
 
-    if (!ehCampoOrdenavel(campo)) {
-        printf("%s\n", FALHA_PROCESSAMENTO);
-        exit(0);
-    }
-
-    FILE *original = abreArquivo(nomeOriginal, "rb", 0);
-    CabecalhoVeiculo cabecalhoOriginal = leCabecalhoVeiculoBinario(original);
-    validaArquivo(cabecalhoOriginal.status, 1, original);
-
-    FILE *ordenado = abreArquivo(nomeOrdenado, "wb", 1, original);
-    CabecalhoVeiculo cabecalhoOrdenado = criaCabecalhoVeiculoOrdenado(cabecalhoOriginal);
-    escreveCabecalhoVeiculoBinario(cabecalhoOrdenado, ordenado);
-
-    if (cabecalhoOriginal.nroRegistros > 0) {
-        int nroTotalRegistros = cabecalhoOriginal.nroRegistros + cabecalhoOriginal.nroRegRemovidos;
-
-        Veiculo veiculos[cabecalhoOriginal.nroRegistros];
-        leVeiculosBinario(veiculos, nroTotalRegistros, original);
-
-        ordenaVeiculos(veiculos, cabecalhoOriginal.nroRegistros);
-        escreveVeiculosBinario(veiculos, cabecalhoOriginal.nroRegistros, ordenado);
-    }
-
-    cabecalhoOrdenado.status = '1';
-    cabecalhoOrdenado.byteProxReg = ftell(ordenado);
-    cabecalhoOrdenado.nroRegistros = cabecalhoOriginal.nroRegistros;
-    escreveCabecalhoVeiculoBinario(cabecalhoOrdenado, ordenado);
-
-    fclose(original);
-    fclose(ordenado);
+    // Criação do arquivo ordenado
+    _criaBinarioVeiculoOrdenado(nomeOriginal, nomeOrdenado, campo);
 
     binarioNaTela(nomeOrdenado);
 }
@@ -784,38 +761,11 @@ void orderByLinha() {
     char nomeOrdenado[255];
     char campo[20];
 
+    // Leitura dos campos
     leStringsEntrada(3, nomeOriginal, nomeOrdenado, campo);
 
-    if (!ehCampoOrdenavel(campo)) {
-        printf("%s\n", FALHA_PROCESSAMENTO);
-        exit(0);
-    }
-
-    FILE *original = abreArquivo(nomeOriginal, "rb", 0);
-    CabecalhoLinha cabecalhoOriginal = leCabecalhoLinhaBinario(original);
-    validaArquivo(cabecalhoOriginal.status, 1, original);
-
-    FILE *ordenado = abreArquivo(nomeOrdenado, "wb", 1, original);
-    CabecalhoLinha cabecalhoOrdenado = criaCabecalhoLinhaOrdenado(cabecalhoOriginal);
-    escreveCabecalhoLinhaBinario(cabecalhoOrdenado, ordenado);
-
-    if (cabecalhoOriginal.nroRegistros > 0) {
-        int nroTotalRegistros = cabecalhoOriginal.nroRegistros + cabecalhoOriginal.nroRegRemovidos;
-
-        Linha linhas[cabecalhoOriginal.nroRegistros];
-        leLinhasBinario(linhas, nroTotalRegistros, original);
-
-        ordenaLinhas(linhas, cabecalhoOriginal.nroRegistros);
-        escreveLinhasBinario(linhas, cabecalhoOriginal.nroRegistros, ordenado);
-    }
-
-    cabecalhoOrdenado.status = '1';
-    cabecalhoOrdenado.byteProxReg = ftell(ordenado);
-    cabecalhoOrdenado.nroRegistros = cabecalhoOriginal.nroRegistros;
-    escreveCabecalhoLinhaBinario(cabecalhoOrdenado, ordenado);
-
-    fclose(original);
-    fclose(ordenado);
+    // Criação do arquivo ordenado
+    _criaBinarioLinhaOrdenado(nomeOriginal, nomeOrdenado, campo);
 
     binarioNaTela(nomeOrdenado);
 }
@@ -992,4 +942,77 @@ void selectFromJoinOnIndex() {
 
 void selectFromJoinOnMerge() {
 
+}
+
+
+/**
+ * 
+ * Auxiliares
+ * 
+ */
+
+void _criaBinarioVeiculoOrdenado(char *nomeOriginal, char *nomeOrdenado, char *campo) {
+    if (!ehCampoOrdenavel(campo)) {
+        printf("%s\n", FALHA_PROCESSAMENTO);
+        exit(0);
+    }
+
+    FILE *original = abreArquivo(nomeOriginal, "rb", 0);
+    CabecalhoVeiculo cabecalhoOriginal = leCabecalhoVeiculoBinario(original);
+    validaArquivo(cabecalhoOriginal.status, 1, original);
+
+    FILE *ordenado = abreArquivo(nomeOrdenado, "wb", 1, original);
+    CabecalhoVeiculo cabecalhoOrdenado = criaCabecalhoVeiculoOrdenado(cabecalhoOriginal);
+    escreveCabecalhoVeiculoBinario(cabecalhoOrdenado, ordenado);
+
+    if (cabecalhoOriginal.nroRegistros > 0) {
+        int nroTotalRegistros = cabecalhoOriginal.nroRegistros + cabecalhoOriginal.nroRegRemovidos;
+
+        Veiculo veiculos[cabecalhoOriginal.nroRegistros];
+        leVeiculosBinario(veiculos, nroTotalRegistros, original);
+
+        ordenaVeiculos(veiculos, cabecalhoOriginal.nroRegistros);
+        escreveVeiculosBinario(veiculos, cabecalhoOriginal.nroRegistros, ordenado);
+    }
+
+    cabecalhoOrdenado.status = '1';
+    cabecalhoOrdenado.byteProxReg = ftell(ordenado);
+    cabecalhoOrdenado.nroRegistros = cabecalhoOriginal.nroRegistros;
+    escreveCabecalhoVeiculoBinario(cabecalhoOrdenado, ordenado);
+
+    fclose(original);
+    fclose(ordenado);
+}
+
+void _criaBinarioLinhaOrdenado(char *nomeOriginal, char *nomeOrdenado, char *campo) {
+    if (!ehCampoOrdenavel(campo)) {
+        printf("%s\n", FALHA_PROCESSAMENTO);
+        exit(0);
+    }
+
+    FILE *original = abreArquivo(nomeOriginal, "rb", 0);
+    CabecalhoLinha cabecalhoOriginal = leCabecalhoLinhaBinario(original);
+    validaArquivo(cabecalhoOriginal.status, 1, original);
+
+    FILE *ordenado = abreArquivo(nomeOrdenado, "wb", 1, original);
+    CabecalhoLinha cabecalhoOrdenado = criaCabecalhoLinhaOrdenado(cabecalhoOriginal);
+    escreveCabecalhoLinhaBinario(cabecalhoOrdenado, ordenado);
+
+    if (cabecalhoOriginal.nroRegistros > 0) {
+        int nroTotalRegistros = cabecalhoOriginal.nroRegistros + cabecalhoOriginal.nroRegRemovidos;
+
+        Linha linhas[cabecalhoOriginal.nroRegistros];
+        leLinhasBinario(linhas, nroTotalRegistros, original);
+
+        ordenaLinhas(linhas, cabecalhoOriginal.nroRegistros);
+        escreveLinhasBinario(linhas, cabecalhoOriginal.nroRegistros, ordenado);
+    }
+
+    cabecalhoOrdenado.status = '1';
+    cabecalhoOrdenado.byteProxReg = ftell(ordenado);
+    cabecalhoOrdenado.nroRegistros = cabecalhoOriginal.nroRegistros;
+    escreveCabecalhoLinhaBinario(cabecalhoOrdenado, ordenado);
+
+    fclose(original);
+    fclose(ordenado);
 }
