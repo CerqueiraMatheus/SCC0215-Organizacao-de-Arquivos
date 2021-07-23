@@ -8,6 +8,7 @@
  */
 
 #include <stdbool.h>
+#include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 
@@ -22,6 +23,7 @@ static const int TAMANHO_BASE_LINHA = 13;
 
 static void _posicionaBinarioCabecalhoLinha(FILE *binario);
 static void _imprimeAceitaCartao(const char *aceitaCartao);
+static int _comparaLinhas(const void *primeira, const void *segunda);
 
 
 /**
@@ -50,7 +52,7 @@ CabecalhoLinha leCabecalhoLinhaCsv(FILE *csv) {
     CabecalhoLinha cabecalho;
 
     cabecalho.status = '0';
-    cabecalho.byteProxReg = 0;
+    cabecalho.byteProxReg = TAMANHO_CABECALHO_LINHA;
     cabecalho.nroRegistros = 0;
     cabecalho.nroRegRemovidos = 0;
 
@@ -81,6 +83,22 @@ CabecalhoLinha leCabecalhoLinhaBinario(FILE *binario) {
     return cabecalho;
 }
 
+CabecalhoLinha criaCabecalhoLinhaOrdenado(CabecalhoLinha original) {
+    CabecalhoLinha ordenado;
+
+    ordenado.status = '0';
+    ordenado.byteProxReg = TAMANHO_CABECALHO_LINHA;
+    ordenado.nroRegistros = 0;
+    ordenado.nroRegRemovidos = 0;
+
+    strcpy(ordenado.descreveCodigo, original.descreveCodigo);
+    strcpy(ordenado.descreveCartao, original.descreveCartao);
+    strcpy(ordenado.descreveNome, original.descreveNome);
+    strcpy(ordenado.descreveLinha, original.descreveLinha);
+
+    return ordenado;
+}
+
 // Escreve o cabeçalho de uma Linha num binário
 void escreveCabecalhoLinhaBinario(CabecalhoLinha cabecalho, FILE *binario) {
     _posicionaBinarioCabecalhoLinha(binario);
@@ -99,7 +117,7 @@ void escreveCabecalhoLinhaBinario(CabecalhoLinha cabecalho, FILE *binario) {
 
 /**
  *
- * Linha 
+ * Linha
  * 
  */
 
@@ -228,6 +246,33 @@ bool comparaCampoLinha(Linha *linha, const char *campo, const char *valor) {
 
 /**
  *
+ * Linhas
+ * 
+ */
+
+void leLinhasBinario(Linha *linhas, int numero, FILE *binario) {
+    for (int i = 0, j = 0; i < numero; i++) {
+        Linha temporario = leLinhaBinario(binario);
+
+        if (!registroFoiRemovido(temporario.removido)) {
+            linhas[j++] = temporario;
+        }
+    }
+}
+
+void escreveLinhasBinario(Linha *linhas, int numero, FILE *binario) {
+    for (int i = 0; i < numero; i++) {
+        escreveLinhaBinario(linhas[i], binario);
+    }
+}
+
+void ordenaLinhas(Linha *linhas, int numero) {
+    qsort(linhas, numero, sizeof(Linha), _comparaLinhas);
+}
+
+
+/**
+ *
  * Auxiliares 
  * 
  */
@@ -256,4 +301,8 @@ static void _imprimeAceitaCartao(const char *aceitaCartao) {
         printf("PAGAMENTO EM CARTAO SOMENTE NO FINAL DE SEMANA\n");
         break;
     }
+}
+
+static int _comparaLinhas(const void *primeira, const void *segunda) {
+    return ((Linha *)primeira)->codLinha - ((Linha *)segunda)->codLinha;
 }

@@ -45,6 +45,7 @@ void posicionaBinarioPrimeiroRegistroLinha(FILE *binario);
 /** Cabeçalho da Linha **/
 CabecalhoLinha leCabecalhoLinhaCsv(FILE *csv);
 CabecalhoLinha leCabecalhoLinhaBinario(FILE *binario);
+CabecalhoLinha criaCabecalhoLinhaOrdenado(CabecalhoLinha original);
 void escreveCabecalhoLinhaBinario(CabecalhoLinha cabecalho, FILE *binario);
 
 /** Linha **/
@@ -54,6 +55,11 @@ Linha leLinhaEntrada();
 void escreveLinhaBinario(Linha linha, FILE *binario);
 void imprimeLinha(Linha linha, CabecalhoLinha cabecalho);
 bool comparaCampoLinha(Linha *linha, const char *campo, const char *valor);
+
+/** Linhas **/
+void leLinhasBinario(Linha *linhas, int numero, FILE *binario);
+void escreveLinhasBinario(Linha *linhas, int numero, FILE *binario);
+void ordenaLinhas(Linha *linhas, int numero);
 
 
 #endif  // LINHA_H

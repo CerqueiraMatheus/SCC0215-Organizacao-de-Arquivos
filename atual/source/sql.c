@@ -780,7 +780,44 @@ void orderByVeiculo() {
 }
 
 void orderByLinha() {
+    char nomeOriginal[255];
+    char nomeOrdenado[255];
+    char campo[20];
 
+    leStringsEntrada(3, nomeOriginal, nomeOrdenado, campo);
+
+    if (!ehCampoOrdenavel(campo)) {
+        printf("%s\n", FALHA_PROCESSAMENTO);
+        exit(0);
+    }
+
+    FILE *original = abreArquivo(nomeOriginal, "rb", 0);
+    CabecalhoLinha cabecalhoOriginal = leCabecalhoLinhaBinario(original);
+    validaArquivo(cabecalhoOriginal.status, 1, original);
+
+    FILE *ordenado = abreArquivo(nomeOrdenado, "wb", 1, original);
+    CabecalhoLinha cabecalhoOrdenado = criaCabecalhoLinhaOrdenado(cabecalhoOriginal);
+    escreveCabecalhoLinhaBinario(cabecalhoOrdenado, ordenado);
+
+    if (cabecalhoOriginal.nroRegistros > 0) {
+        int nroTotalRegistros = cabecalhoOriginal.nroRegistros + cabecalhoOriginal.nroRegRemovidos;
+
+        Linha linhas[cabecalhoOriginal.nroRegistros];
+        leLinhasBinario(linhas, nroTotalRegistros, original);
+
+        ordenaLinhas(linhas, cabecalhoOriginal.nroRegistros);
+        escreveLinhasBinario(linhas, cabecalhoOriginal.nroRegistros, ordenado);
+    }
+
+    cabecalhoOrdenado.status = '1';
+    cabecalhoOrdenado.byteProxReg = ftell(ordenado);
+    cabecalhoOrdenado.nroRegistros = cabecalhoOriginal.nroRegistros;
+    escreveCabecalhoLinhaBinario(cabecalhoOrdenado, ordenado);
+
+    fclose(original);
+    fclose(ordenado);
+
+    binarioNaTela(nomeOrdenado);
 }
 
 
