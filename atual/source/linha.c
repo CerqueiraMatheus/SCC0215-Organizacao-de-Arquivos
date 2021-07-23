@@ -212,7 +212,7 @@ void imprimeLinha(Linha linha, CabecalhoLinha cabecalho) {
 }
 
 // Verifica se uma Linha corresponde ao campo e valor pesquisados
-bool comparaLinha(Linha *linha, const char *campo, const char *valor) {
+bool comparaCampoLinha(Linha *linha, const char *campo, const char *valor) {
     if (
         comparaCampoInteiro(campo, "codLinha", stringParaInteiro(valor), linha->codLinha) ||
         comparaCampoString(campo, "aceitaCartao", valor, linha->aceitaCartao) ||

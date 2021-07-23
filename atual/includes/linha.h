@@ -53,7 +53,7 @@ Linha leLinhaBinario(FILE *binario);
 Linha leLinhaEntrada();
 void escreveLinhaBinario(Linha linha, FILE *binario);
 void imprimeLinha(Linha linha, CabecalhoLinha cabecalho);
-bool comparaLinha(Linha *linha, const char *campo, const char *valor);
+bool comparaCampoLinha(Linha *linha, const char *campo, const char *valor);
 
 
 #endif  // LINHA_H

@@ -251,7 +251,7 @@ void selectFromWhereVeiculo() {
         // Caso registro lido não removido
         if (!registroFoiRemovido(veiculo.removido)) {
             // Checa valor desejado
-            if (comparaVeiculo(&veiculo, campo, valor)) {
+            if (comparaCampoVeiculo(&veiculo, campo, valor)) {
                 imprimeVeiculo(veiculo, cabecalhoVeiculo);
                 houveCorrespondencia = true;
             }
@@ -306,7 +306,7 @@ void selectFromWhereLinha() {
         // Caso registro lido não removido
         if (!registroFoiRemovido(linha.removido)) {
             // Checa valor desejado
-            if (comparaLinha(&linha, campo, valor)) {
+            if (comparaCampoLinha(&linha, campo, valor)) {
                 imprimeLinha(linha, cabecalhoLinha);
                 houveCorrespondencia = true;
             }

@@ -255,7 +255,7 @@ void imprimeVeiculo(Veiculo veiculo, CabecalhoVeiculo cabecalho) {
 }
 
 // Verifica se um Veículo corresponde ao campo e valor pesquisados
-bool comparaVeiculo(Veiculo *veiculo, const char *campo, const char *valor) {
+bool comparaCampoVeiculo(Veiculo *veiculo, const char *campo, const char *valor) {
     if (
         comparaCampoString(campo, "prefixo", valor, veiculo->prefixo) ||
         comparaCampoString(campo, "data", valor, veiculo->data) ||
