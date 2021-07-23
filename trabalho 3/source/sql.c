@@ -26,6 +26,9 @@ void _criaBinarioLinhaOrdenado(char *nomeOriginal, char *nomeOrdenado, char *cam
  * 
  */
 
+// Função 17:
+//  -> Lê um arquivo de dados de Veículo desordenado e um arquivo destino
+//  -> Cria um arquivo ordenado e exibe o binário na tela
 void orderByVeiculo() {
     char nomeOriginal[255];
     char nomeOrdenado[255];
@@ -40,6 +43,9 @@ void orderByVeiculo() {
     binarioNaTela(nomeOrdenado);
 }
 
+// Função 18:
+//  -> Lê um arquivo de dados de Linha desordenado e um arquivo destino
+//  -> Cria um arquivo ordenado e exibe o binário na tela
 void orderByLinha() {
     char nomeOriginal[255];
     char nomeOrdenado[255];
@@ -60,6 +66,9 @@ void orderByLinha() {
  * 
  */
 
+// Função 15:
+//  -> Lê um arquivo de dados de Veículo e Linha
+//  -> Exibe os "matches" entre os códigos de linha de Veículo e Linha
 void selectFromJoinOnLoop() {
     char nomeBinarioVeiculo[255];
     char nomeBinarioLinha[255];
@@ -138,6 +147,9 @@ void selectFromJoinOnLoop() {
     fclose(binarioLinha);
 }
 
+// Função 16:
+//  -> Lê um arquivo de dados de Veículo e Linha e um arquivo de índices de Linha
+//  -> Exibe os "matches" entre os códigos de linha de Veículo e Linha
 void selectFromJoinOnIndex() {
     char nomeBinarioVeiculo[255];
     char nomeBinarioLinha[255];
@@ -220,6 +232,10 @@ void selectFromJoinOnIndex() {
     fclose(arvoreB);
 }
 
+// Função 19:
+//  -> Lê um arquivo de dados de Veículo e Linha
+//  -> Cria arquivos ordenados de dados
+//     Exibe os "matches" entre os códigos de linha de Veículo e Linha
 void selectFromJoinOnMerge() {
     char nomeBinarioVeiculo[255];
     char nomeBinarioLinha[255];
