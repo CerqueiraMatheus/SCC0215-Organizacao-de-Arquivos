@@ -82,23 +82,23 @@ CabecalhoVeiculo leCabecalhoVeiculoBinario(FILE *binario) {
     return cabecalho;
 }
 
-CabecalhoVeiculo criaCabecalhoVeiculoNovo(CabecalhoVeiculo original) {
-    CabecalhoVeiculo novo;
+CabecalhoVeiculo criaCabecalhoVeiculoOrdenado(CabecalhoVeiculo original) {
+    CabecalhoVeiculo ordenado;
 
-    novo.status = '0';
-    novo.byteProxReg = 0;
+    ordenado.status = '0';
+    ordenado.byteProxReg = 0;
 
-    strcpy(novo.descrevePrefixo, original.descrevePrefixo);
-    strcpy(novo.descreveData, original.descreveData);
-    strcpy(novo.descreveLugares, original.descreveLugares);
-    strcpy(novo.descreveLinha, original.descreveLinha);
-    strcpy(novo.descreveModelo, original.descreveModelo);
-    strcpy(novo.descreveCategoria, original.descreveCategoria);
+    strcpy(ordenado.descrevePrefixo, original.descrevePrefixo);
+    strcpy(ordenado.descreveData, original.descreveData);
+    strcpy(ordenado.descreveLugares, original.descreveLugares);
+    strcpy(ordenado.descreveLinha, original.descreveLinha);
+    strcpy(ordenado.descreveModelo, original.descreveModelo);
+    strcpy(ordenado.descreveCategoria, original.descreveCategoria);
 
-    novo.nroRegistros = original.nroRegistros;
-    novo.nroRegRemovidos = 0;
+    ordenado.nroRegistros = original.nroRegistros;
+    ordenado.nroRegRemovidos = 0;
 
-    return novo;
+    return ordenado;
 }
 
 // Escreve o cabeçalho de um Veículo num binário

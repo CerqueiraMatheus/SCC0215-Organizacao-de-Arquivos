@@ -48,7 +48,7 @@ void posicionaBinarioProximoRegistroVeiculo(FILE *binario, CabecalhoVeiculo cabe
 /** Cabeçalho do Veículo **/
 CabecalhoVeiculo leCabecalhoVeiculoCsv(FILE *csv);
 CabecalhoVeiculo leCabecalhoVeiculoBinario(FILE *binario);
-CabecalhoVeiculo criaCabecalhoVeiculoNovo(CabecalhoVeiculo original);
+CabecalhoVeiculo criaCabecalhoVeiculoOrdenado(CabecalhoVeiculo original);
 void escreveCabecalhoVeiculoBinario(CabecalhoVeiculo cabecalho, FILE *binario);
 
 /** Veículo **/
